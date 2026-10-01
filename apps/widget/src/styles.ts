@@ -160,8 +160,12 @@ export const widgetStyles = `
     border-radius: var(--ig-border-radius);
     aspect-ratio: 1;
     background-color: #f3f4f6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
+
+  .ig-card-rounded { border-radius: 18px; }
+  .ig-card-elevated { box-shadow: 0 5px 18px rgba(15, 23, 42, 0.14); }
 
   .ig-feed-item a {
     display: block;
@@ -179,9 +183,33 @@ export const widgetStyles = `
     transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .ig-feed-item:hover img {
+  .ig-hover-zoom:hover img {
     transform: scale(1.05);
   }
+
+  .ig-hover-lift:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.16); }
+  .ig-hover-none img { transition: none; }
+
+  .ig-feed-likes {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .ig-feed-item:hover .ig-feed-likes { opacity: 1; }
+  .ig-hover-none:hover .ig-feed-likes { opacity: 0; }
+  .ig-feed-heart { font-size: 34px; line-height: 1; font-weight: 400; }
 
   /* Media Badges in Top Right Corner */
   .ig-media-badge {
@@ -220,7 +248,7 @@ export const widgetStyles = `
     pointer-events: none;
   }
 
-  .ig-feed-item:hover .ig-feed-overlay {
+  .ig-hover-overlay:hover .ig-feed-overlay {
     opacity: 1;
   }
 
