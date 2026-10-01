@@ -108,6 +108,7 @@ pnpm db:generate
 
 # Apply migrations locally
 pnpm --filter @instagram-widget/api exec wrangler d1 execute instagram-widget-db --local --file=../../database/migrations/0000_bouncy_peter_parker.sql
+pnpm --filter @instagram-widget/api exec wrangler d1 execute instagram-widget-db --local --file=../../database/migrations/0001_old_risque.sql
 ```
 
 ---
