@@ -1,4 +1,4 @@
-import { sqliteTable, text, uniqueIndex, index } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, uniqueIndex, index } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 // ─── Users ─────────────────────────────────────────────────────
@@ -82,6 +82,7 @@ export const posts = sqliteTable(
     thumbnailUrl: text("thumbnail_url"),
     permalink: text("permalink").notNull(),
     caption: text("caption"),
+    likeCount: integer("like_count"),
     timestamp: text("timestamp").notNull(),
     createdAt: text("created_at")
       .notNull()
