@@ -103,7 +103,13 @@ class InstagramFeedWidget extends HTMLElement {
     }
 
     const cssVars = this.buildCssVars(settings);
-    const postsHtml = data.posts
+    const posts = [...data.posts]
+      .sort((a, b) => {
+        const difference = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        return settings.order === "oldest" ? difference : -difference;
+      })
+      .slice(0, settings.postCount ?? ((settings.columns ?? 4) * (settings.rows ?? 2)));
+    const postsHtml = posts
       .map((post) => this.renderPost(post, settings))
       .join("");
 
@@ -166,6 +172,10 @@ class InstagramFeedWidget extends HTMLElement {
       showCaption && post.caption
         ? `<div class="ig-feed-overlay"><p class="ig-feed-overlay-text">${this.escapeHtml(post.caption)}</p></div>`
         : "";
+    const likesOverlay =
+      post.likeCount !== null && post.likeCount !== undefined
+        ? `<div class="ig-feed-likes" aria-label="${post.likeCount} likes"><span class="ig-feed-heart">♡</span><span>${post.likeCount.toLocaleString()}</span></div>`
+        : "";
 
     // Badges in top-right corner matching Instagram
     let typeBadge = "";
@@ -189,8 +199,11 @@ class InstagramFeedWidget extends HTMLElement {
       `;
     }
 
+    const hoverStyle = settings.hoverStyle ?? (settings.hoverEffect === false ? "none" : "zoom");
+    const cardStyle = settings.cardStyle ?? "clean";
+
     return `
-      <div class="ig-feed-item">
+      <div class="ig-feed-item ig-card-${cardStyle} ig-hover-${hoverStyle}">
         <a href="${this.escapeHtml(post.permalink)}" target="_blank" rel="noopener noreferrer">
           <img
             src="${this.escapeHtml(imgSrc)}"
@@ -198,6 +211,7 @@ class InstagramFeedWidget extends HTMLElement {
             loading="lazy"
           />
           ${typeBadge}
+          ${likesOverlay}
           ${captionOverlay}
         </a>
       </div>
