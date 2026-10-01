@@ -2,6 +2,10 @@
 
 export type MediaType = "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
 
+export type FeedOrder = "newest" | "oldest";
+export type FeedCardStyle = "clean" | "rounded" | "elevated";
+export type FeedHoverStyle = "zoom" | "overlay" | "lift" | "none";
+
 // ─── API Response: Feed Post ───────────────────────────────────
 
 export interface FeedPost {
@@ -11,6 +15,7 @@ export interface FeedPost {
   thumbnailUrl: string | null;
   permalink: string;
   caption: string | null;
+  likeCount: number | null;
   timestamp: string;
 }
 
@@ -19,10 +24,14 @@ export interface FeedPost {
 export interface FeedSettings {
   columns?: number;
   rows?: number;
+  postCount?: number;
+  order?: FeedOrder;
   gap?: number;
   borderRadius?: number;
+  cardStyle?: FeedCardStyle;
   showCaption?: boolean;
   hoverEffect?: boolean;
+  hoverStyle?: FeedHoverStyle;
   showHeader?: boolean;
   headerName?: string;
   headerUsername?: string;
@@ -93,6 +102,7 @@ export interface InstagramMedia {
   thumbnailUrl: string | null;
   permalink: string;
   caption: string | null;
+  likeCount: number | null;
   timestamp: string;
 }
 
