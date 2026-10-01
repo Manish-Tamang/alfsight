@@ -173,7 +173,7 @@ export class MetaInstagramProvider implements InstagramProvider {
    */
   async getMedia(accessToken: string, limit = 25): Promise<InstagramMedia[]> {
     const url = new URL("https://graph.instagram.com/v21.0/me/media");
-    url.searchParams.set("fields", "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp");
+    url.searchParams.set("fields", "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,like_count");
     url.searchParams.set("limit", String(limit));
     url.searchParams.set("access_token", accessToken);
 
@@ -191,6 +191,7 @@ export class MetaInstagramProvider implements InstagramProvider {
       thumbnailUrl: item.thumbnail_url ?? null,
       permalink: item.permalink,
       caption: item.caption ?? null,
+      likeCount: typeof item.like_count === "number" ? item.like_count : null,
       timestamp: item.timestamp,
     }));
   }
