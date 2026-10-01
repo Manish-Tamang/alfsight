@@ -1,0 +1,25 @@
+{
+  "name": "alfsight",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Embeddable Instagram feed widget service",
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
+    "dev:api": "pnpm --filter @instagram-widget/api dev",
+    "dev:dashboard": "pnpm --filter @instagram-widget/dashboard dev",
+    "dev:widget": "pnpm --filter @instagram-widget/widget dev",
+    "build": "pnpm --filter ./packages/* run build && pnpm --filter ./database run build && pnpm --filter ./apps/* run build",
+    "build:api": "pnpm --filter @instagram-widget/api build",
+    "build:dashboard": "pnpm --filter @instagram-widget/dashboard build",
+    "build:widget": "pnpm --filter @instagram-widget/widget build",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "db:generate": "pnpm --filter @instagram-widget/database generate",
+    "db:migrate": "pnpm --filter @instagram-widget/database migrate"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

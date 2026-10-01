@@ -1,0 +1,41 @@
+{
+  // Alfsight API — Cloudflare Worker
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "instagram-widget-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-09-25",
+
+  // D1 Database
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "instagram-widget-db",
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    }
+  ],
+
+  // KV Namespace for feed caching
+  "kv_namespaces": [
+    {
+      "binding": "FEED_CACHE",
+      "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+    }
+  ],
+
+  // Cron triggers for scheduled feed refresh
+  "triggers": {
+    "crons": [
+      "0 */6 * * *" // Every 6 hours
+    ]
+  },
+
+  // Environment variables (non-secret)
+  "vars": {
+    "ENVIRONMENT": "development"
+  }
+
+  // Secrets (set via `wrangler secret put`):
+  // - META_APP_ID
+  // - META_APP_SECRET
+  // - META_REDIRECT_URI
+}

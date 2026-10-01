@@ -1,0 +1,2 @@
+-- placeholder for initial migration
+-- run `pnpm db:generate` to create the first migration from schema.ts
