@@ -10,10 +10,14 @@ export const feedSettingsSchema = z
   .object({
     columns: z.number().int().min(1).max(12).optional(),
     rows: z.number().int().min(1).max(20).optional(),
+    postCount: z.number().int().min(1).max(100).optional(),
+    order: z.enum(["newest", "oldest"]).optional(),
     gap: z.number().int().min(0).max(64).optional(),
     borderRadius: z.number().int().min(0).max(64).optional(),
+    cardStyle: z.enum(["clean", "rounded", "elevated"]).optional(),
     showCaption: z.boolean().optional(),
     hoverEffect: z.boolean().optional(),
+    hoverStyle: z.enum(["zoom", "overlay", "lift", "none"]).optional(),
     showHeader: z.boolean().optional(),
     headerName: z.string().optional(),
     headerUsername: z.string().optional(),
@@ -51,6 +55,7 @@ export const feedPostSchema = z.object({
   thumbnailUrl: z.string().url().nullable(),
   permalink: z.string().url(),
   caption: z.string().nullable(),
+  likeCount: z.number().int().nonnegative().nullable(),
   timestamp: z.string(),
 });
 
