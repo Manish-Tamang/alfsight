@@ -184,6 +184,7 @@ export class FeedService {
         thumbnailUrl: p.thumbnailUrl,
         permalink: p.permalink,
         caption: p.caption,
+        likeCount: p.likeCount ?? null,
         timestamp: p.timestamp,
       })),
     };
@@ -243,6 +244,7 @@ export class FeedService {
           thumbnailUrl: media.thumbnailUrl,
           permalink: media.permalink,
           caption: media.caption,
+          likeCount: media.likeCount,
           timestamp: media.timestamp,
           createdAt: now,
           updatedAt: now,
@@ -255,6 +257,7 @@ export class FeedService {
             thumbnailUrl: media.thumbnailUrl,
             permalink: media.permalink,
             caption: media.caption,
+            likeCount: media.likeCount,
             timestamp: media.timestamp,
             updatedAt: now,
           },
