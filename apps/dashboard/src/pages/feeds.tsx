@@ -4,6 +4,7 @@ import {
   Check,
   Clipboard,
   Eye,
+  Pencil,
   Grid2X2,
   Plus,
   RefreshCw,
@@ -27,16 +28,21 @@ export function FeedsPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingFeedId, setEditingFeedId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [feedName, setFeedName] = useState("");
   const [selectedAccountId, setSelectedAccountId] = useState("");
   const [settings, setSettings] = useState<FeedSettings>({
     columns: 4,
     rows: 2,
+    postCount: 8,
+    order: "newest",
     gap: 16,
     borderRadius: 8,
+    cardStyle: "clean",
     showCaption: true,
     hoverEffect: true,
+    hoverStyle: "zoom",
   });
 
   const [syncingId, setSyncingId] = useState<string | null>(null);
@@ -82,8 +88,9 @@ export function FeedsPage() {
       setCreating(true);
       setError(null);
 
-      const res = await fetch("/api/feeds", {
-        method: "POST",
+      const isEditing = editingFeedId !== null;
+      const res = await fetch(isEditing ? `/api/feeds/${editingFeedId}` : "/api/feeds", {
+        method: isEditing ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
           "x-dev-user-id": "dev-user-1",
@@ -100,16 +107,38 @@ export function FeedsPage() {
         throw new Error(data.error?.message || "Failed to create feed");
       }
 
-      setFeeds((prev) => [data, ...prev]);
+      setFeeds((prev) => isEditing ? prev.map((feed) => feed.id === data.id ? data : feed) : [data, ...prev]);
       setIsModalOpen(false);
+      setEditingFeedId(null);
       setFeedName("");
-      setSuccess(`Feed "${data.name}" created and synced successfully!`);
+      setSuccess(isEditing ? `Feed "${data.name}" updated.` : `Feed "${data.name}" created and synced successfully!`);
     } catch (err: any) {
       console.error("Create feed error:", err);
       setError(err.message || "Failed to create feed");
     } finally {
       setCreating(false);
     }
+  };
+
+  const openCreateModal = () => {
+    setEditingFeedId(null);
+    setFeedName("");
+    setSettings({ columns: 4, rows: 2, postCount: 8, order: "newest", gap: 16, borderRadius: 8, cardStyle: "clean", showCaption: true, hoverEffect: true, hoverStyle: "zoom" });
+    setError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (feed: FeedMeta) => {
+    setEditingFeedId(feed.id);
+    setFeedName(feed.name);
+    setSettings({
+      columns: 4, rows: 2, postCount: 8, order: "newest", gap: 16, borderRadius: 8,
+      cardStyle: "clean", showCaption: true, hoverEffect: true, hoverStyle: feed.settings.hoverStyle ?? (feed.settings.hoverEffect === false ? "none" : "zoom"),
+      ...feed.settings,
+    });
+    setSelectedAccountId(feed.instagramAccountId ?? "");
+    setError(null);
+    setIsModalOpen(true);
   };
 
   const handleSyncFeed = async (feedId: string) => {
@@ -169,7 +198,7 @@ export function FeedsPage() {
         title="Feeds & Widgets"
         description="Create, customize, and embed your Instagram feed widgets."
         action={
-          <Button onClick={() => { setError(null); setIsModalOpen(true); }}>
+          <Button onClick={openCreateModal}>
             <Plus size={14} />
             Create feed
           </Button>
@@ -228,6 +257,14 @@ export function FeedsPage() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => openEditModal(feed)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-[var(--color-border)] hover:bg-[var(--color-muted)] rounded-[var(--radius)] transition-colors cursor-pointer"
+                    >
+                      <Pencil size={12} />
+                      Edit
+                    </button>
+
                     <button
                       onClick={() => handleSyncFeed(feed.id)}
                       disabled={syncingId === feed.id}
@@ -323,7 +360,7 @@ export function FeedsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div className="bg-white rounded-[var(--radius)] border border-[var(--color-border)] w-full max-w-lg p-6">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="font-heading text-base font-semibold">Create New Feed</h2>
+              <h2 className="font-heading text-base font-semibold">{editingFeedId ? "Edit Feed" : "Create New Feed"}</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="rounded-[var(--radius)] p-1.5 text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)] cursor-pointer"
@@ -409,6 +446,22 @@ export function FeedsPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
+                  <label className="block text-xs font-medium text-[var(--color-foreground)] mb-1.5">Post Count</label>
+                  <select value={settings.postCount} onChange={(e) => setSettings({ ...settings, postCount: Number(e.target.value) })} className={selectClass}>
+                    {[4, 6, 8, 10, 12, 16, 20].map((count) => <option key={count} value={count}>{count} posts</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[var(--color-foreground)] mb-1.5">Order</label>
+                  <select value={settings.order} onChange={(e) => setSettings({ ...settings, order: e.target.value as FeedSettings["order"] })} className={selectClass}>
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
                   <label className="block text-xs font-medium text-[var(--color-foreground)] mb-1.5">
                     Gap
                   </label>
@@ -440,6 +493,26 @@ export function FeedsPage() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-[var(--color-foreground)] mb-1.5">Card Style</label>
+                  <select value={settings.cardStyle} onChange={(e) => setSettings({ ...settings, cardStyle: e.target.value as FeedSettings["cardStyle"] })} className={selectClass}>
+                    <option value="clean">Clean</option>
+                    <option value="rounded">Rounded</option>
+                    <option value="elevated">Elevated</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[var(--color-foreground)] mb-1.5">Hover Style</label>
+                  <select value={settings.hoverStyle} onChange={(e) => setSettings({ ...settings, hoverStyle: e.target.value as FeedSettings["hoverStyle"], hoverEffect: e.target.value !== "none" })} className={selectClass}>
+                    <option value="zoom">Zoom image</option>
+                    <option value="overlay">Caption overlay</option>
+                    <option value="lift">Lift card</option>
+                    <option value="none">No effect</option>
+                  </select>
+                </div>
+              </div>
+
               <div className="flex items-center gap-5 pt-1">
                 <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
                   <input
@@ -450,15 +523,6 @@ export function FeedsPage() {
                   />
                   Show Captions
                 </label>
-                <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={settings.hoverEffect}
-                    onChange={(e) => setSettings({ ...settings, hoverEffect: e.target.checked })}
-                    className="rounded border-[var(--color-border)] accent-[var(--color-primary)]"
-                  />
-                  Hover Effect
-                </label>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-4 border-t border-[var(--color-border)]">
@@ -466,7 +530,7 @@ export function FeedsPage() {
                   Cancel
                 </Button>
                 <Button type="submit" disabled={creating || !feedName.trim()} loading={creating}>
-                  {creating ? "Creating..." : "Create Feed"}
+                  {creating ? (editingFeedId ? "Saving..." : "Creating...") : (editingFeedId ? "Save Changes" : "Create Feed")}
                 </Button>
               </div>
             </form>
