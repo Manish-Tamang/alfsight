@@ -35,7 +35,6 @@
   }
 
   // Secrets (set via `wrangler secret put`):
-  // - META_APP_ID
-  // - META_APP_SECRET
-  // - META_REDIRECT_URI
+  // - OPENHANDLE_TEST_KEY for local/test data
+  // - OPENHANDLE_LIVE_KEY for explicitly enabled production access
 }
