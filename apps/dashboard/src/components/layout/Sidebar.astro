@@ -1,0 +1,94 @@
+---
+import {
+  LayoutGrid,
+  Star,
+  Boxes,
+  BarChart3,
+  Settings,
+  LifeBuoy,
+} from "lucide-react";
+
+const path = Astro.url.pathname;
+
+const items = [
+  { label: "Widgets", href: "/", icon: LayoutGrid, match: (p: string) => p === "/" || p.startsWith("/widgets") },
+  { label: "Favorites", href: "/favorites", icon: Star, match: (p: string) => p.startsWith("/favorites") },
+  { label: "Sources", href: "/sources", icon: Boxes, match: (p: string) => p.startsWith("/sources") },
+  { label: "Insights", href: "/insights", icon: BarChart3, match: (p: string) => p.startsWith("/insights") },
+] as const;
+
+const footerItems = [
+  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Help", href: "/help", icon: LifeBuoy },
+] as const;
+---
+
+<aside
+  class="fixed top-0 left-0 z-30 flex h-screen w-[96px] flex-col items-center border-r border-[var(--color-border-soft)] bg-[var(--color-surface)] py-5"
+>
+  <a href="/" class="mb-6 flex h-10 w-10 items-center justify-center" aria-label="Alfsight home">
+    <svg viewBox="0 0 32 32" class="h-6 w-6 text-[var(--color-primary)]" aria-hidden="true">
+      <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
+      <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
+      <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
+    </svg>
+  </a>
+
+  <nav class="flex flex-1 flex-col items-center gap-1">
+    {
+      items.map((item) => {
+        const Icon = item.icon;
+        const active = item.match(path);
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              "group flex w-[72px] flex-col items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-3 transition-colors",
+              active
+                ? "bg-[var(--color-accent)] text-[var(--color-accent-foreground)]"
+                : "text-[var(--color-text-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]",
+            ]}
+          >
+            <Icon size={18} strokeWidth={1.8} />
+            <span class="text-[10.5px] font-medium leading-none tracking-tight">{item.label}</span>
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="flex flex-col items-center gap-2">
+    {
+      footerItems.map((item) => {
+        const Icon = item.icon;
+        return (
+          <a
+            href={item.href}
+            class="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-soft)] transition-colors hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
+            aria-label={item.label}
+          >
+            <Icon size={16} strokeWidth={1.8} />
+          </a>
+        );
+      })
+    }
+
+    <div class="mt-2 flex flex-col items-center gap-1">
+      <div
+        class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[var(--color-surface-2)] text-xs font-medium text-[var(--color-text-muted)]"
+      >
+        A
+      </div>
+      <button
+        class="text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
+        aria-label="Account menu"
+      >
+        <svg width="14" height="4" viewBox="0 0 14 4" fill="currentColor" aria-hidden="true">
+          <circle cx="2" cy="2" r="1.4"></circle>
+          <circle cx="7" cy="2" r="1.4"></circle>
+          <circle cx="12" cy="2" r="1.4"></circle>
+        </svg>
+      </button>
+    </div>
+  </div>
+</aside>

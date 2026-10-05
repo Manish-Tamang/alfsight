@@ -1,0 +1,74 @@
+---
+import DashboardLayout from "@/layouts/DashboardLayout.astro";
+import { WidgetsGrid } from "@/components/widgets/WidgetsGrid";
+import { Plus, Search } from "lucide-react";
+---
+
+<DashboardLayout title="Widgets — Alfsight">
+  <div class="mx-auto w-full max-w-[900px]">
+    <header class="mb-6">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="text-[22px] font-semibold tracking-tight text-[var(--color-text)]">
+              Instagram Feed
+            </h1>
+            <span
+              class="rounded-[4px] bg-[var(--color-surface-2)] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-muted)]"
+            >
+              Free
+            </span>
+          </div>
+          <p class="mt-1.5 text-[13px] text-[var(--color-text-muted)]">
+            Create, edit and embed Instagram feed widgets anywhere on the web.
+          </p>
+        </div>
+      </div>
+
+      <nav
+        class="mt-6 flex gap-8 border-b border-[var(--color-border)] text-[14px]"
+        aria-label="Instagram Feed sections"
+      >
+        <span
+          class="-mb-px border-b-2 border-[var(--color-primary)] pb-2.5 font-medium text-[var(--color-text)]"
+        >
+          Widgets
+        </span>
+        <a
+          href="/sources"
+          class="pb-2.5 text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+        >
+          Sources
+        </a>
+        <a
+          href="/insights"
+          class="pb-2.5 text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+        >
+          Insights
+        </a>
+      </nav>
+
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <label class="relative block min-w-0 flex-1 sm:max-w-[320px]">
+          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--color-text-soft)]">
+            <Search size={16} strokeWidth={1.75} />
+          </span>
+          <input
+            type="search"
+            placeholder="Search widgets…"
+            class="h-9 w-full rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] py-0 pl-9 pr-3 text-[13px] text-[var(--color-text)] outline-none placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-primary)]"
+          />
+        </label>
+        <a
+          href="/widgets/new"
+          class="inline-flex h-9 shrink-0 items-center gap-2 rounded-[6px] bg-[var(--color-primary)] px-4 text-[13px] font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+        >
+          <Plus size={16} strokeWidth={2} />
+          Create widget
+        </a>
+      </div>
+    </header>
+
+    <WidgetsGrid client:load />
+  </div>
+</DashboardLayout>

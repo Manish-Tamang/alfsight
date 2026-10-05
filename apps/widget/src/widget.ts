@@ -12,6 +12,7 @@ class InstagramFeedWidget extends HTMLElement {
   private shadow: ShadowRoot;
   private feedId: string | null = null;
   private apiBase: string | undefined;
+  private feedData: FeedResponse | null = null;
 
   static get observedAttributes(): string[] {
     return ["feed", "api-base"];
@@ -25,8 +26,23 @@ class InstagramFeedWidget extends HTMLElement {
   connectedCallback(): void {
     this.feedId = this.getAttribute("feed");
     this.apiBase = this.getAttribute("api-base") ?? undefined;
+    window.addEventListener("message", this.handlePreviewMessage);
     this.render();
   }
+
+  disconnectedCallback(): void {
+    window.removeEventListener("message", this.handlePreviewMessage);
+  }
+
+  private handlePreviewMessage = (event: MessageEvent): void => {
+    if (event.source !== window.parent || event.data?.type !== "widget-preview-settings") return;
+    if (!this.feedData) return;
+
+    this.renderFeed({
+      ...this.feedData,
+      settings: { ...this.feedData.settings, ...event.data.settings },
+    });
+  };
 
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
     if (oldValue === newValue) return;
@@ -50,6 +66,7 @@ class InstagramFeedWidget extends HTMLElement {
 
     try {
       const data = await fetchFeed(this.feedId, this.apiBase);
+      this.feedData = data;
       this.renderFeed(data);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to load feed";
@@ -112,16 +129,58 @@ class InstagramFeedWidget extends HTMLElement {
     const postsHtml = posts
       .map((post) => this.renderPost(post, settings))
       .join("");
+    const layout = settings.layout ?? "grid";
+    const feedMarkup = layout === "showcase"
+      ? `
+          <div class="ig-showcase-wrap">
+            <button class="ig-showcase-control ig-showcase-prev" type="button" aria-label="Previous post" title="Previous post">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <div class="ig-feed-grid ig-layout-showcase" style="${cssVars}" role="feed" aria-label="${this.escapeHtml(data.name)}">
+              ${postsHtml}
+            </div>
+            <button class="ig-showcase-control ig-showcase-next" type="button" aria-label="Next post" title="Next post">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </button>
+          </div>
+        `
+      : `<div class="ig-feed-grid ig-layout-${layout}" style="${cssVars}" role="feed" aria-label="${this.escapeHtml(data.name)}">${postsHtml}</div>`;
 
     this.shadow.innerHTML = `
       <style>${widgetStyles}</style>
       <div class="ig-feed-container">
         ${profileHtml}
-        <div class="ig-feed-grid" style="${cssVars}" role="feed" aria-label="${this.escapeHtml(data.name)}">
-          ${postsHtml}
-        </div>
+        ${feedMarkup}
       </div>
     `;
+
+    if (layout === "showcase") this.setupShowcaseControls();
+  }
+
+  private setupShowcaseControls(): void {
+    const track = this.shadow.querySelector<HTMLElement>(".ig-layout-showcase");
+    const previous = this.shadow.querySelector<HTMLButtonElement>(".ig-showcase-prev");
+    const next = this.shadow.querySelector<HTMLButtonElement>(".ig-showcase-next");
+    if (!track || !previous || !next) return;
+
+    const updateControls = (): void => {
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      previous.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= maxScroll - 1;
+    };
+    const scrollByCard = (direction: number): void => {
+      const firstPost = track.querySelector<HTMLElement>(".ig-feed-item");
+      if (!firstPost) return;
+      const styles = getComputedStyle(track);
+      const gap = Number.parseFloat(styles.columnGap || styles.gap || "0") || 0;
+      track.scrollBy({ left: direction * (firstPost.getBoundingClientRect().width + gap), behavior: "smooth" });
+    };
+
+    previous.addEventListener("click", () => scrollByCard(-1));
+    next.addEventListener("click", () => scrollByCard(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    updateControls();
   }
 
   private renderHeader(profile: FeedProfile, settings: FeedSettings): string {
@@ -129,6 +188,14 @@ class InstagramFeedWidget extends HTMLElement {
     const username = profile.username || "instagram";
     const followUrl = profile.followUrl || `https://www.instagram.com/${encodeURIComponent(username)}/`;
     const followBtnText = settings.followButtonText || "Follow";
+    const stats = [
+      [profile.posts, "posts"],
+      [profile.followers, "followers"],
+      [profile.following, "following"],
+    ]
+      .filter(([value]) => value !== null && value !== undefined)
+      .map(([value, label]) => `<div class="ig-header-stat"><strong>${Number(value).toLocaleString()}</strong><span>${label}</span></div>`)
+      .join("");
 
     // Avatar image with unavatar fallback
     const effectiveAvatar = profile.avatarUrl || (username ? `https://unavatar.io/instagram/${encodeURIComponent(username)}` : "");
@@ -156,6 +223,7 @@ class InstagramFeedWidget extends HTMLElement {
             @${this.escapeHtml(username)}
           </a>
         </div>
+        ${stats ? `<div class="ig-header-stats">${stats}</div>` : ""}
         <a href="${this.escapeHtml(followUrl)}" target="_blank" rel="noopener noreferrer" class="ig-follow-btn">
           ${instagramIcon}
           <span>${this.escapeHtml(followBtnText)}</span>
@@ -167,15 +235,21 @@ class InstagramFeedWidget extends HTMLElement {
   private renderPost(post: FeedPost, settings: FeedSettings): string {
     const imgSrc = post.thumbnailUrl ?? post.imageUrl;
     const showCaption = settings.showCaption !== false;
+    const hoverStyle = settings.hoverStyle ?? (settings.hoverEffect === false ? "none" : "zoom");
+    const cardStyle = settings.cardStyle ?? "clean";
 
-    const captionOverlay =
-      showCaption && post.caption
-        ? `<div class="ig-feed-overlay"><p class="ig-feed-overlay-text">${this.escapeHtml(post.caption)}</p></div>`
-        : "";
-    const likesOverlay =
-      post.likeCount !== null && post.likeCount !== undefined
-        ? `<div class="ig-feed-likes" aria-label="${post.likeCount} likes"><span class="ig-feed-heart">♡</span><span>${post.likeCount.toLocaleString()}</span></div>`
-        : "";
+    const captionText = showCaption && post.caption
+      ? `<p class="ig-feed-overlay-text">${this.escapeHtml(post.caption)}</p>`
+      : "";
+    const likesText = post.likeCount !== null && post.likeCount !== undefined
+      ? `<span class="ig-feed-engagement-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" /></svg><span>${post.likeCount.toLocaleString()}</span></span>`
+      : "";
+    const engagement = likesText
+      ? `<div class="ig-feed-engagement" aria-label="${post.likeCount} likes and comments"><span>${likesText}</span><span class="ig-feed-engagement-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.8L3 21l1.8-4.2A8.38 8.38 0 0 1 3 11.5a8.38 8.38 0 0 1 9-8.5 8.38 8.38 0 0 1 9 8.5z" /></svg></span></div>`
+      : "";
+    const hoverOverlay = hoverStyle !== "none"
+      ? `<div class="ig-feed-overlay"><div class="ig-feed-overlay-content">${captionText}${engagement}</div></div>`
+      : "";
 
     // Badges in top-right corner matching Instagram
     let typeBadge = "";
@@ -199,9 +273,6 @@ class InstagramFeedWidget extends HTMLElement {
       `;
     }
 
-    const hoverStyle = settings.hoverStyle ?? (settings.hoverEffect === false ? "none" : "zoom");
-    const cardStyle = settings.cardStyle ?? "clean";
-
     return `
       <div class="ig-feed-item ig-card-${cardStyle} ig-hover-${hoverStyle}">
         <a href="${this.escapeHtml(post.permalink)}" target="_blank" rel="noopener noreferrer">
@@ -211,8 +282,7 @@ class InstagramFeedWidget extends HTMLElement {
             loading="lazy"
           />
           ${typeBadge}
-          ${likesOverlay}
-          ${captionOverlay}
+          ${hoverOverlay}
         </a>
       </div>
     `;
