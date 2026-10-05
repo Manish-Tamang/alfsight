@@ -1,6 +1,6 @@
 # Alfsight
 
-A lightweight, embeddable Instagram feed widget service and management dashboard. Connect an Instagram Professional or Creator account, cache feed content at the edge, and embed customizable grids on any website using a zero-dependency Web Component `<script>` tag.
+A lightweight, embeddable Instagram feed widget service and management dashboard. Fetch public Instagram data server-side, cache feed content at the edge, and embed customizable grids on any website using a zero-dependency Web Component `<script>` tag.
 
 ---
 
@@ -41,8 +41,8 @@ A lightweight, embeddable Instagram feed widget service and management dashboard
                        └──────────────┘     └───────┬────────┘
                                                     │
                                             ┌───────▼────────┐
-                                            │ Instagram Graph│
-                                            │ API (Meta)     │
+                                            │ OpenHandle     │
+                                            │ Instagram API  │
                                             └────────────────┘
 ```
 
@@ -146,8 +146,28 @@ Add the bundled script to any web page and insert the custom tag:
 | `POST` | `/api/instagram/connect` | Yes | Generate OAuth authorization URL |
 | `GET` | `/api/instagram/callback` | No | Meta OAuth redirect callback |
 | `GET` | `/api/instagram/accounts` | Yes | List linked Instagram accounts |
+| `GET` | `/api/instagram/:identifier` | No | Fetch a normalized public profile |
+| `GET` | `/api/instagram/:identifier/posts` | No | Fetch one cursor-paginated posts page |
+| `GET` | `/api/instagram/:identifier/reels` | No | Fetch one cursor-paginated reels page |
+| `GET` | `/api/instagram/:identifier/stories` | No | Fetch current, non-expired public Stories |
+| `GET` | `/api/instagram/:identifier/highlights` | No | Fetch public Highlights and story references |
+| `GET` | `/api/instagram/:identifier/followers` | No | Fetch one cursor-paginated follower page |
+| `GET` | `/api/instagram/:identifier/following` | No | Fetch one cursor-paginated following page |
 
 > **Local Development Auth**: Pass the `x-dev-user-id: dev-user-1` header to simulate an authenticated request during local development.
+
+## OpenHandle
+
+OpenHandle is the initial public Instagram data provider. Requests go from the browser to this API, then from the API to OpenHandle; the provider key is never sent to browser code, widget configuration, responses, logs, or local storage. Use a Test key during development. Live keys may incur usage charges and belong in Cloudflare Worker secrets, not committed files. Responses are normalized by the API and cached in Cloudflare KV, with shorter freshness for Stories because they expire. This project is not affiliated with Instagram, Meta, or OpenHandle.
+
+### Local setup
+
+```bash
+pnpm install
+cp .env.example .env
+# Add OPENHANDLE_TEST_KEY to apps/api/.dev.vars
+pnpm dev
+```
 
 ---
 
