@@ -8,8 +8,10 @@ export const mediaTypeSchema = z.enum(["IMAGE", "VIDEO", "CAROUSEL_ALBUM"]);
 
 export const feedSettingsSchema = z
   .object({
+    instagramHandle: z.string().min(1).max(255).optional(),
     columns: z.number().int().min(1).max(12).optional(),
     rows: z.number().int().min(1).max(20).optional(),
+    layout: z.enum(["showcase", "grid", "masonry"]).optional(),
     postCount: z.number().int().min(1).max(100).optional(),
     order: z.enum(["newest", "oldest"]).optional(),
     gap: z.number().int().min(0).max(64).optional(),
@@ -22,6 +24,9 @@ export const feedSettingsSchema = z
     headerName: z.string().optional(),
     headerUsername: z.string().optional(),
     headerAvatarUrl: z.string().optional(),
+    headerPostCount: z.number().int().nonnegative().optional(),
+    headerFollowers: z.number().int().nonnegative().optional(),
+    headerFollowing: z.number().int().nonnegative().optional(),
     followButtonText: z.string().optional(),
   })
   .strict();
@@ -66,6 +71,9 @@ export const feedProfileSchema = z.object({
   username: z.string().optional(),
   avatarUrl: z.string().optional(),
   followUrl: z.string().optional(),
+  posts: z.number().int().nonnegative().nullable().optional(),
+  followers: z.number().int().nonnegative().nullable().optional(),
+  following: z.number().int().nonnegative().nullable().optional(),
 }).optional();
 
 // ─── Feed Response (API response) ──────────────────────────────
