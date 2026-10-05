@@ -6,6 +6,7 @@ import { servicesMiddleware, authMiddleware } from "./middleware";
 import { health } from "./routes/health";
 import { feedsRouter } from "./routes/feeds";
 import { instagramRouter } from "./routes/instagram";
+import { publicInstagramRouter } from "./routes/public-instagram";
 
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
@@ -28,6 +29,7 @@ app.use("*", authMiddleware);
 app.route("/api/health", health);
 app.route("/api/feeds", feedsRouter);
 app.route("/api/instagram", instagramRouter);
+app.route("/api/instagram", publicInstagramRouter);
 
 // ─── 404 fallback ──────────────────────────────────────────────
 
