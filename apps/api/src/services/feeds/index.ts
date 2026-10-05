@@ -1,9 +1,10 @@
 import { eq } from "drizzle-orm";
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
 import { feeds, posts, instagramAccounts } from "@instagram-widget/database";
-import type { FeedResponse, FeedMeta, FeedSettings, CacheProvider, InstagramProvider } from "@instagram-widget/types";
+import type { FeedResponse, FeedMeta, FeedSettings, CacheProvider, InstagramProvider, PublicInstagramProvider } from "@instagram-widget/types";
 import type { CreateFeedInput, UpdateFeedInput } from "@instagram-widget/validation";
 import { feedCacheKey, DEFAULT_CACHE_TTL } from "../cache";
+import { normalizeInstagramIdentifier } from "../instagram/openhandle";
 
 export class FeedService {
   private readonly db: DrizzleD1Database;
@@ -120,6 +121,49 @@ export class FeedService {
     }));
   }
 
+  async applyPublicProfileToSettings(
+    settings: FeedSettings,
+    publicInstagram: PublicInstagramProvider,
+  ): Promise<FeedSettings> {
+    const handle = settings.instagramHandle?.trim();
+    if (!handle) return settings;
+
+    const normalizedHandle = normalizeInstagramIdentifier(handle);
+    const profile = await publicInstagram.getProfile(normalizedHandle);
+
+    return {
+      ...settings,
+      instagramHandle: normalizedHandle,
+      headerName: profile.name ?? profile.username,
+      headerUsername: profile.username,
+      headerAvatarUrl: profile.avatarUrl ?? undefined,
+      headerPostCount: profile.posts ?? undefined,
+      headerFollowers: profile.followers ?? undefined,
+      headerFollowing: profile.following ?? undefined,
+    };
+  }
+
+  async ensureStoredProfileAvatar(
+    feedId: string,
+    publicInstagram: PublicInstagramProvider,
+  ): Promise<FeedMeta | null> {
+    const feed = await this.getById(feedId);
+    if (!feed?.settings.instagramHandle?.trim()) return feed;
+    if (
+      feed.settings.headerAvatarUrl &&
+      feed.settings.headerPostCount !== undefined &&
+      feed.settings.headerFollowers !== undefined &&
+      feed.settings.headerFollowing !== undefined
+    ) return feed;
+
+    try {
+      const settings = await this.applyPublicProfileToSettings(feed.settings, publicInstagram);
+      return await this.update(feedId, { settings });
+    } catch {
+      return feed;
+    }
+  }
+
   // ─── Feed + Posts (for widget) ──────────────────────────────
 
   /**
@@ -176,6 +220,9 @@ export class FeedService {
         username: profileUsername,
         avatarUrl: profileAvatarUrl || "",
         followUrl: `https://www.instagram.com/${profileUsername}/`,
+        posts: feed.settings.headerPostCount ?? null,
+        followers: feed.settings.headerFollowers ?? null,
+        following: feed.settings.headerFollowing ?? null,
       },
       posts: feedPosts.map((p) => ({
         id: p.id,
@@ -266,5 +313,59 @@ export class FeedService {
 
     await this.cache.delete(feedCacheKey(feedId));
     return mediaList.length;
+  }
+
+  async syncPublicMedia(feedId: string, instagramProvider: PublicInstagramProvider): Promise<number> {
+    const feed = await this.getById(feedId);
+    const handle = feed?.settings.instagramHandle;
+    if (!feed || !handle) return 0;
+
+    const page = await instagramProvider.getPosts(handle);
+    const now = new Date().toISOString();
+    let synced = 0;
+
+    for (const post of page.data) {
+      const media = post.media.find((item) => item.url);
+      if (!media?.url) continue;
+
+      const mediaType = post.type?.toLowerCase().includes("video")
+        ? "VIDEO"
+        : post.type?.toLowerCase().includes("carousel")
+          ? "CAROUSEL_ALBUM"
+          : "IMAGE";
+
+      await this.db
+        .insert(posts)
+        .values({
+          id: crypto.randomUUID().replace(/-/g, "").slice(0, 16),
+          feedId,
+          instagramMediaId: post.id,
+          mediaType,
+          mediaUrl: media.url,
+          thumbnailUrl: media.thumbnailUrl,
+          permalink: post.url,
+          caption: post.caption,
+          likeCount: null,
+          timestamp: post.createdAt,
+          createdAt: now,
+          updatedAt: now,
+        })
+        .onConflictDoUpdate({
+          target: [posts.feedId, posts.instagramMediaId],
+          set: {
+            mediaType,
+            mediaUrl: media.url,
+            thumbnailUrl: media.thumbnailUrl,
+            permalink: post.url,
+            caption: post.caption,
+            timestamp: post.createdAt,
+            updatedAt: now,
+          },
+        });
+      synced += 1;
+    }
+
+    await this.cache.delete(feedCacheKey(feedId));
+    return synced;
   }
 }
