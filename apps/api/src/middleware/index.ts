@@ -3,6 +3,7 @@ import type { Env, AppVariables } from "../types";
 import { KVCacheService } from "../services/cache";
 import { FeedService } from "../services/feeds";
 import { MetaInstagramProvider } from "../services/instagram";
+import { OpenHandleInstagramProvider } from "../services/instagram/openhandle";
 
 /**
  * Initializes shared services and attaches them to the Hono context.
@@ -19,10 +20,14 @@ export const servicesMiddleware = createMiddleware<{
     appSecret: c.env.META_APP_SECRET ?? "",
     redirectUri: c.env.META_REDIRECT_URI ?? "",
   });
+  const publicInstagram = new OpenHandleInstagramProvider(
+    c.env.OPENHANDLE_LIVE_KEY ?? c.env.OPENHANDLE_TEST_KEY ?? ""
+  );
 
   c.set("cache", cache);
   c.set("feedService", feedService);
   c.set("instagram", instagram);
+  c.set("publicInstagram", publicInstagram);
 
   await next();
 });
