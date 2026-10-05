@@ -38,6 +38,19 @@ export class KVCacheService implements CacheProvider {
 /** Default cache TTL: 1 hour */
 export const DEFAULT_CACHE_TTL = 3600;
 
+export const INSTAGRAM_CACHE_TTL = {
+  profile: 86400,
+  posts: 3600,
+  reels: 3600,
+  stories: 300,
+  highlights: 3600,
+  audience: 86400,
+} as const;
+
+export function instagramCacheKey(resource: string, stableId: string, cursor?: string): string {
+  return `instagram:${resource}:${stableId}${cursor ? `:${cursor}` : ""}`;
+}
+
 /** Build a cache key for a feed response */
 export function feedCacheKey(feedId: string): string {
   return `feed:${feedId}`;
