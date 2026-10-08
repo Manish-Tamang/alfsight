@@ -1,25 +1,11 @@
 ---
-import {
-  LayoutGrid,
-  Star,
-  Boxes,
-  BarChart3,
-  Settings,
-  LifeBuoy,
-} from "lucide-react";
+import { LayoutGrid, Settings } from "lucide-react";
 
 const path = Astro.url.pathname;
 
 const items = [
   { label: "Widgets", href: "/", icon: LayoutGrid, match: (p: string) => p === "/" || p.startsWith("/widgets") },
-  { label: "Favorites", href: "/favorites", icon: Star, match: (p: string) => p.startsWith("/favorites") },
-  { label: "Sources", href: "/sources", icon: Boxes, match: (p: string) => p.startsWith("/sources") },
-  { label: "Insights", href: "/insights", icon: BarChart3, match: (p: string) => p.startsWith("/insights") },
-] as const;
-
-const footerItems = [
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Help", href: "/help", icon: LifeBuoy },
+  { label: "Settings", href: "/settings", icon: Settings, match: (p: string) => p.startsWith("/settings") },
 ] as const;
 ---
 
@@ -56,39 +42,4 @@ const footerItems = [
       })
     }
   </nav>
-
-  <div class="flex flex-col items-center gap-2">
-    {
-      footerItems.map((item) => {
-        const Icon = item.icon;
-        return (
-          <a
-            href={item.href}
-            class="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-soft)] transition-colors hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
-            aria-label={item.label}
-          >
-            <Icon size={16} strokeWidth={1.8} />
-          </a>
-        );
-      })
-    }
-
-    <div class="mt-2 flex flex-col items-center gap-1">
-      <div
-        class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[var(--color-surface-2)] text-xs font-medium text-[var(--color-text-muted)]"
-      >
-        A
-      </div>
-      <button
-        class="text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
-        aria-label="Account menu"
-      >
-        <svg width="14" height="4" viewBox="0 0 14 4" fill="currentColor" aria-hidden="true">
-          <circle cx="2" cy="2" r="1.4"></circle>
-          <circle cx="7" cy="2" r="1.4"></circle>
-          <circle cx="12" cy="2" r="1.4"></circle>
-        </svg>
-      </button>
-    </div>
-  </div>
 </aside>
