@@ -1,15 +1,8 @@
 ---
 import DashboardLayout from "@/layouts/DashboardLayout.astro";
-import PageHeader from "@/components/layout/PageHeader.astro";
 import { CreateWidget } from "@/components/widgets/CreateWidget";
 ---
 
 <DashboardLayout title="New widget — Alfsight">
-  <PageHeader
-    eyebrow="Create"
-    title="New widget"
-    description="A short two-step setup. You can refine everything in the editor afterward."
-  />
-
   <CreateWidget client:load />
 </DashboardLayout>
