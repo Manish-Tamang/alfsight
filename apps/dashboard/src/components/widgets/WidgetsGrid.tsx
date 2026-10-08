@@ -8,9 +8,8 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { api } from "@/lib/api";
+import { getEmbedSnippet, WIDGET_ORIGIN } from "@/lib/embed";
 import { cn } from "@/lib/cn";
-
-const WIDGET_PREVIEW_ORIGIN = "http://localhost:5174";
 
 const listWrap = "flex w-full flex-col gap-3";
 
@@ -88,7 +87,7 @@ function WidgetPreview({ feedId }: { feedId: string }) {
   return (
     <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden bg-[#f0f2f5]">
       <iframe
-        src={`${WIDGET_PREVIEW_ORIGIN}/?feed=${feedId}`}
+        src={`${WIDGET_ORIGIN}/?feed=${feedId}`}
         title=""
         className="pointer-events-none absolute left-1/2 top-[58%] h-[240px] w-[360px] -translate-x-1/2 -translate-y-1/2 scale-[0.42] border-0"
         loading="lazy"
@@ -134,8 +133,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
   }, [menuOpen]);
 
   const copyEmbed = () => {
-    const code = `<instagram-feed feed="${feed.id}" api-base="https://localhost:8787"></instagram-feed>\n<script src="${WIDGET_PREVIEW_ORIGIN}/src/index.ts" type="module"></script>`;
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(getEmbedSnippet(feed.id));
     setInstalled(true);
     setTimeout(() => setInstalled(false), 2000);
   };
