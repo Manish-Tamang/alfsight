@@ -43,6 +43,7 @@ export interface FeedSettings {
   headerFollowers?: number;
   headerFollowing?: number;
   followButtonText?: string;
+  backgroundColor?: string;
 }
 
 export interface FeedProfile {
