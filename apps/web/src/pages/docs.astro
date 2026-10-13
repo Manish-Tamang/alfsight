@@ -1,0 +1,902 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Docs — Alfsight" description="Complete guide to self-hosting Alfsight: fork, install, configure, and deploy your own Instagram feed widget service.">
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border-soft)] bg-[var(--color-surface)]/90 backdrop-blur-md">
+    <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
+      <a href="/" class="flex items-center gap-2">
+        <svg viewBox="0 0 32 32" class="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true">
+          <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
+          <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
+          <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
+        </svg>
+        <span class="text-[15px] font-bold text-[var(--color-text)]">Alfsight</span>
+      </a>
+      <div class="hidden items-center gap-6 sm:flex">
+        <a href="/" class="text-[13px] font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]">Home</a>
+        <a href="/docs" class="text-[13px] font-medium text-[var(--color-text)] transition-colors">Docs</a>
+      </div>
+      <a
+        href="/dashboard"
+        class="inline-flex h-8 items-center rounded bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-2 border-b-[var(--color-primary-deep)] transition-all hover:border-b-4 hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
+      >
+        Dashboard
+      </a>
+    </div>
+  </nav>
+
+  <main class="pt-14">
+    <div class="mx-auto flex max-w-6xl gap-0 lg:gap-8">
+
+      <!-- Sidebar -->
+      <aside class="hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto border-r border-[var(--color-border-soft)] py-8 pl-6 pr-4">
+        <nav class="flex flex-col gap-1">
+          <p class="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Getting started</p>
+          <a href="#overview" class="docs-nav-link">Overview</a>
+          <a href="#prerequisites" class="docs-nav-link">Prerequisites</a>
+          <a href="#fork-and-clone" class="docs-nav-link">Fork & clone</a>
+          <a href="#install-dependencies" class="docs-nav-link">Install dependencies</a>
+          <a href="#environment-variables" class="docs-nav-link">Environment variables</a>
+          <a href="#cloudflare-setup" class="docs-nav-link">Cloudflare setup</a>
+          <a href="#database-setup" class="docs-nav-link">Database & migrations</a>
+          <a href="#running-locally" class="docs-nav-link">Running locally</a>
+
+          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Usage</p>
+          <a href="#creating-a-widget" class="docs-nav-link">Creating a widget</a>
+          <a href="#embedding" class="docs-nav-link">Embedding</a>
+          <a href="#widget-attributes" class="docs-nav-link">Widget attributes</a>
+          <a href="#customization" class="docs-nav-link">Customization</a>
+
+          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">API</p>
+          <a href="#api-reference" class="docs-nav-link">API reference</a>
+          <a href="#authentication" class="docs-nav-link">Authentication</a>
+
+          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Deploy</p>
+          <a href="#deploy-production" class="docs-nav-link">Production deploy</a>
+          <a href="#project-structure" class="docs-nav-link">Project structure</a>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <div class="min-w-0 flex-1 px-6 py-10 lg:px-10 lg:py-12">
+
+        <!-- Overview -->
+        <section id="overview" class="docs-section">
+          <h1 class="text-[32px] font-extrabold tracking-tight text-[var(--color-text)]">Documentation</h1>
+          <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">
+            Alfsight is a self-hosted alternative to Elfsight for embedding Instagram feeds on any website. It fetches public Instagram data via the <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">OpenHandle API</a>, caches it at the edge with Cloudflare KV, and serves it through a zero-dependency Web Component that weighs under 3 kB gzipped.
+          </p>
+          <div class="mt-6 rounded border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
+            <strong class="text-[var(--color-text)]">Architecture:</strong> Monorepo with pnpm workspaces &mdash; API (Hono on Cloudflare Workers), Dashboard (Astro + React), Widget (vanilla Web Component), and shared packages for types and validation. Data flows: visitor loads widget &rarr; widget calls API &rarr; API checks KV cache &rarr; cache miss hits D1 &rarr; cron syncs from OpenHandle.
+          </div>
+        </section>
+
+        <!-- Prerequisites -->
+        <section id="prerequisites" class="docs-section">
+          <h2 class="docs-h2">Prerequisites</h2>
+          <ul class="docs-list">
+            <li><strong>Node.js</strong> &ge; 18</li>
+            <li><strong>pnpm</strong> &ge; 8 &mdash; install with <code class="docs-code">npm install -g pnpm</code></li>
+            <li>A <strong>Cloudflare account</strong> (free tier works) for Workers, D1, and KV</li>
+            <li>An <strong>OpenHandle API key</strong> from <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">openhandle.dev</a> (test key is free)</li>
+            <li><strong>Git</strong> installed</li>
+          </ul>
+        </section>
+
+        <!-- Fork & Clone -->
+        <section id="fork-and-clone" class="docs-section">
+          <h2 class="docs-h2">Fork & clone</h2>
+          <p class="docs-p">Fork the repository on GitHub, then clone your fork locally:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Fork via GitHub UI or CLI</span>
+gh repo fork Manish-Tamang/alfsight --clone
+
+<span class="text-[#7c8594]"># Or clone manually after forking</span>
+git clone https://github.com/YOUR_USERNAME/alfsight.git
+cd alfsight</code></pre>
+          </div>
+          <p class="docs-p">If you just want to try it without forking:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>git clone https://github.com/Manish-Tamang/alfsight.git
+cd alfsight</code></pre>
+          </div>
+        </section>
+
+        <!-- Install Dependencies -->
+        <section id="install-dependencies" class="docs-section">
+          <h2 class="docs-h2">Install dependencies</h2>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>pnpm install</code></pre>
+          </div>
+          <p class="docs-p">This installs all workspace dependencies across the monorepo: <code class="docs-code">apps/api</code>, <code class="docs-code">apps/dashboard</code>, <code class="docs-code">apps/widget</code>, <code class="docs-code">apps/web</code>, <code class="docs-code">packages/types</code>, <code class="docs-code">packages/validation</code>, and <code class="docs-code">database</code>.</p>
+        </section>
+
+        <!-- Environment Variables -->
+        <section id="environment-variables" class="docs-section">
+          <h2 class="docs-h2">Environment variables</h2>
+          <p class="docs-p">Copy the example env file and fill in your values:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>cp .env.example .env</code></pre>
+          </div>
+
+          <h3 class="docs-h3">Root <code class="docs-code">.env</code></h3>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>Description</th>
+                  <th>Default</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="docs-code">API_BASE_URL</code></td>
+                  <td>URL of the API worker</td>
+                  <td><code class="docs-code">http://localhost:8787</code></td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">VITE_API_BASE_URL</code></td>
+                  <td>API URL exposed to the dashboard frontend</td>
+                  <td><code class="docs-code">http://localhost:8787</code></td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">OPENHANDLE_TEST_KEY</code></td>
+                  <td>OpenHandle test API key (for development)</td>
+                  <td>&mdash;</td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">OPENHANDLE_LIVE_KEY</code></td>
+                  <td>OpenHandle live API key (for production)</td>
+                  <td>&mdash;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="docs-h3">API secrets <code class="docs-code">apps/api/.dev.vars</code></h3>
+          <p class="docs-p">The API worker reads secrets from <code class="docs-code">.dev.vars</code> during local development (Wrangler convention). Create this file:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>apps/api/.dev.vars</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># OpenHandle — at least one key is required</span>
+OPENHANDLE_TEST_KEY=oh_test_your_key_here
+OPENHANDLE_LIVE_KEY=oh_live_your_key_here
+
+<span class="text-[#7c8594]"># Meta OAuth (optional, for Instagram account linking)</span>
+META_APP_ID=your_meta_app_id
+META_APP_SECRET=your_meta_app_secret
+META_REDIRECT_URI=http://localhost:8787/api/instagram/callback
+
+<span class="text-[#7c8594]"># Environment</span>
+ENVIRONMENT=development</code></pre>
+          </div>
+
+          <div class="mt-4 rounded border border-amber-200 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900">
+            <strong>Important:</strong> Never commit <code class="docs-code">.env</code> or <code class="docs-code">.dev.vars</code>. Both are already in <code class="docs-code">.gitignore</code>. For production, use <code class="docs-code">wrangler secret put &lt;KEY&gt;</code> to set secrets securely.
+          </div>
+
+          <h3 class="docs-h3">Getting an OpenHandle API key</h3>
+          <ol class="docs-list list-decimal">
+            <li>Go to <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">openhandle.dev</a></li>
+            <li>Create an account and generate a <strong>Test</strong> key for development</li>
+            <li>Add the key to both <code class="docs-code">.env</code> and <code class="docs-code">apps/api/.dev.vars</code></li>
+            <li>For production, generate a <strong>Live</strong> key and set it via <code class="docs-code">wrangler secret put OPENHANDLE_LIVE_KEY</code></li>
+          </ol>
+        </section>
+
+        <!-- Cloudflare Setup -->
+        <section id="cloudflare-setup" class="docs-section">
+          <h2 class="docs-h2">Cloudflare setup</h2>
+          <p class="docs-p">The API runs on Cloudflare Workers with D1 (database) and KV (cache). You need to create these resources and update <code class="docs-code">wrangler.jsonc</code>.</p>
+
+          <h3 class="docs-h3">1. Login to Wrangler</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>npx wrangler login</code></pre>
+          </div>
+
+          <h3 class="docs-h3">2. Create a D1 database</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>npx wrangler d1 create instagram-widget-db</code></pre>
+          </div>
+          <p class="docs-p">Copy the returned <code class="docs-code">database_id</code> and paste it into <code class="docs-code">apps/api/wrangler.jsonc</code>:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>apps/api/wrangler.jsonc</span>
+            </div>
+            <pre><code set:html={`"d1_databases": [
+  &#123;
+    "binding": "DB",
+    "database_name": "instagram-widget-db",
+    "database_id": "<span class="text-[#a5d6ff]">YOUR_DATABASE_ID</span>"
+  &#125;
+]`} /></pre>
+          </div>
+
+          <h3 class="docs-h3">3. Create a KV namespace</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>npx wrangler kv namespace create FEED_CACHE</code></pre>
+          </div>
+          <p class="docs-p">Copy the returned <code class="docs-code">id</code> and update <code class="docs-code">wrangler.jsonc</code>:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>apps/api/wrangler.jsonc</span>
+            </div>
+            <pre><code set:html={`"kv_namespaces": [
+  &#123;
+    "binding": "FEED_CACHE",
+    "id": "<span class="text-[#a5d6ff]">YOUR_KV_NAMESPACE_ID</span>"
+  &#125;
+]`} /></pre>
+          </div>
+        </section>
+
+        <!-- Database Setup -->
+        <section id="database-setup" class="docs-section">
+          <h2 class="docs-h2">Database & migrations</h2>
+          <p class="docs-p">The project uses Drizzle ORM with Cloudflare D1 (SQLite). Migrations are generated from the schema at <code class="docs-code">database/schema.ts</code>.</p>
+
+          <h3 class="docs-h3">Generate migrations (if schema changed)</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>pnpm db:generate</code></pre>
+          </div>
+
+          <h3 class="docs-h3">Apply migrations locally</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Apply each migration file in order</span>
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \
+  instagram-widget-db --local \
+  --file=../../database/migrations/0000_bouncy_peter_parker.sql
+
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \
+  instagram-widget-db --local \
+  --file=../../database/migrations/0001_old_risque.sql</code></pre>
+          </div>
+
+          <h3 class="docs-h3">Apply migrations to production</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Same commands without --local</span>
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \
+  instagram-widget-db \
+  --file=../../database/migrations/0000_bouncy_peter_parker.sql</code></pre>
+          </div>
+
+          <h3 class="docs-h3">Database schema</h3>
+          <p class="docs-p">The D1 database has four tables:</p>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Table</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="docs-code">users</code></td>
+                  <td>User accounts (id, email)</td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">instagram_accounts</code></td>
+                  <td>Linked Instagram accounts with OAuth tokens</td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">feeds</code></td>
+                  <td>Widget configurations (name, JSON settings)</td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">posts</code></td>
+                  <td>Cached Instagram posts (media URL, caption, type, likes)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Running Locally -->
+        <section id="running-locally" class="docs-section">
+          <h2 class="docs-h2">Running locally</h2>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Run all apps in parallel</span>
+pnpm dev
+
+<span class="text-[#7c8594]"># Or run individually</span>
+pnpm dev:api         <span class="text-[#7c8594]"># API       → http://localhost:8787</span>
+pnpm dev:dashboard   <span class="text-[#7c8594]"># Dashboard → http://localhost:5173</span>
+pnpm dev:widget      <span class="text-[#7c8594]"># Widget    → http://localhost:5174</span>
+pnpm dev:web         <span class="text-[#7c8594]"># Docs site → http://localhost:4321</span></code></pre>
+          </div>
+
+          <div class="mt-4 rounded border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
+            <strong class="text-[var(--color-text)]">Tip:</strong> The API uses Wrangler's local mode, which emulates D1 and KV in-memory. No Cloudflare account is needed for local development &mdash; just the API key in <code class="docs-code">.dev.vars</code>.
+          </div>
+
+          <h3 class="docs-h3">Dev auth shortcut</h3>
+          <p class="docs-p">In development mode, the API accepts a <code class="docs-code">x-dev-user-id</code> header to simulate authentication without OAuth:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>curl http://localhost:8787/api/feeds \
+  -H "x-dev-user-id: dev-user-1"</code></pre>
+          </div>
+        </section>
+
+        <!-- Creating a Widget -->
+        <section id="creating-a-widget" class="docs-section">
+          <h2 class="docs-h2">Creating a widget</h2>
+          <ol class="docs-list list-decimal">
+            <li>Open the dashboard at <code class="docs-code">http://localhost:5173</code></li>
+            <li>Click <strong>Create widget</strong> (or press <kbd class="docs-kbd">G</kbd>)</li>
+            <li>Enter an Instagram username and widget name</li>
+            <li>The editor opens with a live preview &mdash; configure layout, columns, gap, radius, card style, hover effects, and background color</li>
+            <li>Switch to the <strong>Deploy</strong> tab to get the embed snippet</li>
+          </ol>
+        </section>
+
+        <!-- Embedding -->
+        <section id="embedding" class="docs-section">
+          <h2 class="docs-h2">Embedding</h2>
+          <p class="docs-p">Add two lines to any HTML page:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>HTML</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]">&lt;!-- Load the widget script --&gt;</span>
+<span class="text-[#ff7b72]">&lt;script</span> <span class="text-[#79c0ff]">src</span>=<span class="text-[#a5d6ff]">"https://your-domain.com/instagram.js"</span> <span class="text-[#79c0ff]">defer</span><span class="text-[#ff7b72]">&gt;&lt;/script&gt;</span>
+
+<span class="text-[#7c8594]">&lt;!-- Place the widget --&gt;</span>
+<span class="text-[#ff7b72]">&lt;instagram-feed</span>
+  <span class="text-[#79c0ff]">feed</span>=<span class="text-[#a5d6ff]">"YOUR_FEED_ID"</span>
+  <span class="text-[#79c0ff]">api-base</span>=<span class="text-[#a5d6ff]">"https://your-api.workers.dev"</span>
+<span class="text-[#ff7b72]">&gt;&lt;/instagram-feed&gt;</span></code></pre>
+          </div>
+          <p class="docs-p">The widget uses Shadow DOM for complete style isolation &mdash; it won't conflict with your page's CSS. Works with plain HTML, WordPress, Shopify, Webflow, React, Vue, Next.js, or any platform that renders HTML.</p>
+        </section>
+
+        <!-- Widget Attributes -->
+        <section id="widget-attributes" class="docs-section">
+          <h2 class="docs-h2">Widget attributes</h2>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Attribute</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="docs-code">feed</code></td>
+                  <td>Yes</td>
+                  <td>The feed ID from your dashboard</td>
+                </tr>
+                <tr>
+                  <td><code class="docs-code">api-base</code></td>
+                  <td>No</td>
+                  <td>API URL. Defaults to the bundled origin. Required if widget is served from a different domain than the API.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Customization -->
+        <section id="customization" class="docs-section">
+          <h2 class="docs-h2">Customization</h2>
+          <p class="docs-p">All settings are stored in the feed's JSON settings and applied via CSS custom properties in the Shadow DOM:</p>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Setting</th>
+                  <th>CSS variable</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Columns</td>
+                  <td><code class="docs-code">--ig-grid-columns</code></td>
+                  <td>4</td>
+                  <td>Number of columns (1&ndash;6)</td>
+                </tr>
+                <tr>
+                  <td>Gap</td>
+                  <td><code class="docs-code">--ig-grid-gap</code></td>
+                  <td>14px</td>
+                  <td>Space between posts</td>
+                </tr>
+                <tr>
+                  <td>Border radius</td>
+                  <td><code class="docs-code">--ig-border-radius</code></td>
+                  <td>6px</td>
+                  <td>Corner radius of post cards</td>
+                </tr>
+                <tr>
+                  <td>Background</td>
+                  <td><code class="docs-code">--ig-bg-color</code></td>
+                  <td>transparent</td>
+                  <td>Widget container background color</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="docs-h3">Feed settings reference</h3>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code class="docs-code">layout</code></td><td><code class="docs-code">"grid" | "masonry" | "showcase"</code></td><td>Feed layout mode</td></tr>
+                <tr><td><code class="docs-code">columns</code></td><td><code class="docs-code">number</code></td><td>Grid columns (1&ndash;6)</td></tr>
+                <tr><td><code class="docs-code">rows</code></td><td><code class="docs-code">number</code></td><td>Grid rows</td></tr>
+                <tr><td><code class="docs-code">gap</code></td><td><code class="docs-code">number</code></td><td>Gap in pixels</td></tr>
+                <tr><td><code class="docs-code">borderRadius</code></td><td><code class="docs-code">number</code></td><td>Corner radius in pixels</td></tr>
+                <tr><td><code class="docs-code">cardStyle</code></td><td><code class="docs-code">"clean" | "rounded" | "elevated"</code></td><td>Card appearance</td></tr>
+                <tr><td><code class="docs-code">hoverStyle</code></td><td><code class="docs-code">"zoom" | "overlay" | "lift" | "none"</code></td><td>Hover animation</td></tr>
+                <tr><td><code class="docs-code">showCaption</code></td><td><code class="docs-code">boolean</code></td><td>Show captions on hover</td></tr>
+                <tr><td><code class="docs-code">showHeader</code></td><td><code class="docs-code">boolean</code></td><td>Show profile header</td></tr>
+                <tr><td><code class="docs-code">backgroundColor</code></td><td><code class="docs-code">string</code></td><td>Container background (any CSS color)</td></tr>
+                <tr><td><code class="docs-code">postCount</code></td><td><code class="docs-code">number</code></td><td>Max posts to display</td></tr>
+                <tr><td><code class="docs-code">order</code></td><td><code class="docs-code">"newest" | "oldest"</code></td><td>Post sort order</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- API Reference -->
+        <section id="api-reference" class="docs-section">
+          <h2 class="docs-h2">API reference</h2>
+          <p class="docs-p">Base URL: <code class="docs-code">http://localhost:8787</code> (local) or your deployed Workers URL.</p>
+
+          <h3 class="docs-h3">Public endpoints (no auth)</h3>
+          <div class="docs-endpoint-list">
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/health</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Service health check</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/feeds/:id</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Fetch feed with posts (KV-cached)</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Public profile lookup</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/posts</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Paginated posts</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/reels</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Paginated reels</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/stories</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Current stories</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/highlights</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Public highlights</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/followers</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Paginated followers</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/:identifier/following</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Paginated following</span>
+            </div>
+          </div>
+
+          <h3 class="docs-h3">Authenticated endpoints</h3>
+          <div class="docs-endpoint-list">
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/feeds</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; List all feeds for current user</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-post">POST</span>
+              <code>/api/feeds</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Create a new feed</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-patch">PATCH</span>
+              <code>/api/feeds/:id</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Update feed settings</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-delete">DELETE</span>
+              <code>/api/feeds/:id</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Delete a feed</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-post">POST</span>
+              <code>/api/feeds/:id/refresh</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Trigger manual sync</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-post">POST</span>
+              <code>/api/instagram/connect</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; Start OAuth flow</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/callback</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; OAuth redirect callback</span>
+            </div>
+            <div class="docs-endpoint">
+              <span class="docs-method docs-method-get">GET</span>
+              <code>/api/instagram/accounts</code>
+              <span class="text-[var(--color-text-muted)]">&mdash; List linked accounts</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="docs-section">
+          <h2 class="docs-h2">Authentication</h2>
+          <p class="docs-p">In <strong>development</strong>, pass the dev header to simulate a user:</p>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>HTTP header</span>
+            </div>
+            <pre><code>x-dev-user-id: dev-user-1</code></pre>
+          </div>
+          <p class="docs-p">The dashboard sends this header automatically in development mode. In production, replace the auth middleware in <code class="docs-code">apps/api/src/middleware/index.ts</code> with your auth provider (JWT, session cookies, etc.).</p>
+        </section>
+
+        <!-- Production Deploy -->
+        <section id="deploy-production" class="docs-section">
+          <h2 class="docs-h2">Production deploy</h2>
+
+          <h3 class="docs-h3">1. Set secrets</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Set each secret on Cloudflare</span>
+wrangler secret put OPENHANDLE_LIVE_KEY
+wrangler secret put OPENHANDLE_TEST_KEY
+wrangler secret put META_APP_ID
+wrangler secret put META_APP_SECRET
+wrangler secret put META_REDIRECT_URI</code></pre>
+          </div>
+
+          <h3 class="docs-h3">2. Apply migrations to production D1</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>pnpm --filter @instagram-widget/api exec wrangler d1 execute \
+  instagram-widget-db \
+  --file=../../database/migrations/0000_bouncy_peter_parker.sql
+
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \
+  instagram-widget-db \
+  --file=../../database/migrations/0001_old_risque.sql</code></pre>
+          </div>
+
+          <h3 class="docs-h3">3. Deploy the API worker</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code>pnpm --filter @instagram-widget/api exec wrangler deploy</code></pre>
+          </div>
+
+          <h3 class="docs-h3">4. Build static apps</h3>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="text-[#7c8594]"># Build everything</span>
+pnpm build
+
+<span class="text-[#7c8594]"># Or individually</span>
+pnpm build:dashboard   <span class="text-[#7c8594]"># → apps/dashboard/dist/</span>
+pnpm build:widget      <span class="text-[#7c8594]"># → apps/widget/dist/</span>
+pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span></code></pre>
+          </div>
+          <p class="docs-p">Deploy the dashboard and widget <code class="docs-code">dist/</code> folders to any static host: Cloudflare Pages, Vercel, Netlify, or a CDN.</p>
+
+          <h3 class="docs-h3">5. Cron triggers</h3>
+          <p class="docs-p">The API worker includes a cron trigger configured to run every 6 hours (<code class="docs-code">0 */6 * * *</code>). This is defined in <code class="docs-code">wrangler.jsonc</code> and activates automatically on deploy. It refreshes feed data from OpenHandle so widgets stay up-to-date without manual intervention.</p>
+        </section>
+
+        <!-- Project Structure -->
+        <section id="project-structure" class="docs-section">
+          <h2 class="docs-h2">Project structure</h2>
+          <div class="docs-codeblock">
+            <div class="docs-codeblock-header">
+              <span>tree</span>
+            </div>
+            <pre><code>alfsight/
+├── apps/
+│   ├── api/              <span class="text-[#7c8594]"># Cloudflare Workers API (Hono + Drizzle)</span>
+│   │   ├── src/
+│   │   │   ├── index.ts         <span class="text-[#7c8594]"># Entry point, routes, middleware</span>
+│   │   │   ├── middleware/      <span class="text-[#7c8594]"># Auth, services injection</span>
+│   │   │   ├── routes/          <span class="text-[#7c8594]"># feeds, instagram, health</span>
+│   │   │   ├── services/        <span class="text-[#7c8594]"># Feed, cache, Instagram providers</span>
+│   │   │   └── types/           <span class="text-[#7c8594]"># Env bindings, app variables</span>
+│   │   ├── wrangler.jsonc       <span class="text-[#7c8594]"># D1, KV, cron config</span>
+│   │   └── .dev.vars            <span class="text-[#7c8594]"># Local secrets (gitignored)</span>
+│   │
+│   ├── dashboard/        <span class="text-[#7c8594]"># Admin UI (Astro + React + Tailwind v4)</span>
+│   │   └── src/
+│   │       ├── pages/           <span class="text-[#7c8594]"># index, settings, widgets/[id]</span>
+│   │       ├── components/      <span class="text-[#7c8594]"># Sidebar, WidgetEditor, WidgetsGrid</span>
+│   │       ├── layouts/         <span class="text-[#7c8594]"># DashboardLayout</span>
+│   │       └── styles/          <span class="text-[#7c8594]"># global.css (theme vars)</span>
+│   │
+│   ├── widget/           <span class="text-[#7c8594]"># Embeddable Web Component (&lt;3 kB)</span>
+│   │   └── src/
+│   │       ├── widget.ts        <span class="text-[#7c8594]"># &lt;instagram-feed&gt; custom element</span>
+│   │       ├── styles.ts        <span class="text-[#7c8594]"># Shadow DOM styles</span>
+│   │       └── api.ts           <span class="text-[#7c8594]"># Feed fetch client</span>
+│   │
+│   └── web/              <span class="text-[#7c8594]"># Landing page & docs (Astro)</span>
+│       └── src/
+│           ├── pages/           <span class="text-[#7c8594]"># index, docs</span>
+│           ├── components/      <span class="text-[#7c8594]"># Navbar, Hero, Features, etc.</span>
+│           └── layouts/         <span class="text-[#7c8594]"># BaseLayout</span>
+│
+├── packages/
+│   ├── types/            <span class="text-[#7c8594]"># Shared TypeScript interfaces</span>
+│   └── validation/       <span class="text-[#7c8594]"># Shared Zod schemas</span>
+│
+├── database/
+│   ├── schema.ts         <span class="text-[#7c8594]"># Drizzle ORM schema (users, feeds, posts)</span>
+│   └── migrations/       <span class="text-[#7c8594]"># Auto-generated SQL files</span>
+│
+├── .env.example          <span class="text-[#7c8594]"># Template for root env</span>
+├── pnpm-workspace.yaml   <span class="text-[#7c8594]"># Workspace config</span>
+└── package.json          <span class="text-[#7c8594]"># Root scripts (dev, build, db)</span></code></pre>
+          </div>
+        </section>
+
+        <div class="mt-16 border-t border-[var(--color-border-soft)] pt-8 text-center text-[13px] text-[var(--color-text-soft)]">
+          <a href="https://github.com/Manish-Tamang/alfsight" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">View source on GitHub</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <style>
+    .docs-section {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--color-border-soft);
+    }
+    .docs-section:last-of-type {
+      border-bottom: none;
+    }
+    .docs-h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      margin-bottom: 0.75rem;
+    }
+    .docs-h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .docs-p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .docs-list {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .docs-list li {
+      margin-bottom: 0.35rem;
+    }
+    .docs-list li strong {
+      color: var(--color-text);
+    }
+    .docs-code {
+      font-size: 12.5px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: var(--color-text);
+    }
+    .docs-kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-weight: 600;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      min-width: 20px;
+      color: var(--color-text-muted);
+      box-shadow: 0 1px 0 var(--color-border);
+    }
+    .docs-codeblock {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #1a1d21;
+    }
+    .docs-codeblock-header {
+      display: flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    }
+    .docs-codeblock pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+    .docs-codeblock code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      color: #e0e4e8;
+    }
+    .docs-nav-link {
+      display: block;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .docs-nav-link:hover {
+      color: var(--color-text);
+      background: var(--color-surface-2);
+    }
+    .docs-table-wrap {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid var(--color-border-soft);
+    }
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .docs-table thead {
+      background: var(--color-surface-2);
+    }
+    .docs-table th {
+      text-align: left;
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-soft);
+      border-bottom: 1px solid var(--color-border-soft);
+    }
+    .docs-table td {
+      padding: 8px 14px;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border-soft);
+    }
+    .docs-table tr:last-child td {
+      border-bottom: none;
+    }
+    .docs-endpoint-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .docs-endpoint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      color: var(--color-text);
+    }
+    .docs-endpoint:hover {
+      background: var(--color-surface-2);
+    }
+    .docs-endpoint span:last-child {
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      font-size: 12.5px;
+    }
+    .docs-method {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      border-radius: 4px;
+      padding: 2px 6px;
+      min-width: 52px;
+      text-align: center;
+    }
+    .docs-method-get { background: #ecfdf5; color: #065f46; }
+    .docs-method-post { background: #eff6ff; color: #1e40af; }
+    .docs-method-patch { background: #fffbeb; color: #92400e; }
+    .docs-method-delete { background: #fef2f2; color: #991b1b; }
+  </style>
+</BaseLayout>
