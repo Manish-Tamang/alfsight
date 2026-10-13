@@ -34,7 +34,7 @@ export function CreateWidget() {
         Connect a public Instagram profile. You can customize layout and theme in the editor.
       </p>
 
-      <form onSubmit={submit} className="mt-6 space-y-4 rounded-[8px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+      <form onSubmit={submit} className="mt-6 space-y-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
         <Field label="Widget name">
           <TextInput
             required
@@ -59,7 +59,7 @@ export function CreateWidget() {
         </Field>
 
         {error && (
-          <div className="rounded-[6px] bg-[color:color-mix(in_oklab,var(--color-danger)_8%,transparent)] px-3 py-2 text-[13px] text-[var(--color-danger)]">
+          <div className="rounded-lg bg-[color:color-mix(in_oklab,var(--color-danger)_8%,transparent)] px-3 py-2 text-[13px] text-[var(--color-danger)]">
             {error}
           </div>
         )}
