@@ -1,7 +1,6 @@
 ---
 import DashboardLayout from "@/layouts/DashboardLayout.astro";
 import { WidgetsGrid } from "@/components/widgets/WidgetsGrid";
-import { Search } from "lucide-react";
 ---
 
 <DashboardLayout title="Widgets — Alfsight">
@@ -12,37 +11,10 @@ import { Search } from "lucide-react";
         Create, edit and embed widgets on any site.
       </p>
 
-      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <label class="relative block min-w-0 flex-1 sm:max-w-[320px]">
-          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--color-text-soft)]">
-            <Search size={16} strokeWidth={1.75} />
-          </span>
-          <input
-            type="search"
-            placeholder="Search widgets…"
-            class="h-9 w-full rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] py-0 pl-9 pr-3 text-[13px] text-[var(--color-text)] outline-none placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-primary)]"
-          />
-        </label>
-        <a
-          href="/widgets/new"
-          class="inline-flex h-9 shrink-0 items-center gap-2 rounded-[6px] bg-[var(--color-primary)] px-4 text-[13px] font-medium text-[var(--color-primary-foreground)] transition-colors hover:bg-[var(--color-primary-hover)]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14"></path>
-            <path d="M12 5v14"></path>
-          </svg>
-          Create widget
+      <div class="mt-4 flex items-center justify-end">
+        <a href="/widgets/new" class="btn-primary">
+          <span>Create widget</span>
+          <kbd class="btn-kbd">G</kbd>
         </a>
       </div>
     </header>
@@ -50,3 +22,57 @@ import { Search } from "lucide-react";
     <WidgetsGrid client:load />
   </div>
 </DashboardLayout>
+
+<style>
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    background: linear-gradient(var(--color-primary), var(--color-primary-hover));
+    color: white;
+    box-shadow: inset 0 4px 3px -2px var(--color-primary-glow), 0 4px 5px -3px rgba(0, 0, 0, 0.6);
+    border-bottom: 2px solid var(--color-primary-deep);
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    border-bottom: 4px solid var(--color-primary-deep);
+    translate: 0 -1px;
+  }
+
+  .btn-primary:active {
+    box-shadow: inset 0 4px 3px -2px var(--color-primary-glow), 0 4px 5px -3px transparent;
+    border-bottom: 1px solid var(--color-primary-deep);
+    translate: 0 0;
+  }
+
+  .btn-kbd {
+    margin-left: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    background-color: var(--color-primary-light);
+    color: white;
+    box-shadow: inset 0 -3px 3px -2px #1f54f0, inset 0 3px 3px -2px #658dff,
+      0 2px 2px -2px rgba(0, 0, 0, 0.3), 0 0 0 2px #0d47f0;
+  }
+</style>
+
+<script>
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "g" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const el = document.activeElement;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT")) return;
+      window.location.href = "/widgets/new";
+    }
+  });
+</script>
