@@ -1,0 +1,66 @@
+---
+const features = [
+  {
+    title: "Edge-cached feeds",
+    description: "Posts are fetched once and cached in Cloudflare KV. Visitors get sub-50ms responses from the nearest edge node.",
+    icon: "bolt",
+  },
+  {
+    title: "Zero-dependency widget",
+    description: "A single <script> tag and a custom element. Under 3 kB gzipped, no framework runtime, Shadow DOM isolation.",
+    icon: "box",
+  },
+  {
+    title: "Visual editor",
+    description: "Grid, masonry, or showcase layout. Adjust columns, gap, radius, hover effects, and background color — live preview included.",
+    icon: "palette",
+  },
+  {
+    title: "Self-hosted",
+    description: "Runs on your own Cloudflare account. Your data, your keys, your domain. No third-party widget service.",
+    icon: "server",
+  },
+  {
+    title: "Automatic sync",
+    description: "Cron triggers refresh feeds on a schedule. New posts appear without manual intervention.",
+    icon: "refresh",
+  },
+  {
+    title: "Works everywhere",
+    description: "Plain HTML, WordPress, Shopify, Webflow, React, Vue, Next.js — if it renders HTML, it works.",
+    icon: "globe",
+  },
+];
+
+const icons: Record<string, string> = {
+  bolt: '<path d="M13 2L3 14h9l-1 10 10-12h-9l1-10z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  box: '<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="currentColor" stroke-width="1.5" fill="none"/><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/>',
+  palette: '<circle cx="13.5" cy="6.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6.5" cy="12" r="1.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.04-.23-.29-.38-.63-.38-1.01 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.5-4.5-9.95-10-9.95z" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+  server: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="6" y1="6" x2="6.01" y2="6" stroke="currentColor" stroke-width="2"/><line x1="6" y1="18" x2="6.01" y2="18" stroke="currentColor" stroke-width="2"/>',
+  refresh: '<polyline points="23 4 23 10 17 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1 20 1 14 7 14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  globe: '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.5"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+};
+---
+
+<section id="features" class="py-20 sm:py-28">
+  <div class="mx-auto max-w-5xl px-6">
+    <div class="text-center">
+      <h2 class="text-[28px] font-bold tracking-tight text-[var(--color-text)]">Built for performance and control</h2>
+      <p class="mx-auto mt-3 max-w-md text-[15px] text-[var(--color-text-muted)]">
+        Everything you need to embed Instagram feeds — nothing you don't.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {features.map((feature) => (
+        <div class="rounded border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-5 transition-colors hover:border-[color:color-mix(in_oklab,var(--color-primary)_20%,var(--color-border))]">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded bg-[var(--color-surface-2)] text-[var(--color-primary)]">
+            <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" set:html={icons[feature.icon]} />
+          </div>
+          <h3 class="text-[14px] font-semibold text-[var(--color-text)]">{feature.title}</h3>
+          <p class="mt-1.5 text-[13px] leading-relaxed text-[var(--color-text-muted)]">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
