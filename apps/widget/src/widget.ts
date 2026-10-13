@@ -295,6 +295,7 @@ class InstagramFeedWidget extends HTMLElement {
     if (settings.columns) vars.push(`--ig-grid-columns: ${settings.columns}`);
     if (settings.gap !== undefined) vars.push(`--ig-grid-gap: ${settings.gap}px`);
     if (settings.borderRadius !== undefined) vars.push(`--ig-border-radius: ${settings.borderRadius}px`);
+    if (settings.backgroundColor) vars.push(`--ig-bg-color: ${settings.backgroundColor}`);
     return vars.join("; ");
   }
 

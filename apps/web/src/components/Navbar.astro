@@ -1,0 +1,35 @@
+---
+const navLinks = [
+  { label: "Features", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Docs", href: "#docs" },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border-soft)] bg-[var(--color-surface)]/90 backdrop-blur-md">
+  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
+    <a href="/" class="flex items-center gap-2">
+      <svg viewBox="0 0 32 32" class="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true">
+        <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
+        <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
+        <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
+      </svg>
+      <span class="text-[15px] font-bold text-[var(--color-text)]">Alfsight</span>
+    </a>
+
+    <div class="hidden items-center gap-6 sm:flex">
+      {navLinks.map((link) => (
+        <a href={link.href} class="text-[13px] font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]">
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href="/dashboard"
+      class="inline-flex h-8 items-center rounded bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-2 border-b-[var(--color-primary-deep)] transition-all hover:border-b-4 hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
+    >
+      Dashboard
+    </a>
+  </div>
+</nav>

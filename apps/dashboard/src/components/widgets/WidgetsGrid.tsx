@@ -14,10 +14,13 @@ import { cn } from "@/lib/cn";
 const listWrap = "flex w-full flex-col gap-3";
 
 const cardShell =
-  "relative flex w-full overflow-hidden rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[color:color-mix(in_oklab,var(--color-primary)_25%,var(--color-border))]";
+  "relative flex w-full rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[color:color-mix(in_oklab,var(--color-primary)_25%,var(--color-border))]";
 
 const actionBtn =
-  "inline-flex h-8 items-center justify-center rounded-[6px] bg-[#eef0f2] px-4 text-[13px] font-medium text-[var(--color-text)] transition-colors hover:bg-[#e2e6ea]";
+  "inline-flex h-8 items-center justify-center rounded-lg bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-[2px] border-b-[var(--color-primary-deep)] transition-all hover:border-b-[4px] hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px active:shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_transparent] active:border-b-[1px] active:border-b-[var(--color-primary-deep)] active:translate-y-0";
+
+const actionBtnSecondary =
+  "inline-flex h-8 items-center justify-center rounded-lg bg-[var(--color-surface)] px-4 text-[13px] font-semibold text-[var(--color-text)] border border-[var(--color-border)] shadow-[var(--shadow-card)] transition-colors hover:bg-[var(--color-surface-2)]";
 
 function formatCreatedDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -77,15 +80,13 @@ export function WidgetsGrid() {
       {feeds.map((feed) => (
         <WidgetCard key={feed.id} feed={feed} onDelete={() => remove(feed.id)} />
       ))}
-
-      <NewWidgetCard />
     </div>
   );
 }
 
 function WidgetPreview({ feedId }: { feedId: string }) {
   return (
-    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden bg-[#f0f2f5]">
+    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden rounded-l-[10px] bg-[var(--color-surface-2)]">
       <iframe
         src={`${WIDGET_ORIGIN}/?feed=${feedId}`}
         title=""
@@ -93,25 +94,6 @@ function WidgetPreview({ feedId }: { feedId: string }) {
         loading="lazy"
       />
     </div>
-  );
-}
-
-function NewWidgetCard() {
-  return (
-    <a href="/widgets/new" className={cn(cardShell, "min-h-[120px]")}>
-      <div className="flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center bg-[#f0f2f5] text-[var(--color-text-muted)]">
-        <Plus size={28} strokeWidth={1.5} />
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-center px-5 py-4">
-        <h3 className="text-[15px] font-semibold text-[var(--color-primary)]">New widget</h3>
-        <p className="mt-1 text-[13px] text-[var(--color-text-muted)]">
-          Instagram feed, grid, stories…
-        </p>
-        <div className="mt-3">
-          <span className={actionBtn}>Create</span>
-        </div>
-      </div>
-    </a>
   );
 }
 
@@ -158,11 +140,11 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
       <WidgetPreview feedId={feed.id} />
 
       <div className="relative flex min-w-0 flex-1 flex-col justify-center px-5 py-4 pr-11">
-        <div className="absolute right-3 top-3" ref={menuRef}>
+        <div className="absolute right-3 top-3 z-20" ref={menuRef}>
           <button
             type="button"
             onClick={() => setMenuOpen((o) => !o)}
-            className="border-0 bg-transparent p-1 text-[#9fa4aa] transition-colors hover:text-[var(--color-text)]"
+            className="border-0 bg-transparent p-1 text-[var(--color-text-soft)] transition-colors hover:text-[var(--color-text)]"
             aria-label="More actions"
             aria-expanded={menuOpen}
           >
@@ -170,7 +152,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
           </button>
           {menuOpen && (
             <div
-              className="absolute right-0 top-full z-10 mt-1 min-w-[148px] overflow-hidden rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+              className="absolute right-0 top-full z-30 mt-1 min-w-[148px] overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
               role="menu"
             >
               <button
@@ -213,7 +195,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
           <a href={`/widgets/edit?id=${feed.id}`} className={actionBtn}>
             Edit
           </a>
-          <button type="button" onClick={copyEmbed} className={actionBtn}>
+          <button type="button" onClick={copyEmbed} className={actionBtnSecondary}>
             {installed ? "Copied" : "Install"}
           </button>
         </div>
@@ -225,7 +207,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
 function EmptyState() {
   return (
     <div className="rounded-[10px] border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] py-16 text-center">
-      <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px] border border-[var(--color-border)] text-[var(--color-text)]">
+      <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-primary)]">
         <Camera size={20} strokeWidth={1.75} />
       </div>
       <h3 className="text-[16px] font-semibold text-[var(--color-text)]">No widgets yet</h3>
@@ -235,7 +217,7 @@ function EmptyState() {
       <div className="mt-6">
         <a
           href="/widgets/new"
-          className="inline-flex h-10 items-center gap-2 rounded-[6px] bg-[var(--color-primary)] px-5 text-[13px] font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+          className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-5 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-[2px] border-b-[var(--color-primary-deep)] transition-all hover:border-b-[4px] hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
         >
           <Plus size={14} />
           Create your first widget

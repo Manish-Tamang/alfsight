@@ -11,6 +11,7 @@ export const widgetStyles = `
     --ig-grid-columns: 4;
     --ig-grid-gap: 14px;
     --ig-border-radius: 6px;
+    --ig-bg-color: transparent;
   }
 
   * {
@@ -23,6 +24,8 @@ export const widgetStyles = `
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+    background-color: var(--ig-bg-color);
+    border-radius: var(--ig-border-radius);
   }
 
   /* ── Header ── */
@@ -268,7 +271,7 @@ export const widgetStyles = `
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .ig-card-rounded { border-radius: 18px; }
+  .ig-card-rounded { border-radius: calc(var(--ig-border-radius) + 10px); }
   .ig-card-elevated { box-shadow: 0 5px 18px rgba(15, 23, 42, 0.14); }
 
   .ig-feed-item a {
