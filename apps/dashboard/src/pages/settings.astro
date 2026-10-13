@@ -4,28 +4,28 @@ import DashboardLayout from "@/layouts/DashboardLayout.astro";
 
 <DashboardLayout title="Settings — Alfsight">
   <div class="mx-auto w-full max-w-[480px]">
-    <h1 class="text-[22px] font-semibold text-[var(--color-text)]">Settings</h1>
+    <h1 class="text-[22px] font-semibold tracking-tight text-[var(--color-text)]">Settings</h1>
     <p class="mt-1 text-[13px] text-[var(--color-text-muted)]">Workspace preferences.</p>
 
-    <div class="mt-6 space-y-4 rounded-[8px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+    <div class="mt-6 space-y-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <div>
-        <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
+        <label class="mb-1.5 block text-[11.5px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
           Display name
         </label>
         <input
           type="text"
           value="Alfsight User"
-          class="h-10 w-full rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none focus:border-[var(--color-primary)]"
+          class="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none transition-colors focus:border-[var(--color-primary)]"
         />
       </div>
       <div>
-        <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
+        <label class="mb-1.5 block text-[11.5px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
           Email
         </label>
         <input
           type="email"
           value="dev@alfsight.local"
-          class="h-10 w-full rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none focus:border-[var(--color-primary)]"
+          class="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none transition-colors focus:border-[var(--color-primary)]"
         />
       </div>
     </div>
