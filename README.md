@@ -1,4 +1,19 @@
-# Alfsight
+<p align="center">
+  <img src=".github/assets/alfsight.png" alt="Alfsight logo" width="96" height="96" />
+</p>
+
+<h1 align="center">Alfsight</h1>
+
+<p align="center">
+  <strong>The open-source alternative to Elfsight.</strong><br />
+  Self-hosted Instagram feed widgets for any website.
+</p>
+
+<p align="center">
+  <a href="#getting-started">Getting started</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="https://github.com/Manish-Tamang/alfsight">GitHub</a>
+</p>
 
 A lightweight, embeddable Instagram feed widget service and management dashboard. Fetch public Instagram data server-side, cache feed content at the edge, and embed customizable grids on any website using a zero-dependency Web Component `<script>` tag.
 
@@ -13,7 +28,7 @@ A lightweight, embeddable Instagram feed widget service and management dashboard
 
 ### Applications & Packages
 - **API (`apps/api`)**: [Hono](https://hono.dev/) v4, [Drizzle ORM](https://orm.drizzle.team/), [Zod](https://zod.dev/)
-- **Dashboard (`apps/dashboard`)**: [React 19](https://react.dev/), [Vite 6](https://vite.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [React Router v7](https://reactrouter.com/), [Lucide React](https://lucide.dev/) (Roboto & Rubik typography)
+- **Dashboard (`apps/dashboard`)**: [React 19](https://react.dev/), [Vite 6](https://vite.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [React Router v7](https://reactrouter.com/), [Lucide React](https://lucide.dev/) (Inter & Satoshi typography)
 - **Widget (`apps/widget`)**: Vanilla Web Component (`customElements` + Shadow DOM), zero framework runtime (< 3 kB gzipped)
 - **Database (`database`)**: [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite) with Drizzle ORM migrations
 - **Cache**: [Cloudflare KV](https://developers.cloudflare.com/kv/) for low-latency edge feed delivery
