@@ -1,38 +1,26 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import CodeBlock from "@/components/ui/CodeBlock.astro";
 ---
 
-<BaseLayout title="Docs — Alfsight" description="Complete guide to self-hosting Alfsight: fork, install, configure, and deploy your own Instagram feed widget service.">
-  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border-soft)] bg-[var(--color-surface)]/90 backdrop-blur-md">
-    <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-      <a href="/" class="flex items-center gap-2">
-        <svg viewBox="0 0 32 32" class="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true">
-          <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
-          <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
-          <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
-        </svg>
-        <span class="text-[15px] font-bold text-[var(--color-text)]">Alfsight</span>
-      </a>
-      <div class="hidden items-center gap-6 sm:flex">
-        <a href="/" class="text-[13px] font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]">Home</a>
-        <a href="/docs" class="text-[13px] font-medium text-[var(--color-text)] transition-colors">Docs</a>
-      </div>
-      <a
-        href="/dashboard"
-        class="inline-flex h-8 items-center rounded bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-2 border-b-[var(--color-primary-deep)] transition-all hover:border-b-4 hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
-      >
-        Dashboard
-      </a>
-    </div>
-  </nav>
+<BaseLayout title="Docs | Alfsight | Open-Source Elfsight Alternative" description="Complete guide to self-hosting Alfsight: fork, install, configure, and deploy your own Instagram feed widget service.">
+  <Navbar
+    links={[
+      { label: "Home", href: "/" },
+      { label: "Features", href: "/#features" },
+      { label: "Docs", href: "/docs", active: true },
+    ]}
+  />
 
-  <main class="pt-14">
+  <main class="border-t border-neutral-200">
     <div class="mx-auto flex max-w-6xl gap-0 lg:gap-8">
 
       <!-- Sidebar -->
       <aside class="hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto border-r border-[var(--color-border-soft)] py-8 pl-6 pr-4">
         <nav class="flex flex-col gap-1">
-          <p class="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Getting started</p>
+          <p class="mb-2 text-xs font-medium text-neutral-900">Getting started</p>
           <a href="#overview" class="docs-nav-link">Overview</a>
           <a href="#prerequisites" class="docs-nav-link">Prerequisites</a>
           <a href="#fork-and-clone" class="docs-nav-link">Fork & clone</a>
@@ -42,17 +30,17 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <a href="#database-setup" class="docs-nav-link">Database & migrations</a>
           <a href="#running-locally" class="docs-nav-link">Running locally</a>
 
-          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Usage</p>
+          <p class="mb-2 mt-5 text-xs font-medium text-neutral-900">Usage</p>
           <a href="#creating-a-widget" class="docs-nav-link">Creating a widget</a>
           <a href="#embedding" class="docs-nav-link">Embedding</a>
           <a href="#widget-attributes" class="docs-nav-link">Widget attributes</a>
           <a href="#customization" class="docs-nav-link">Customization</a>
 
-          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">API</p>
+          <p class="mb-2 mt-5 text-xs font-medium text-neutral-900">API</p>
           <a href="#api-reference" class="docs-nav-link">API reference</a>
           <a href="#authentication" class="docs-nav-link">Authentication</a>
 
-          <p class="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">Deploy</p>
+          <p class="mb-2 mt-5 text-xs font-medium text-neutral-900">Deploy</p>
           <a href="#deploy-production" class="docs-nav-link">Production deploy</a>
           <a href="#project-structure" class="docs-nav-link">Project structure</a>
         </nav>
@@ -63,11 +51,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
         <!-- Overview -->
         <section id="overview" class="docs-section">
-          <h1 class="text-[32px] font-extrabold tracking-tight text-[var(--color-text)]">Documentation</h1>
+          <h1 class="font-display text-4xl font-medium text-neutral-900">Documentation</h1>
           <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">
-            Alfsight is a self-hosted alternative to Elfsight for embedding Instagram feeds on any website. It fetches public Instagram data via the <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">OpenHandle API</a>, caches it at the edge with Cloudflare KV, and serves it through a zero-dependency Web Component that weighs under 3 kB gzipped.
+            Alfsight is a self-hosted alternative to Elfsight for embedding Instagram feeds on any website. It fetches public Instagram data via the <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">OpenHandle API</a>, caches it at the edge with Cloudflare KV, and serves it through a zero-dependency Web Component that weighs under 3 kB gzipped.
           </p>
-          <div class="mt-6 rounded border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
+          <div class="mt-6 rounded-lg border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
             <strong class="text-[var(--color-text)]">Architecture:</strong> Monorepo with pnpm workspaces &mdash; API (Hono on Cloudflare Workers), Dashboard (Astro + React), Widget (vanilla Web Component), and shared packages for types and validation. Data flows: visitor loads widget &rarr; widget calls API &rarr; API checks KV cache &rarr; cache miss hits D1 &rarr; cron syncs from OpenHandle.
           </div>
         </section>
@@ -79,7 +67,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             <li><strong>Node.js</strong> &ge; 18</li>
             <li><strong>pnpm</strong> &ge; 8 &mdash; install with <code class="docs-code">npm install -g pnpm</code></li>
             <li>A <strong>Cloudflare account</strong> (free tier works) for Workers, D1, and KV</li>
-            <li>An <strong>OpenHandle API key</strong> from <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">openhandle.dev</a> (test key is free)</li>
+            <li>An <strong>OpenHandle API key</strong> from <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">openhandle.dev</a> (test key is free)</li>
             <li><strong>Git</strong> installed</li>
           </ul>
         </section>
@@ -88,36 +76,21 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <section id="fork-and-clone" class="docs-section">
           <h2 class="docs-h2">Fork & clone</h2>
           <p class="docs-p">Fork the repository on GitHub, then clone your fork locally:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Fork via GitHub UI or CLI</span>
+          <CodeBlock lang="bash" code={`# Fork via GitHub UI or CLI
 gh repo fork Manish-Tamang/alfsight --clone
 
-<span class="text-[#7c8594]"># Or clone manually after forking</span>
+# Or clone manually after forking
 git clone https://github.com/YOUR_USERNAME/alfsight.git
-cd alfsight</code></pre>
-          </div>
+cd alfsight`} />
           <p class="docs-p">If you just want to try it without forking:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>git clone https://github.com/Manish-Tamang/alfsight.git
-cd alfsight</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`git clone https://github.com/Manish-Tamang/alfsight.git
+cd alfsight`} />
         </section>
 
         <!-- Install Dependencies -->
         <section id="install-dependencies" class="docs-section">
           <h2 class="docs-h2">Install dependencies</h2>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>pnpm install</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`pnpm install`} />
           <p class="docs-p">This installs all workspace dependencies across the monorepo: <code class="docs-code">apps/api</code>, <code class="docs-code">apps/dashboard</code>, <code class="docs-code">apps/widget</code>, <code class="docs-code">apps/web</code>, <code class="docs-code">packages/types</code>, <code class="docs-code">packages/validation</code>, and <code class="docs-code">database</code>.</p>
         </section>
 
@@ -125,12 +98,7 @@ cd alfsight</code></pre>
         <section id="environment-variables" class="docs-section">
           <h2 class="docs-h2">Environment variables</h2>
           <p class="docs-p">Copy the example env file and fill in your values:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>cp .env.example .env</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`cp .env.example .env`} />
 
           <h3 class="docs-h3">Root <code class="docs-code">.env</code></h3>
           <div class="docs-table-wrap">
@@ -169,30 +137,25 @@ cd alfsight</code></pre>
 
           <h3 class="docs-h3">API secrets <code class="docs-code">apps/api/.dev.vars</code></h3>
           <p class="docs-p">The API worker reads secrets from <code class="docs-code">.dev.vars</code> during local development (Wrangler convention). Create this file:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>apps/api/.dev.vars</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># OpenHandle — at least one key is required</span>
+          <CodeBlock lang="dotenv" title="apps/api/.dev.vars" code={`# OpenHandle — at least one key is required
 OPENHANDLE_TEST_KEY=oh_test_your_key_here
 OPENHANDLE_LIVE_KEY=oh_live_your_key_here
 
-<span class="text-[#7c8594]"># Meta OAuth (optional, for Instagram account linking)</span>
+# Meta OAuth (optional, for Instagram account linking)
 META_APP_ID=your_meta_app_id
 META_APP_SECRET=your_meta_app_secret
 META_REDIRECT_URI=http://localhost:8787/api/instagram/callback
 
-<span class="text-[#7c8594]"># Environment</span>
-ENVIRONMENT=development</code></pre>
-          </div>
+# Environment
+ENVIRONMENT=development`} />
 
-          <div class="mt-4 rounded border border-amber-200 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900">
+          <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900">
             <strong>Important:</strong> Never commit <code class="docs-code">.env</code> or <code class="docs-code">.dev.vars</code>. Both are already in <code class="docs-code">.gitignore</code>. For production, use <code class="docs-code">wrangler secret put &lt;KEY&gt;</code> to set secrets securely.
           </div>
 
           <h3 class="docs-h3">Getting an OpenHandle API key</h3>
           <ol class="docs-list list-decimal">
-            <li>Go to <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">openhandle.dev</a></li>
+            <li>Go to <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">openhandle.dev</a></li>
             <li>Create an account and generate a <strong>Test</strong> key for development</li>
             <li>Add the key to both <code class="docs-code">.env</code> and <code class="docs-code">apps/api/.dev.vars</code></li>
             <li>For production, generate a <strong>Live</strong> key and set it via <code class="docs-code">wrangler secret put OPENHANDLE_LIVE_KEY</code></li>
@@ -205,53 +168,28 @@ ENVIRONMENT=development</code></pre>
           <p class="docs-p">The API runs on Cloudflare Workers with D1 (database) and KV (cache). You need to create these resources and update <code class="docs-code">wrangler.jsonc</code>.</p>
 
           <h3 class="docs-h3">1. Login to Wrangler</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>npx wrangler login</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`npx wrangler login`} />
 
           <h3 class="docs-h3">2. Create a D1 database</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>npx wrangler d1 create instagram-widget-db</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`npx wrangler d1 create instagram-widget-db`} />
           <p class="docs-p">Copy the returned <code class="docs-code">database_id</code> and paste it into <code class="docs-code">apps/api/wrangler.jsonc</code>:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>apps/api/wrangler.jsonc</span>
-            </div>
-            <pre><code set:html={`"d1_databases": [
-  &#123;
+          <CodeBlock lang="jsonc" title="apps/api/wrangler.jsonc" code={`"d1_databases": [
+  {
     "binding": "DB",
     "database_name": "instagram-widget-db",
-    "database_id": "<span class="text-[#a5d6ff]">YOUR_DATABASE_ID</span>"
-  &#125;
-]`} /></pre>
-          </div>
+    "database_id": "YOUR_DATABASE_ID"
+  }
+]`} />
 
           <h3 class="docs-h3">3. Create a KV namespace</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>npx wrangler kv namespace create FEED_CACHE</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`npx wrangler kv namespace create FEED_CACHE`} />
           <p class="docs-p">Copy the returned <code class="docs-code">id</code> and update <code class="docs-code">wrangler.jsonc</code>:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>apps/api/wrangler.jsonc</span>
-            </div>
-            <pre><code set:html={`"kv_namespaces": [
-  &#123;
+          <CodeBlock lang="jsonc" title="apps/api/wrangler.jsonc" code={`"kv_namespaces": [
+  {
     "binding": "FEED_CACHE",
-    "id": "<span class="text-[#a5d6ff]">YOUR_KV_NAMESPACE_ID</span>"
-  &#125;
-]`} /></pre>
-          </div>
+    "id": "YOUR_KV_NAMESPACE_ID"
+  }
+]`} />
         </section>
 
         <!-- Database Setup -->
@@ -260,38 +198,23 @@ ENVIRONMENT=development</code></pre>
           <p class="docs-p">The project uses Drizzle ORM with Cloudflare D1 (SQLite). Migrations are generated from the schema at <code class="docs-code">database/schema.ts</code>.</p>
 
           <h3 class="docs-h3">Generate migrations (if schema changed)</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>pnpm db:generate</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`pnpm db:generate`} />
 
           <h3 class="docs-h3">Apply migrations locally</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Apply each migration file in order</span>
-pnpm --filter @instagram-widget/api exec wrangler d1 execute \
-  instagram-widget-db --local \
+          <CodeBlock lang="bash" code={`# Apply each migration file in order
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
+  instagram-widget-db --local \\
   --file=../../database/migrations/0000_bouncy_peter_parker.sql
 
-pnpm --filter @instagram-widget/api exec wrangler d1 execute \
-  instagram-widget-db --local \
-  --file=../../database/migrations/0001_old_risque.sql</code></pre>
-          </div>
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
+  instagram-widget-db --local \\
+  --file=../../database/migrations/0001_old_risque.sql`} />
 
           <h3 class="docs-h3">Apply migrations to production</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Same commands without --local</span>
-pnpm --filter @instagram-widget/api exec wrangler d1 execute \
-  instagram-widget-db \
-  --file=../../database/migrations/0000_bouncy_peter_parker.sql</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`# Same commands without --local
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
+  instagram-widget-db \\
+  --file=../../database/migrations/0000_bouncy_peter_parker.sql`} />
 
           <h3 class="docs-h3">Database schema</h3>
           <p class="docs-p">The D1 database has four tables:</p>
@@ -328,33 +251,23 @@ pnpm --filter @instagram-widget/api exec wrangler d1 execute \
         <!-- Running Locally -->
         <section id="running-locally" class="docs-section">
           <h2 class="docs-h2">Running locally</h2>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Run all apps in parallel</span>
+          <CodeBlock lang="bash" code={`# Run all apps in parallel
 pnpm dev
 
-<span class="text-[#7c8594]"># Or run individually</span>
-pnpm dev:api         <span class="text-[#7c8594]"># API       → http://localhost:8787</span>
-pnpm dev:dashboard   <span class="text-[#7c8594]"># Dashboard → http://localhost:5173</span>
-pnpm dev:widget      <span class="text-[#7c8594]"># Widget    → http://localhost:5174</span>
-pnpm dev:web         <span class="text-[#7c8594]"># Docs site → http://localhost:4321</span></code></pre>
-          </div>
+# Or run individually
+pnpm dev:api         # API       → http://localhost:8787
+pnpm dev:dashboard   # Dashboard → http://localhost:5173
+pnpm dev:widget      # Widget    → http://localhost:5174
+pnpm dev:web         # Docs site → http://localhost:4321`} />
 
-          <div class="mt-4 rounded border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
+          <div class="mt-4 rounded-lg border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
             <strong class="text-[var(--color-text)]">Tip:</strong> The API uses Wrangler's local mode, which emulates D1 and KV in-memory. No Cloudflare account is needed for local development &mdash; just the API key in <code class="docs-code">.dev.vars</code>.
           </div>
 
           <h3 class="docs-h3">Dev auth shortcut</h3>
           <p class="docs-p">In development mode, the API accepts a <code class="docs-code">x-dev-user-id</code> header to simulate authentication without OAuth:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>curl http://localhost:8787/api/feeds \
-  -H "x-dev-user-id: dev-user-1"</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`curl http://localhost:8787/api/feeds \\
+  -H "x-dev-user-id: dev-user-1"`} />
         </section>
 
         <!-- Creating a Widget -->
@@ -373,19 +286,14 @@ pnpm dev:web         <span class="text-[#7c8594]"># Docs site → http://localho
         <section id="embedding" class="docs-section">
           <h2 class="docs-h2">Embedding</h2>
           <p class="docs-p">Add two lines to any HTML page:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>HTML</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]">&lt;!-- Load the widget script --&gt;</span>
-<span class="text-[#ff7b72]">&lt;script</span> <span class="text-[#79c0ff]">src</span>=<span class="text-[#a5d6ff]">"https://your-domain.com/instagram.js"</span> <span class="text-[#79c0ff]">defer</span><span class="text-[#ff7b72]">&gt;&lt;/script&gt;</span>
+          <CodeBlock lang="html" title="HTML" code={`<!-- Load the widget script -->
+<script src="https://your-domain.com/instagram.js" defer></script>
 
-<span class="text-[#7c8594]">&lt;!-- Place the widget --&gt;</span>
-<span class="text-[#ff7b72]">&lt;instagram-feed</span>
-  <span class="text-[#79c0ff]">feed</span>=<span class="text-[#a5d6ff]">"YOUR_FEED_ID"</span>
-  <span class="text-[#79c0ff]">api-base</span>=<span class="text-[#a5d6ff]">"https://your-api.workers.dev"</span>
-<span class="text-[#ff7b72]">&gt;&lt;/instagram-feed&gt;</span></code></pre>
-          </div>
+<!-- Place the widget -->
+<instagram-feed
+  feed="YOUR_FEED_ID"
+  api-base="https://your-api.workers.dev"
+></instagram-feed>`} />
           <p class="docs-p">The widget uses Shadow DOM for complete style isolation &mdash; it won't conflict with your page's CSS. Works with plain HTML, WordPress, Shopify, Webflow, React, Vue, Next.js, or any platform that renders HTML.</p>
         </section>
 
@@ -585,18 +493,97 @@ pnpm dev:web         <span class="text-[#7c8594]"># Docs site → http://localho
               <span class="text-[var(--color-text-muted)]">&mdash; List linked accounts</span>
             </div>
           </div>
+                  <h3 class="docs-h3">Examples</h3>
+          <p class="docs-p">Fetch a feed the same way the widget does. This route is public and served from the KV cache:</p>
+          <CodeBlock lang="bash" code={`curl http://localhost:8787/api/feeds/FEED_ID`} />
+          <CodeBlock lang="json" title="200 OK" code={`{
+  "id": "a1b2c3d4e5f6g7h8",
+  "name": "Homepage feed",
+  "settings": {
+    "instagramHandle": "natgeo",
+    "layout": "grid",
+    "columns": 4,
+    "rows": 2,
+    "gap": 16,
+    "borderRadius": 8
+  },
+  "profile": {
+    "name": "National Geographic",
+    "username": "natgeo",
+    "avatarUrl": "https://…/avatar.jpg",
+    "followUrl": "https://instagram.com/natgeo",
+    "posts": 31000,
+    "followers": 280000000,
+    "following": 150
+  },
+  "posts": [
+    {
+      "id": "3412…",
+      "type": "IMAGE",
+      "imageUrl": "https://…/post.jpg",
+      "thumbnailUrl": null,
+      "permalink": "https://instagram.com/p/…",
+      "caption": "Into the wild",
+      "likeCount": 120394,
+      "timestamp": "2026-10-20T14:32:00.000Z"
+    }
+  ]
+}`} />
+
+          <p class="docs-p">Create a feed for a public Instagram profile. Posts sync right away:</p>
+          <CodeBlock lang="bash" code={`curl -X POST http://localhost:8787/api/feeds \\
+  -H "Content-Type: application/json" \\
+  -H "x-dev-user-id: dev-user-1" \\
+  -d '{
+    "name": "Homepage feed",
+    "settings": { "instagramHandle": "natgeo", "layout": "grid", "columns": 4 }
+  }'`} />
+          <CodeBlock lang="json" title="201 Created" code={`{
+  "id": "a1b2c3d4e5f6g7h8",
+  "name": "Homepage feed",
+  "instagramAccountId": null,
+  "settings": { "instagramHandle": "natgeo", "layout": "grid", "columns": 4 },
+  "createdAt": "2026-10-27T09:00:00.000Z",
+  "updatedAt": "2026-10-27T09:00:00.000Z"
+}`} />
+
+          <p class="docs-p">Update settings from your own code. Send only the fields you want to change:</p>
+          <CodeBlock lang="ts" title="update-feed.ts" code={`const res = await fetch(\`\${API_BASE}/api/feeds/\${feedId}\`, {
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json",
+    "x-dev-user-id": "dev-user-1",
+  },
+  body: JSON.stringify({
+    settings: { layout: "masonry", gap: 8, hoverStyle: "overlay" },
+  }),
+});
+
+if (!res.ok) {
+  const { error } = await res.json();
+  throw new Error(\`\${error.code}: \${error.message}\`);
+}`} />
+
+          <p class="docs-p">Trigger a manual sync:</p>
+          <CodeBlock lang="bash" code={`curl -X POST http://localhost:8787/api/feeds/FEED_ID/refresh \\
+  -H "x-dev-user-id: dev-user-1"`} />
+          <CodeBlock lang="json" title="200 OK" code={`{ "message": "Feed refreshed successfully", "syncedPosts": 12 }`} />
+
+          <h3 class="docs-h3">Errors</h3>
+          <p class="docs-p">Every error uses the same shape, with a machine-readable <code class="docs-code">code</code>:</p>
+          <CodeBlock lang="json" title="404 Not Found" code={`{
+  "error": {
+    "code": "FEED_NOT_FOUND",
+    "message": "Feed not found"
+  }
+}`} />
         </section>
 
         <!-- Authentication -->
         <section id="authentication" class="docs-section">
           <h2 class="docs-h2">Authentication</h2>
           <p class="docs-p">In <strong>development</strong>, pass the dev header to simulate a user:</p>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>HTTP header</span>
-            </div>
-            <pre><code>x-dev-user-id: dev-user-1</code></pre>
-          </div>
+          <CodeBlock lang="http" title="HTTP header" code={`x-dev-user-id: dev-user-1`} />
           <p class="docs-p">The dashboard sends this header automatically in development mode. In production, replace the auth middleware in <code class="docs-code">apps/api/src/middleware/index.ts</code> with your auth provider (JWT, session cookies, etc.).</p>
         </section>
 
@@ -605,53 +592,33 @@ pnpm dev:web         <span class="text-[#7c8594]"># Docs site → http://localho
           <h2 class="docs-h2">Production deploy</h2>
 
           <h3 class="docs-h3">1. Set secrets</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Set each secret on Cloudflare</span>
+          <CodeBlock lang="bash" code={`# Set each secret on Cloudflare
 wrangler secret put OPENHANDLE_LIVE_KEY
 wrangler secret put OPENHANDLE_TEST_KEY
 wrangler secret put META_APP_ID
 wrangler secret put META_APP_SECRET
-wrangler secret put META_REDIRECT_URI</code></pre>
-          </div>
+wrangler secret put META_REDIRECT_URI`} />
 
           <h3 class="docs-h3">2. Apply migrations to production D1</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>pnpm --filter @instagram-widget/api exec wrangler d1 execute \
-  instagram-widget-db \
+          <CodeBlock lang="bash" code={`pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
+  instagram-widget-db \\
   --file=../../database/migrations/0000_bouncy_peter_parker.sql
 
-pnpm --filter @instagram-widget/api exec wrangler d1 execute \
-  instagram-widget-db \
-  --file=../../database/migrations/0001_old_risque.sql</code></pre>
-          </div>
+pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
+  instagram-widget-db \\
+  --file=../../database/migrations/0001_old_risque.sql`} />
 
           <h3 class="docs-h3">3. Deploy the API worker</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code>pnpm --filter @instagram-widget/api exec wrangler deploy</code></pre>
-          </div>
+          <CodeBlock lang="bash" code={`pnpm --filter @instagram-widget/api exec wrangler deploy`} />
 
           <h3 class="docs-h3">4. Build static apps</h3>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>terminal</span>
-            </div>
-            <pre><code><span class="text-[#7c8594]"># Build everything</span>
+          <CodeBlock lang="bash" code={`# Build everything
 pnpm build
 
-<span class="text-[#7c8594]"># Or individually</span>
-pnpm build:dashboard   <span class="text-[#7c8594]"># → apps/dashboard/dist/</span>
-pnpm build:widget      <span class="text-[#7c8594]"># → apps/widget/dist/</span>
-pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span></code></pre>
-          </div>
+# Or individually
+pnpm build:dashboard   # → apps/dashboard/dist/
+pnpm build:widget      # → apps/widget/dist/
+pnpm build:web         # → apps/web/dist/`} />
           <p class="docs-p">Deploy the dashboard and widget <code class="docs-code">dist/</code> folders to any static host: Cloudflare Pages, Vercel, Netlify, or a CDN.</p>
 
           <h3 class="docs-h3">5. Cron triggers</h3>
@@ -661,62 +628,58 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
         <!-- Project Structure -->
         <section id="project-structure" class="docs-section">
           <h2 class="docs-h2">Project structure</h2>
-          <div class="docs-codeblock">
-            <div class="docs-codeblock-header">
-              <span>tree</span>
-            </div>
-            <pre><code>alfsight/
+          <CodeBlock lang="bash" title="tree" code={`alfsight/
 ├── apps/
-│   ├── api/              <span class="text-[#7c8594]"># Cloudflare Workers API (Hono + Drizzle)</span>
+│   ├── api/              # Cloudflare Workers API (Hono + Drizzle)
 │   │   ├── src/
-│   │   │   ├── index.ts         <span class="text-[#7c8594]"># Entry point, routes, middleware</span>
-│   │   │   ├── middleware/      <span class="text-[#7c8594]"># Auth, services injection</span>
-│   │   │   ├── routes/          <span class="text-[#7c8594]"># feeds, instagram, health</span>
-│   │   │   ├── services/        <span class="text-[#7c8594]"># Feed, cache, Instagram providers</span>
-│   │   │   └── types/           <span class="text-[#7c8594]"># Env bindings, app variables</span>
-│   │   ├── wrangler.jsonc       <span class="text-[#7c8594]"># D1, KV, cron config</span>
-│   │   └── .dev.vars            <span class="text-[#7c8594]"># Local secrets (gitignored)</span>
+│   │   │   ├── index.ts         # Entry point, routes, middleware
+│   │   │   ├── middleware/      # Auth, services injection
+│   │   │   ├── routes/          # feeds, instagram, health
+│   │   │   ├── services/        # Feed, cache, Instagram providers
+│   │   │   └── types/           # Env bindings, app variables
+│   │   ├── wrangler.jsonc       # D1, KV, cron config
+│   │   └── .dev.vars            # Local secrets (gitignored)
 │   │
-│   ├── dashboard/        <span class="text-[#7c8594]"># Admin UI (Astro + React + Tailwind v4)</span>
+│   ├── dashboard/        # Admin UI (Astro + React + Tailwind v4)
 │   │   └── src/
-│   │       ├── pages/           <span class="text-[#7c8594]"># index, settings, widgets/[id]</span>
-│   │       ├── components/      <span class="text-[#7c8594]"># Sidebar, WidgetEditor, WidgetsGrid</span>
-│   │       ├── layouts/         <span class="text-[#7c8594]"># DashboardLayout</span>
-│   │       └── styles/          <span class="text-[#7c8594]"># global.css (theme vars)</span>
+│   │       ├── pages/           # index, settings, widgets/[id]
+│   │       ├── components/      # Sidebar, WidgetEditor, WidgetsGrid
+│   │       ├── layouts/         # DashboardLayout
+│   │       └── styles/          # global.css (theme vars)
 │   │
-│   ├── widget/           <span class="text-[#7c8594]"># Embeddable Web Component (&lt;3 kB)</span>
+│   ├── widget/           # Embeddable Web Component (<3 kB)
 │   │   └── src/
-│   │       ├── widget.ts        <span class="text-[#7c8594]"># &lt;instagram-feed&gt; custom element</span>
-│   │       ├── styles.ts        <span class="text-[#7c8594]"># Shadow DOM styles</span>
-│   │       └── api.ts           <span class="text-[#7c8594]"># Feed fetch client</span>
+│   │       ├── widget.ts        # <instagram-feed> custom element
+│   │       ├── styles.ts        # Shadow DOM styles
+│   │       └── api.ts           # Feed fetch client
 │   │
-│   └── web/              <span class="text-[#7c8594]"># Landing page & docs (Astro)</span>
+│   └── web/              # Landing page & docs (Astro)
 │       └── src/
-│           ├── pages/           <span class="text-[#7c8594]"># index, docs</span>
-│           ├── components/      <span class="text-[#7c8594]"># Navbar, Hero, Features, etc.</span>
-│           └── layouts/         <span class="text-[#7c8594]"># BaseLayout</span>
+│           ├── pages/           # index, docs
+│           ├── components/      # Navbar, Hero, Features, etc.
+│           └── layouts/         # BaseLayout
 │
 ├── packages/
-│   ├── types/            <span class="text-[#7c8594]"># Shared TypeScript interfaces</span>
-│   └── validation/       <span class="text-[#7c8594]"># Shared Zod schemas</span>
+│   ├── types/            # Shared TypeScript interfaces
+│   └── validation/       # Shared Zod schemas
 │
 ├── database/
-│   ├── schema.ts         <span class="text-[#7c8594]"># Drizzle ORM schema (users, feeds, posts)</span>
-│   └── migrations/       <span class="text-[#7c8594]"># Auto-generated SQL files</span>
+│   ├── schema.ts         # Drizzle ORM schema (users, feeds, posts)
+│   └── migrations/       # Auto-generated SQL files
 │
-├── .env.example          <span class="text-[#7c8594]"># Template for root env</span>
-├── pnpm-workspace.yaml   <span class="text-[#7c8594]"># Workspace config</span>
-└── package.json          <span class="text-[#7c8594]"># Root scripts (dev, build, db)</span></code></pre>
-          </div>
+├── .env.example          # Template for root env
+├── pnpm-workspace.yaml   # Workspace config
+└── package.json          # Root scripts (dev, build, db)`} />
         </section>
 
         <div class="mt-16 border-t border-[var(--color-border-soft)] pt-8 text-center text-[13px] text-[var(--color-text-soft)]">
-          <a href="https://github.com/Manish-Tamang/alfsight" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary)] hover:underline">View source on GitHub</a>
+          <a href="https://github.com/Manish-Tamang/alfsight" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">View source on GitHub</a>
         </div>
 
       </div>
     </div>
   </main>
+  <Footer />
 
   <style>
     .docs-section {
@@ -728,15 +691,15 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
       border-bottom: none;
     }
     .docs-h2 {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 500;
       color: var(--color-text);
       margin-bottom: 0.75rem;
     }
     .docs-h3 {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--color-text);
       margin-top: 1.5rem;
       margin-bottom: 0.5rem;
@@ -763,7 +726,7 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
     }
     .docs-code {
       font-size: 12.5px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-family: var(--font-mono);
       background: var(--color-surface-2);
       border: 1px solid var(--color-border-soft);
       border-radius: 4px;
@@ -775,7 +738,7 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-family: var(--font-mono);
       font-weight: 600;
       background: var(--color-surface-2);
       border: 1px solid var(--color-border);
@@ -785,51 +748,23 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
       color: var(--color-text-muted);
       box-shadow: 0 1px 0 var(--color-border);
     }
-    .docs-codeblock {
-      margin-top: 0.75rem;
-      margin-bottom: 0.75rem;
-      border-radius: 6px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: #1a1d21;
-    }
-    .docs-codeblock-header {
-      display: flex;
-      align-items: center;
-      padding: 8px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.35);
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-    }
-    .docs-codeblock pre {
-      margin: 0;
-      padding: 14px;
-      overflow-x: auto;
-      font-size: 12.5px;
-      line-height: 1.6;
-    }
-    .docs-codeblock code {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-      color: #e0e4e8;
-    }
     .docs-nav-link {
       display: block;
       font-size: 13px;
       color: var(--color-text-muted);
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 6px 10px;
+      border-radius: 8px;
       transition: color 0.15s, background 0.15s;
     }
     .docs-nav-link:hover {
-      color: var(--color-text);
-      background: var(--color-surface-2);
+      color: var(--color-accent);
+      background: var(--color-brand-50);
     }
     .docs-table-wrap {
       margin-top: 0.75rem;
       margin-bottom: 0.75rem;
       overflow-x: auto;
-      border-radius: 6px;
+      border-radius: 12px;
       border: 1px solid var(--color-border-soft);
     }
     .docs-table {
@@ -872,7 +807,7 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
       padding: 8px 12px;
       border-radius: 4px;
       font-size: 13px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-family: var(--font-mono);
       color: var(--color-text);
     }
     .docs-endpoint:hover {
@@ -888,7 +823,7 @@ pnpm build:web         <span class="text-[#7c8594]"># → apps/web/dist/</span><
       justify-content: center;
       font-size: 10px;
       font-weight: 700;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-family: var(--font-mono);
       border-radius: 4px;
       padding: 2px 6px;
       min-width: 52px;
