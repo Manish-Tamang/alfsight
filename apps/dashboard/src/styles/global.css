@@ -1,38 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #f5f6f8;
+  --color-bg: #f5f5f5;
   --color-surface: #ffffff;
-  --color-surface-2: #eef0f4;
-  --color-text: #0f1114;
-  --color-text-muted: #3d4451;
-  --color-text-soft: #6b7280;
-  --color-border: #d4d8e1;
-  --color-border-soft: #e5e7ed;
-  --color-primary: #1f5afe;
-  --color-primary-hover: #0f4cf5;
-  --color-primary-deep: #083acd;
-  --color-primary-light: #3e6eff;
-  --color-primary-glow: #386fff;
+  --color-surface-2: #f5f5f5;
+  --color-text: #171717;
+  --color-text-muted: #525252;
+  --color-text-soft: #737373;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
+  --color-border-soft: #f0f0f0;
+  --color-primary: #19ca58;
+  --color-primary-hover: #14ad4b;
   --color-primary-foreground: #ffffff;
-  --color-accent: #3e6eff;
-  --color-accent-hover: #2d5ef0;
-  --color-accent-foreground: #ffffff;
-  --color-ring: #1f5afe;
+  --color-accent: #0f863a;
+  --color-accent-soft: #ebfbf1;
+  --color-brand-50: #ebfbf1;
+  --color-brand-100: #d1f6df;
+  --color-brand-200: #a5edc1;
+  --color-brand-500: #19ca58;
+  --color-brand-600: #14ad4b;
+  --color-brand-700: #0f863a;
+  --color-ring: #a3a3a3;
   --color-danger: #dc2626;
 
   --radius-pill: 999px;
   --radius-xl: 12px;
-  --radius-lg: 4px;
-  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-md: 6px;
   --radius-sm: 4px;
 
-  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 1px rgba(16, 24, 40, 0.02);
-  --shadow-float: 0 10px 30px -12px rgba(31, 90, 254, 0.16);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-float: 0 4px 16px -4px rgb(0 0 0 / 0.12);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Satoshi", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @layer base {
@@ -58,8 +62,8 @@
   }
 
   ::selection {
-    background: var(--color-primary);
-    color: #fff;
+    background: var(--color-brand-100);
+    color: #171717;
   }
 
   input,
@@ -75,7 +79,7 @@
   textarea:focus-visible,
   button:focus-visible {
     outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
+    outline-offset: 1px;
   }
 }
 

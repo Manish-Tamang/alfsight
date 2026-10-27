@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api, defaultFeedSettings } from "@/lib/api";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonClass } from "@/components/ui/Button";
 import { Field, TextInput } from "@/components/ui/Field";
 
 export function CreateWidget() {
@@ -28,13 +28,13 @@ export function CreateWidget() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[480px]">
-      <h1 className="text-[20px] font-semibold text-[var(--color-text)]">New widget</h1>
-      <p className="mt-1 text-[13px] text-[var(--color-text-muted)]">
+    <div className="mx-auto w-full max-w-[520px]">
+      <h1 className="font-display text-2xl font-medium text-neutral-900">New widget</h1>
+      <p className="mt-1 text-sm text-neutral-500">
         Connect a public Instagram profile. You can customize layout and theme in the editor.
       </p>
 
-      <form onSubmit={submit} className="mt-6 space-y-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+      <form onSubmit={submit} className="mt-6 space-y-5 rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
         <Field label="Widget name">
           <TextInput
             required
@@ -46,29 +46,26 @@ export function CreateWidget() {
         </Field>
 
         <Field label="Instagram username">
-          <div className="flex h-10 items-center overflow-hidden rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)]">
-            <span className="pl-3 pr-1 text-[13px] text-[var(--color-text-soft)]">@</span>
+          <div className="flex h-9 items-center overflow-hidden rounded-md border border-neutral-300 bg-white transition-colors focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500">
+            <span className="flex h-full items-center border-r border-neutral-300 bg-neutral-50 px-3 text-sm text-neutral-500">@</span>
             <input
               required
               value={handle.replace(/^@/, "")}
               onChange={(e) => setHandle(e.target.value)}
               placeholder="username"
-              className="h-full flex-1 border-0 bg-transparent pr-3 text-[13px] outline-none"
+              className="h-full flex-1 border-0 bg-transparent px-3 text-sm text-neutral-900 outline-none placeholder:text-neutral-400 focus-visible:outline-none"
             />
           </div>
         </Field>
 
         {error && (
-          <div className="rounded-lg bg-[color:color-mix(in_oklab,var(--color-danger)_8%,transparent)] px-3 py-2 text-[13px] text-[var(--color-danger)]">
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
           </div>
         )}
 
         <div className="flex justify-end gap-2 pt-2">
-          <a
-            href="/"
-            className="inline-flex h-9 items-center px-3 text-[13px] font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-          >
+          <a href="/" className={buttonClass("secondary", "md")}>
             Cancel
           </a>
           <Button type="submit" loading={creating} disabled={!name.trim() || !handle.trim()}>

@@ -13,25 +13,34 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   kbd?: string;
 }
 
-const base =
-  "inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-55 whitespace-nowrap border-none";
+// Dub-style buttons: flat fills, 1px border, soft ring on hover.
+export const buttonBase =
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium transition-all cursor-pointer disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:shadow-none disabled:ring-0";
 
-const variants: Record<Variant, string> = {
+export const buttonVariants: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-primary-foreground)] shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-[2px] border-b-[var(--color-primary-deep)] hover:border-b-[4px] hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px active:shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_transparent] active:border-b-[1px] active:border-b-[var(--color-primary-deep)] active:translate-y-0",
+    "border-brand-600 bg-brand-500 text-white shadow-[var(--shadow-card)] hover:bg-brand-600 hover:ring-4 hover:ring-brand-100",
   secondary:
-    "bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-surface-2)] shadow-[var(--shadow-card)]",
+    "border-neutral-200 bg-white text-neutral-900 shadow-[var(--shadow-card)] hover:bg-neutral-50 hover:ring-4 hover:ring-neutral-100",
   ghost:
-    "bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]",
+    "border-transparent bg-transparent text-neutral-600 hover:bg-black/5 hover:text-neutral-900",
   danger:
-    "bg-[var(--color-surface)] text-[var(--color-danger)] border border-[color:color-mix(in_oklab,var(--color-danger)_30%,transparent)] hover:bg-[color:color-mix(in_oklab,var(--color-danger)_8%,transparent)]",
+    "border-red-500 bg-red-500 text-white shadow-[var(--shadow-card)] hover:bg-red-600 hover:ring-4 hover:ring-red-100",
 };
 
-const sizes: Record<Size, string> = {
-  sm: "h-8 px-3 text-[12.5px]",
-  md: "h-9 px-4 text-[13px]",
-  lg: "h-11 px-5 text-[14px]",
+export const buttonSizes: Record<Size, string> = {
+  sm: "h-8 px-3 text-[13px]",
+  md: "h-9 px-4 text-sm",
+  lg: "h-10 px-5 text-sm",
 };
+
+export function buttonClass(
+  variant: Variant = "primary",
+  size: Size = "md",
+  className?: string,
+) {
+  return cn(buttonBase, buttonVariants[variant], buttonSizes[size], className);
+}
 
 export function Button({
   variant = "primary",
@@ -47,7 +56,7 @@ export function Button({
 }: Props) {
   return (
     <button
-      className={cn(base, variants[variant], sizes[size], className)}
+      className={buttonClass(variant, size, className)}
       disabled={disabled || loading}
       {...rest}
     >
@@ -57,12 +66,29 @@ export function Button({
         icon
       )}
       {children}
-      {kbdKey && (
-        <kbd className="ml-1 rounded bg-[var(--color-primary-light)] px-2 py-0.5 text-[11px] font-semibold shadow-[inset_0_-3px_3px_-2px_#1f54f0,inset_0_3px_3px_-2px_#658dff,0_2px_2px_-2px_rgba(0,0,0,0.3),0_0_0_2px_#0d47f0]">
-          {kbdKey}
-        </kbd>
-      )}
+      {kbdKey && <Kbd dark={variant === "primary"}>{kbdKey}</Kbd>}
       {iconRight}
     </button>
+  );
+}
+
+export function Kbd({
+  children,
+  dark,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+}) {
+  return (
+    <kbd
+      className={cn(
+        "hidden rounded px-1.5 py-px font-mono text-[11px] font-medium md:inline-block",
+        dark
+          ? "bg-brand-600 text-white"
+          : "border border-neutral-200 bg-neutral-100 text-neutral-500",
+      )}
+    >
+      {children}
+    </kbd>
   );
 }

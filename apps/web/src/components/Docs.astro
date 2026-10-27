@@ -8,39 +8,44 @@ const endpoints = [
 ];
 ---
 
-<section id="docs" class="border-t border-[var(--color-border-soft)] py-20 sm:py-28">
-  <div class="mx-auto max-w-5xl px-6">
-    <div class="text-center">
-      <h2 class="text-[28px] font-bold tracking-tight text-[var(--color-text)]">API reference</h2>
-      <p class="mx-auto mt-3 max-w-md text-[15px] text-[var(--color-text-muted)]">
+<section id="docs" class="grid-section">
+  <div class="grid-col px-4 pb-16 sm:pb-20">
+    <div class="py-16 text-center sm:py-20">
+      <h2 class="font-display text-3xl font-medium text-neutral-900 sm:text-4xl">API reference</h2>
+      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
         A minimal REST API for managing feeds. Authenticated routes use a dev header locally.
       </p>
     </div>
 
-    <div class="mx-auto mt-10 max-w-2xl overflow-hidden rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
-      <div class="border-b border-[var(--color-border-soft)] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-text-soft)]">
+    <div class="mx-auto max-w-2xl overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
+      <div class="border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-medium text-neutral-500">
         Endpoints
       </div>
       {endpoints.map((ep, i) => (
         <div class:list={[
-          "flex items-start gap-3 px-4 py-3 text-[13px]",
-          i < endpoints.length - 1 && "border-b border-[var(--color-border-soft)]",
+          "flex items-start gap-3 px-4 py-3 text-sm",
+          i < endpoints.length - 1 && "border-b border-neutral-200",
         ]}>
           <span class:list={[
-            "inline-flex h-5 shrink-0 items-center rounded px-1.5 text-[10px] font-bold",
-            ep.method === "GET" && "bg-emerald-50 text-emerald-700",
-            ep.method === "POST" && "bg-blue-50 text-blue-700",
-            ep.method === "PATCH" && "bg-amber-50 text-amber-700",
-            ep.method === "DELETE" && "bg-red-50 text-red-700",
+            "inline-flex h-5 w-14 shrink-0 items-center justify-center rounded-md border font-mono text-[10px] font-medium",
+            ep.method === "GET" && "border-green-200 bg-green-50 text-green-700",
+            ep.method === "POST" && "border-blue-200 bg-blue-50 text-blue-700",
+            ep.method === "PATCH" && "border-amber-200 bg-amber-50 text-amber-700",
+            ep.method === "DELETE" && "border-red-200 bg-red-50 text-red-700",
           ]}>
             {ep.method}
           </span>
           <div>
-            <code class="text-[12px] font-semibold text-[var(--color-text)]">{ep.path}</code>
-            <p class="mt-0.5 text-[12px] text-[var(--color-text-muted)]">{ep.description}</p>
+            <code class="font-mono text-[13px] text-neutral-900">{ep.path}</code>
+            <p class="mt-0.5 text-[13px] text-neutral-500">{ep.description}</p>
           </div>
         </div>
       ))}
+    </div>
+
+    <div class="mt-10 flex justify-center gap-4">
+      <a href="/docs" class="btn btn-primary">Read the docs</a>
+      <a href="/dashboard" class="btn btn-secondary">Open dashboard</a>
     </div>
   </div>
 </section>

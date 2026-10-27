@@ -1,26 +1,24 @@
 ---
-import { LayoutGrid, Settings } from "lucide-react";
+import { BookOpen, LayoutGrid, Plus, Settings } from "lucide-react";
 
 const path = Astro.url.pathname;
 
 const items = [
-  { label: "Widgets", href: "/", icon: LayoutGrid, match: (p: string) => p === "/" || p.startsWith("/widgets") },
+  { label: "Widgets", href: "/", icon: LayoutGrid, match: (p: string) => p === "/" || p.startsWith("/widgets/edit") },
+  { label: "New widget", href: "/widgets/new", icon: Plus, match: (p: string) => p.startsWith("/widgets/new") },
   { label: "Settings", href: "/settings", icon: Settings, match: (p: string) => p.startsWith("/settings") },
 ] as const;
 ---
 
-<aside
-  class="fixed top-0 left-0 z-30 flex h-screen w-[72px] flex-col items-center border-r border-[var(--color-border-soft)] bg-[var(--color-surface)] py-5"
->
-  <a href="/" class="mb-6 flex h-8 w-8 items-center justify-center" aria-label="Alfsight home">
-    <svg viewBox="0 0 32 32" class="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true">
-      <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
-      <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
-      <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
-    </svg>
-  </a>
+<aside class="sticky top-0 z-30 flex w-full flex-col bg-[var(--color-bg)] md:h-screen md:w-[240px] md:shrink-0">
+  <div class="flex h-14 items-center justify-between px-4 md:h-auto md:px-3 md:pt-4 md:pb-3">
+    <a href="/" class="flex items-center gap-2 rounded-lg px-1 py-1 text-black" aria-label="Alfsight home">
+      <img src="/alfsight.png" alt="" width="450" height="450" class="h-6 w-6" />
+      <span class="font-display text-[17px] font-bold tracking-tight">Alfsight</span>
+    </a>
+  </div>
 
-  <nav class="flex flex-1 flex-col items-center gap-1">
+  <nav class="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:gap-0.5 md:pb-0 scrollbar-hide">
     {
       items.map((item) => {
         const Icon = item.icon;
@@ -29,17 +27,29 @@ const items = [
           <a
             href={item.href}
             class:list={[
-              "group flex w-[56px] flex-col items-center gap-1 rounded-lg px-2 py-2.5 transition-colors",
+              "flex h-9 shrink-0 items-center gap-2.5 rounded-lg px-2.5 text-sm transition-colors",
               active
-                ? "bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.3)]"
-                : "text-[var(--color-text-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]",
+                ? "bg-[var(--color-accent-soft)] font-medium text-[var(--color-accent)]"
+                : "text-neutral-600 hover:bg-black/5 hover:text-neutral-900 active:bg-black/10",
             ]}
           >
-            <Icon size={17} strokeWidth={1.8} />
-            <span class="text-[10px] font-medium leading-none tracking-tight">{item.label}</span>
+            <Icon size={16} strokeWidth={active ? 2 : 1.75} />
+            <span>{item.label}</span>
           </a>
         );
       })
     }
   </nav>
+
+  <div class="hidden px-3 pb-4 md:block">
+    <a
+      href="https://github.com/Manish-Tamang/alfsight#readme"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/5 hover:text-neutral-900"
+    >
+      <BookOpen size={16} strokeWidth={1.75} />
+      Docs
+    </a>
+  </div>
 </aside>

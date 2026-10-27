@@ -18,23 +18,23 @@ const steps = [
 ];
 ---
 
-<section id="how-it-works" class="border-t border-[var(--color-border-soft)] py-20 sm:py-28">
-  <div class="mx-auto max-w-5xl px-6">
-    <div class="text-center">
-      <h2 class="text-[28px] font-bold tracking-tight text-[var(--color-text)]">Three steps to a live feed</h2>
-      <p class="mx-auto mt-3 max-w-md text-[15px] text-[var(--color-text-muted)]">
+<section id="how-it-works" class="grid-section bg-neutral-100">
+  <div class="grid-col bg-white">
+    <div class="px-4 py-16 text-center sm:py-20">
+      <h2 class="font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Three steps to a live feed</h2>
+      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
         No OAuth tokens, no API keys in the browser, no framework lock-in.
       </p>
     </div>
 
-    <div class="mt-14 grid gap-8 sm:grid-cols-3">
+    <div class="grid border-t border-[var(--color-grid)] sm:grid-cols-3 sm:divide-x divide-[var(--color-grid)] max-sm:divide-y">
       {steps.map((item) => (
-        <div class="text-center">
-          <div class="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[15px] font-bold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.4)]">
+        <div class="p-8">
+          <div class="mb-4 flex size-7 items-center justify-center rounded-full border border-brand-200 bg-brand-50 font-mono text-xs font-medium text-brand-700">
             {item.step}
           </div>
-          <h3 class="text-[15px] font-semibold text-[var(--color-text)]">{item.title}</h3>
-          <p class="mt-2 text-[13px] leading-relaxed text-[var(--color-text-muted)]">{item.description}</p>
+          <h3 class="text-base font-medium text-neutral-900">{item.title}</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-neutral-500">{item.description}</p>
         </div>
       ))}
     </div>

@@ -1,35 +1,59 @@
 ---
-const navLinks = [
-  { label: "Features", href: "/#features" },
-  { label: "How it works", href: "/#how-it-works" },
-  { label: "Docs", href: "/docs" },
-];
+import Logo from "./ui/Logo.astro";
+
+interface Props {
+  links?: { label: string; href: string; active?: boolean }[];
+}
+
+const {
+  links = [
+    { label: "Features", href: "/#features" },
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Docs", href: "/docs" },
+  ],
+} = Astro.props;
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border-soft)] bg-[var(--color-surface)]/90 backdrop-blur-md">
-  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-    <a href="/" class="flex items-center gap-2">
-      <svg viewBox="0 0 32 32" class="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true">
-        <circle cx="10" cy="16" r="5" fill="currentColor" opacity="0.9"></circle>
-        <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.6"></circle>
-        <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.4"></circle>
-      </svg>
-      <span class="text-[15px] font-bold text-[var(--color-text)]">Alfsight</span>
-    </a>
+<nav class="sticky top-0 z-50 w-full border-b border-transparent bg-white/75 backdrop-blur-lg transition-colors" data-navbar>
+  <div class="mx-auto flex h-14 w-full max-w-[1080px] items-center justify-between px-4 xl:px-0">
+    <div class="flex grow basis-0 items-center">
+      <a href="/" class="flex items-center gap-2 py-2 pr-2 text-black">
+        <Logo class="h-6 w-6" />
+        <span class="font-display text-[17px] font-bold tracking-tight">Alfsight</span>
+      </a>
+    </div>
 
-    <div class="hidden items-center gap-6 sm:flex">
-      {navLinks.map((link) => (
-        <a href={link.href} class="text-[13px] font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]">
+    <div class="hidden items-center sm:flex">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            "flex h-8 items-center rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900",
+            link.active && "bg-neutral-900/5 text-neutral-900",
+          ]}
+        >
           {link.label}
         </a>
       ))}
     </div>
 
-    <a
-      href="/dashboard"
-      class="inline-flex h-8 items-center rounded bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-2 border-b-[var(--color-primary-deep)] transition-all hover:border-b-4 hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
-    >
-      Dashboard
-    </a>
+    <div class="flex grow basis-0 items-center justify-end gap-2">
+      <a
+        href="https://github.com/Manish-Tamang/alfsight"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden h-8 items-center rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900 md:flex"
+      >
+        GitHub
+      </a>
+      <a href="/dashboard" class="btn btn-primary btn-sm">Dashboard</a>
+    </div>
   </div>
 </nav>
+
+<script>
+  const nav = document.querySelector<HTMLElement>("[data-navbar]");
+  const onScroll = () => nav?.classList.toggle("!border-neutral-200", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+</script>
