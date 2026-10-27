@@ -110,13 +110,13 @@ export function WidgetEditor({ feedId }: Props) {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-[1200px] flex-col">
+    <div className="mx-auto flex h-[calc(100vh-5rem)] w-full max-w-[1200px] flex-col">
       {/* Top bar */}
-      <div className="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] pb-3 mb-3">
+      <div className="mb-4 flex shrink-0 items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
           <a
             href="/"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[var(--color-text-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
             aria-label="Back"
           >
             <ChevronLeft size={16} />
@@ -127,20 +127,20 @@ export function WidgetEditor({ feedId }: Props) {
               setName(e.target.value);
               setDirty(true);
             }}
-            className="min-w-0 border-0 bg-transparent text-[14px] font-semibold text-[var(--color-text)] outline-none"
+            className="min-w-0 rounded-md border border-transparent bg-transparent px-1.5 py-0.5 font-display text-lg font-medium text-neutral-900 outline-none transition-colors hover:border-neutral-200 focus:border-neutral-300 focus-visible:outline-none"
           />
-          <span className="text-[12px] text-[var(--color-text-soft)]">
+          <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs text-neutral-600">
             @{settings.instagramHandle?.replace(/^@/, "") || "unlinked"}
           </span>
         </div>
         <div className="flex items-center gap-2">
           {saved && (
-            <span className="flex items-center gap-1 text-[11px] text-[var(--color-primary)]">
+            <span className="flex items-center gap-1 text-xs text-green-600">
               <Check size={12} /> Saved
             </span>
           )}
           {dirty && !saving && !saved && (
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]" />
+            <span className="text-xs text-neutral-500">Unsaved changes</span>
           )}
           <Button size="sm" loading={saving} disabled={!dirty && !saving} onClick={save}>
             Save
@@ -149,18 +149,18 @@ export function WidgetEditor({ feedId }: Props) {
       </div>
 
       {error && (
-        <div className="mb-3 rounded-md bg-[color:color-mix(in_oklab,var(--color-danger)_8%,transparent)] px-3 py-2 text-[12px] text-[var(--color-danger)]">
+        <div className="mb-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
         </div>
       )}
 
       {/* Main area */}
-      <div className="flex min-h-0 flex-1 gap-0 overflow-hidden rounded-lg border border-[var(--color-border)]">
+      <div className="flex min-h-0 flex-1 gap-0 overflow-hidden rounded-xl border border-neutral-200">
         {/* Preview */}
-        <div className="flex flex-1 flex-col bg-[var(--color-surface-2)]">
-          <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5">
-            <span className="text-[11px] font-medium text-[var(--color-text-soft)]">Preview</span>
-            <div className="flex items-center gap-0.5">
+        <div className="flex flex-1 flex-col bg-neutral-50">
+          <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-3 py-2">
+            <span className="text-xs font-medium text-neutral-500">Preview</span>
+            <div className="flex items-center gap-0.5 rounded-lg border border-neutral-200 p-0.5">
               {(
                 [
                   { id: "desktop", icon: Monitor },
@@ -175,10 +175,10 @@ export function WidgetEditor({ feedId }: Props) {
                     type="button"
                     onClick={() => setDevice(d.id)}
                     className={cn(
-                      "flex h-6 w-6 items-center justify-center rounded",
+                      "flex size-6 items-center justify-center rounded-md transition-colors",
                       device === d.id
-                        ? "bg-[var(--color-surface-2)] text-[var(--color-text)]"
-                        : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]",
+                        ? "bg-neutral-100 text-neutral-900"
+                        : "text-neutral-500 hover:text-neutral-900",
                     )}
                     aria-label={`${d.id} preview`}
                   >
@@ -190,7 +190,7 @@ export function WidgetEditor({ feedId }: Props) {
           </div>
           <div className="flex flex-1 items-start justify-center overflow-auto p-4">
             <div
-              className="overflow-hidden rounded-lg border border-[var(--color-border)] bg-white"
+              className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[var(--shadow-card)]"
               style={{ width: previewWidth, maxWidth: "100%" }}
             >
               <iframe
@@ -206,9 +206,9 @@ export function WidgetEditor({ feedId }: Props) {
         </div>
 
         {/* Right panel */}
-        <div className="flex w-[280px] shrink-0 flex-col border-l border-[var(--color-border)] bg-[var(--color-surface)]">
+        <div className="flex w-[300px] shrink-0 flex-col border-l border-neutral-200 bg-white">
           {/* Panel tabs */}
-          <div className="flex border-b border-[var(--color-border)]">
+          <div className="flex gap-1 border-b border-neutral-200 px-3">
             {(
               [
                 { id: "design", label: "Design" },
@@ -220,10 +220,10 @@ export function WidgetEditor({ feedId }: Props) {
                 type="button"
                 onClick={() => setTab(t.id)}
                 className={cn(
-                  "flex-1 py-2.5 text-[11px] font-semibold tracking-wide transition-colors",
+                  "-mb-px border-b-2 px-2 py-2.5 text-sm font-medium transition-colors",
                   tab === t.id
-                    ? "border-b-2 border-[var(--color-primary)] text-[var(--color-primary)]"
-                    : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]",
+                    ? "border-brand-500 text-brand-700"
+                    : "border-transparent text-neutral-500 hover:text-neutral-900",
                 )}
               >
                 {t.label}
@@ -248,8 +248,8 @@ export function WidgetEditor({ feedId }: Props) {
 /* ── Figma-style section wrapper ── */
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="border-b border-[var(--color-border-soft)] px-4 py-3">
-      <h3 className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--color-text-soft)]">
+    <div className="border-b border-neutral-200 px-4 py-4">
+      <h3 className="mb-3 text-sm font-medium text-neutral-900">
         {title}
       </h3>
       {children}
@@ -268,17 +268,17 @@ function Segmented<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="flex rounded-md bg-[var(--color-surface-2)] p-0.5">
+    <div className="flex rounded-lg border border-neutral-200 bg-neutral-100 p-0.5">
       {options.map((opt) => (
         <button
           key={opt.id}
           type="button"
           onClick={() => onChange(opt.id)}
           className={cn(
-            "flex-1 rounded py-1 text-[11px] font-medium transition-all",
+            "flex-1 rounded-md py-1 text-xs font-medium transition-all",
             value === opt.id
-              ? "bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm"
-              : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]",
+              ? "bg-white text-neutral-900 shadow-sm"
+              : "text-neutral-500 hover:text-neutral-900",
           )}
         >
           {opt.label}
@@ -292,7 +292,7 @@ function Segmented<T extends string>({
 function PropRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-3 py-1.5">
-      <span className="text-[12px] text-[var(--color-text-muted)]">{label}</span>
+      <span className="text-[13px] text-neutral-600">{label}</span>
       <div className="flex items-center gap-1.5">{children}</div>
     </div>
   );
@@ -313,7 +313,7 @@ function NumInput({
   suffix?: string;
 }) {
   return (
-    <div className="flex h-7 w-[56px] items-center overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-surface)]">
+    <div className="flex h-7 w-[56px] items-center overflow-hidden rounded-md border border-neutral-300 bg-white">
       <input
         type="number"
         value={value}
@@ -343,7 +343,7 @@ function MiniSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-7 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 pr-6 text-[12px] outline-none appearance-none bg-no-repeat bg-[right_6px_center]"
+      className="h-7 rounded-md border border-neutral-300 bg-white px-2 pr-6 text-[12px] outline-none appearance-none bg-no-repeat bg-[right_6px_center]"
       style={{
         backgroundImage:
           "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5' fill='none'><path d='M1 1l3 3 3-3' stroke='%236b7280' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg>\")",
@@ -370,7 +370,7 @@ function Switch({
 }) {
   return (
     <div className="flex items-center justify-between py-1.5">
-      <span className="text-[12px] text-[var(--color-text-muted)]">{label}</span>
+      <span className="text-[13px] text-neutral-600">{label}</span>
       <button
         type="button"
         role="switch"
@@ -378,7 +378,7 @@ function Switch({
         onClick={() => onChange(!checked)}
         className={cn(
           "relative h-4 w-7 rounded-full transition-colors",
-          checked ? "bg-[var(--color-primary)]" : "bg-[var(--color-border)]",
+          checked ? "bg-brand-500" : "bg-neutral-200",
         )}
       >
         <span
@@ -468,14 +468,14 @@ function DesignPanel({
                 type="color"
                 value={settings.backgroundColor || "#ffffff"}
                 onChange={(e) => update("backgroundColor", e.target.value)}
-                className="h-7 w-7 cursor-pointer rounded border border-[var(--color-border)] bg-transparent p-0.5 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none"
+                className="h-7 w-7 cursor-pointer rounded-md border border-neutral-300 bg-transparent p-0.5 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none"
               />
               <input
                 type="text"
                 value={settings.backgroundColor || ""}
                 onChange={(e) => update("backgroundColor", e.target.value)}
                 placeholder="transparent"
-                className="h-7 w-[80px] rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 text-[11px] outline-none"
+                className="h-7 w-[80px] rounded-md border border-neutral-300 bg-white px-2 text-[11px] outline-none"
               />
             </div>
           </PropRow>
@@ -501,7 +501,7 @@ function DesignPanel({
       <Section title="Content">
         <div className="space-y-0.5">
           <PropRow label="Account">
-            <div className="flex h-7 w-[120px] items-center overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-surface)]">
+            <div className="flex h-7 w-[120px] items-center overflow-hidden rounded-md border border-neutral-300 bg-white">
               <span className="pl-2 text-[11px] text-[var(--color-text-soft)]">@</span>
               <input
                 value={(settings.instagramHandle ?? "").replace(/^@/, "")}
@@ -536,7 +536,7 @@ function DesignPanel({
             }}
           />
           <PropRow label="Header">
-            <div className="flex h-7 w-[120px] items-center overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-surface)]">
+            <div className="flex h-7 w-[120px] items-center overflow-hidden rounded-md border border-neutral-300 bg-white">
               <input
                 value={settings.headerName ?? ""}
                 onChange={(e) => update("headerName", e.target.value)}
@@ -566,19 +566,19 @@ function DeployInlinePanel({ feedId }: { feedId: string }) {
     <>
       <Section title="Embed code">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-[11px] text-[var(--color-text-soft)]">
+          <span className="text-xs text-neutral-500">
             Paste into your HTML
           </span>
           <button
             type="button"
             onClick={copy}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]"
+            className="inline-flex items-center gap-1 rounded-md border border-neutral-200 px-1.5 py-0.5 text-xs font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
           >
             {copied ? <Check size={12} /> : <Copy size={12} />}
             {copied ? "Copied" : "Copy"}
           </button>
         </div>
-        <pre className="overflow-x-auto rounded-md bg-[#1a1d21] p-3 text-[10.5px] leading-relaxed text-[#e0e4e8]">
+        <pre className="overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-50 p-3 font-mono text-[11px] leading-relaxed text-neutral-800">
           <code>{snippet}</code>
         </pre>
       </Section>
@@ -591,8 +591,8 @@ function DeployInlinePanel({ feedId }: { feedId: string }) {
             "Paste it into your page before </body>.",
             "Set api-base to your live API URL.",
           ].map((text, i) => (
-            <li key={i} className="flex gap-2 text-[11px] leading-relaxed text-[var(--color-text-muted)]">
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-2)] text-[9px] font-bold text-[var(--color-text)]">
+            <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-neutral-600">
+              <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50 font-mono text-[10px] font-medium text-neutral-700">
                 {i + 1}
               </span>
               <span>{text}</span>

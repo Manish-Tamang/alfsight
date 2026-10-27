@@ -1,22 +1,22 @@
 import type { InputHTMLAttributes, SelectHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-const control =
-  "w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[color:color-mix(in_oklab,var(--color-primary)_18%,transparent)] transition-colors";
+export const control =
+  "w-full rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 focus-visible:outline-none transition-colors";
 
 export function Label({ children, hint }: { children: ReactNode; hint?: string }) {
   return (
     <div className="mb-1.5 flex items-baseline justify-between">
-      <label className="text-[11.5px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
+      <label className="text-sm font-medium text-neutral-700">
         {children}
       </label>
-      {hint && <span className="text-[11px] text-[var(--color-text-soft)]">{hint}</span>}
+      {hint && <span className="text-xs text-neutral-500">{hint}</span>}
     </div>
   );
 }
 
 export function TextInput({ className, ...rest }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...rest} className={cn(control, "h-10", className)} />;
+  return <input {...rest} className={cn(control, "h-9", className)} />;
 }
 
 export function Select({
@@ -25,10 +25,10 @@ export function Select({
   ...rest
 }: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
-    <select {...rest} className={cn(control, "h-10 appearance-none pr-9 bg-no-repeat bg-[right_12px_center]", className)}
+    <select {...rest} className={cn(control, "h-9 appearance-none pr-9 bg-no-repeat bg-[right_12px_center]", className)}
       style={{
         backgroundImage:
-          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%236b7a76' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>\")",
+          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23737373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>\")",
       }}
     >
       {children}
@@ -64,7 +64,7 @@ export function Toggle({
 }) {
   return (
     <label className="flex cursor-pointer items-center justify-between gap-3 py-2">
-      <span className="text-[13px] text-[var(--color-text)]">{label}</span>
+      <span className="text-sm text-neutral-800">{label}</span>
       <button
         type="button"
         role="switch"
@@ -73,8 +73,8 @@ export function Toggle({
         className={cn(
           "relative h-5 w-9 rounded-full transition-colors",
           checked
-            ? "bg-[var(--color-primary)]"
-            : "bg-[color:color-mix(in_oklab,var(--color-text-soft)_35%,transparent)]",
+            ? "bg-brand-500"
+            : "bg-neutral-200",
         )}
       >
         <span

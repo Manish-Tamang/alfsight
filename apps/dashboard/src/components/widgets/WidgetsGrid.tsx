@@ -10,17 +10,16 @@ import {
 import { api } from "@/lib/api";
 import { getEmbedSnippet, WIDGET_ORIGIN } from "@/lib/embed";
 import { cn } from "@/lib/cn";
+import { buttonClass } from "@/components/ui/Button";
 
 const listWrap = "flex w-full flex-col gap-3";
 
 const cardShell =
-  "relative flex w-full rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[color:color-mix(in_oklab,var(--color-primary)_25%,var(--color-border))]";
+  "relative flex w-full overflow-hidden rounded-xl border border-neutral-200 bg-white transition-[border-color,box-shadow] hover:border-brand-200 hover:shadow-[0_4px_12px_-4px_rgb(0_0_0_/_0.08)]";
 
-const actionBtn =
-  "inline-flex h-8 items-center justify-center rounded-lg bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-4 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-[2px] border-b-[var(--color-primary-deep)] transition-all hover:border-b-[4px] hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px active:shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_transparent] active:border-b-[1px] active:border-b-[var(--color-primary-deep)] active:translate-y-0";
+const actionBtn = buttonClass("primary", "sm");
 
-const actionBtnSecondary =
-  "inline-flex h-8 items-center justify-center rounded-lg bg-[var(--color-surface)] px-4 text-[13px] font-semibold text-[var(--color-text)] border border-[var(--color-border)] shadow-[var(--shadow-card)] transition-colors hover:bg-[var(--color-surface-2)]";
+const actionBtnSecondary = buttonClass("secondary", "sm");
 
 function formatCreatedDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -50,7 +49,7 @@ export function WidgetsGrid() {
   if (error) {
     return (
       <div className={cn(listWrap)}>
-        <div className="rounded-[8px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-[13px] text-[var(--color-danger)]">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
           {error}
         </div>
       </div>
@@ -86,7 +85,7 @@ export function WidgetsGrid() {
 
 function WidgetPreview({ feedId }: { feedId: string }) {
   return (
-    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden rounded-l-[10px] bg-[var(--color-surface-2)]">
+    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden border-r border-neutral-200 bg-neutral-50">
       <iframe
         src={`${WIDGET_ORIGIN}/?feed=${feedId}`}
         title=""
@@ -144,7 +143,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
           <button
             type="button"
             onClick={() => setMenuOpen((o) => !o)}
-            className="border-0 bg-transparent p-1 text-[var(--color-text-soft)] transition-colors hover:text-[var(--color-text)]"
+            className="rounded-md border-0 bg-transparent p-1 text-neutral-500 transition-colors hover:bg-black/5 hover:text-neutral-900"
             aria-label="More actions"
             aria-expanded={menuOpen}
           >
@@ -152,7 +151,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
           </button>
           {menuOpen && (
             <div
-              className="absolute right-0 top-full z-30 mt-1 min-w-[148px] overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
+              className="absolute right-0 top-full z-30 mt-1 min-w-[160px] overflow-hidden rounded-lg border border-neutral-200 bg-white p-1 shadow-[var(--shadow-float)] animate-fade-in"
               role="menu"
             >
               <button
@@ -160,7 +159,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
                 role="menuitem"
                 disabled={syncing}
                 onClick={() => void sync()}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-2)] disabled:opacity-50"
+                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50"
               >
                 <RefreshCw
                   size={14}
@@ -173,7 +172,7 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
                 type="button"
                 role="menuitem"
                 onClick={handleDelete}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[var(--color-danger)] transition-colors hover:bg-[var(--color-surface-2)]"
+                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
               >
                 <Trash2 size={14} strokeWidth={1.75} />
                 Delete
@@ -184,11 +183,11 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
 
         <a
           href={`/widgets/edit?id=${feed.id}`}
-          className="truncate text-[15px] font-semibold text-[var(--color-primary)] hover:underline"
+          className="truncate text-[15px] font-semibold text-neutral-900 hover:text-brand-700 hover:underline"
         >
           {feed.name}
         </a>
-        <p className="mt-1 text-[13px] text-[var(--color-text-muted)]">
+        <p className="mt-1 text-[13px] text-neutral-500">
           Created {formatCreatedDate(feed.createdAt)}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -206,19 +205,16 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
 
 function EmptyState() {
   return (
-    <div className="rounded-[10px] border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] py-16 text-center">
-      <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-primary)]">
+    <div className="rounded-xl border border-neutral-200 bg-white px-4 py-16 text-center">
+      <div className="mx-auto mb-5 flex size-12 items-center justify-center rounded-xl border border-neutral-200 bg-brand-50 text-brand-700 shadow-sm">
         <Camera size={20} strokeWidth={1.75} />
       </div>
-      <h3 className="text-[16px] font-semibold text-[var(--color-text)]">No widgets yet</h3>
-      <p className="mx-auto mt-1.5 max-w-sm text-[13px] leading-relaxed text-[var(--color-text-muted)]">
+      <h3 className="text-base font-semibold text-neutral-900">No widgets yet</h3>
+      <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-neutral-500">
         Create an Instagram feed widget and embed it anywhere with a single line of code.
       </p>
       <div className="mt-6">
-        <a
-          href="/widgets/new"
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-5 text-[13px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-[2px] border-b-[var(--color-primary-deep)] transition-all hover:border-b-[4px] hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
-        >
+        <a href="/widgets/new" className={buttonClass("primary", "md")}>
           <Plus size={14} />
           Create your first widget
         </a>

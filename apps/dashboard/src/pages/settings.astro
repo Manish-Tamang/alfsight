@@ -1,32 +1,32 @@
 ---
 import DashboardLayout from "@/layouts/DashboardLayout.astro";
+import { buttonClass } from "@/components/ui/Button";
+import { control } from "@/components/ui/Field";
 ---
 
-<DashboardLayout title="Settings — Alfsight">
-  <div class="mx-auto w-full max-w-[480px]">
-    <h1 class="text-[22px] font-semibold tracking-tight text-[var(--color-text)]">Settings</h1>
-    <p class="mt-1 text-[13px] text-[var(--color-text-muted)]">Workspace preferences.</p>
+<DashboardLayout title="Settings | Alfsight">
+  <div class="mx-auto w-full max-w-[640px]">
+    <h1 class="font-display text-2xl font-medium text-neutral-900">Settings</h1>
+    <p class="mt-1 text-sm text-neutral-500">Workspace preferences.</p>
 
-    <div class="mt-6 space-y-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-      <div>
-        <label class="mb-1.5 block text-[11.5px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
-          Display name
-        </label>
-        <input
-          type="text"
-          value="Alfsight User"
-          class="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none transition-colors focus:border-[var(--color-primary)]"
-        />
+    <div class="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+      <div class="space-y-5 p-5 sm:p-6">
+        <div>
+          <h2 class="text-base font-semibold text-neutral-900">General</h2>
+          <p class="mt-0.5 text-sm text-neutral-500">How you appear across the dashboard.</p>
+        </div>
+        <div>
+          <label for="display-name" class="mb-1.5 block text-sm font-medium text-neutral-700">Display name</label>
+          <input id="display-name" type="text" value="Alfsight User" class:list={[control, "h-9"]} />
+        </div>
+        <div>
+          <label for="email" class="mb-1.5 block text-sm font-medium text-neutral-700">Email</label>
+          <input id="email" type="email" value="dev@alfsight.local" class:list={[control, "h-9"]} />
+        </div>
       </div>
-      <div>
-        <label class="mb-1.5 block text-[11.5px] font-medium uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
-          Email
-        </label>
-        <input
-          type="email"
-          value="dev@alfsight.local"
-          class="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none transition-colors focus:border-[var(--color-primary)]"
-        />
+      <div class="flex items-center justify-between border-t border-neutral-200 bg-neutral-50 px-5 py-3 sm:px-6">
+        <p class="text-sm text-neutral-500">Settings are stored locally in development.</p>
+        <button type="button" class={buttonClass("primary", "sm")}>Save changes</button>
       </div>
     </div>
   </div>
