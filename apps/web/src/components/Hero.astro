@@ -1,60 +1,64 @@
 ---
-
+import GridPattern from "./ui/GridPattern.astro";
 ---
 
-<section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
-  <div class="mx-auto max-w-5xl px-6 text-center">
-    <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-[12px] font-medium text-[var(--color-text-muted)]">
-      <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-      Open source &middot; Self-hosted
-    </div>
+<section class="grid-section !border-t-0">
+  <div class="grid-col overflow-hidden px-4 pt-28 pb-16 sm:pt-36 sm:pb-24">
+    <GridPattern />
 
-    <h1 class="mx-auto max-w-2xl text-[clamp(2rem,5vw,3.25rem)] font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)]">
-      Instagram feed widgets for
-      <span class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] bg-clip-text text-transparent">
-        any website
-      </span>
-    </h1>
-
-    <p class="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-[var(--color-text-muted)]">
-      Fetch public Instagram data, cache at the edge, and embed customizable grids anywhere with a single script tag. No third-party widget service needed.
-    </p>
-
-    <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <a
-        href="/docs"
-        class="inline-flex h-11 items-center gap-2 rounded bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-primary-hover)] px-6 text-[14px] font-semibold text-white shadow-[inset_0_4px_3px_-2px_var(--color-primary-glow),0_4px_5px_-3px_rgba(0,0,0,0.6)] border-b-2 border-b-[var(--color-primary-deep)] transition-all hover:border-b-4 hover:border-b-[var(--color-primary-deep)] hover:-translate-y-px"
-      >
-        Get started
-        <kbd class="rounded bg-[var(--color-primary-light)] px-1.5 py-0.5 text-[11px] font-semibold shadow-[inset_0_-3px_3px_-2px_#1f54f0,inset_0_3px_3px_-2px_#658dff,0_2px_2px_-2px_rgba(0,0,0,0.3),0_0_0_2px_#0d47f0]">
-          G
-        </kbd>
-      </a>
+    <div class="relative mx-auto flex max-w-2xl flex-col items-center text-center">
       <a
         href="https://github.com/Manish-Tamang/alfsight"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex h-11 items-center gap-2 rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-6 text-[14px] font-semibold text-[var(--color-text)] shadow-sm transition-colors hover:bg-[var(--color-surface-2)]"
+        class="group flex animate-slide-up-fade items-center rounded-full border border-neutral-300 bg-white text-xs font-medium drop-shadow-sm transition-colors hover:bg-neutral-50 sm:divide-x sm:divide-neutral-300 [--offset:10px]"
       >
+        <span class="py-1.5 pl-4 text-neutral-800 sm:pr-2.5">Self-hosted on Cloudflare</span>
+        <span class="flex items-center gap-1.5 p-1.5 pl-2.5 text-neutral-500">
+          <span class="hidden sm:block">Star on GitHub</span>
+          <span class="rounded-full bg-brand-50 p-0.5 text-brand-700">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="size-2.5 transition-transform group-hover:-translate-y-px group-hover:translate-x-px">
+              <path d="M7 7h10v10"></path><path d="M7 17 17 7"></path>
+            </svg>
+          </span>
+        </span>
+      </a>
+
+      <h1 class="mt-5 animate-slide-up-fade text-pretty font-display text-4xl font-medium text-neutral-900 [--offset:20px] [animation-delay:100ms] sm:text-5xl sm:leading-[1.15]">
+        The open-source alternative to{" "}
+        <span class="bg-gradient-to-r from-brand-600 to-brand-500 bg-clip-text text-transparent">Elfsight</span>
+      </h1>
+
+      <p class="mt-5 animate-slide-up-fade text-pretty text-base text-neutral-600 [animation-delay:200ms] sm:text-xl">
+        Self-hosted Instagram feed widgets for any website. No subscription and no view limits, just one script tag.
+      </p>
+    </div>
+
+    <div class="relative mx-auto mt-10 flex max-w-fit animate-slide-up-fade gap-4 [--offset:5px] [animation-delay:300ms]">
+      <a href="/docs" class="btn btn-primary">Get started</a>
+      <a href="https://github.com/Manish-Tamang/alfsight" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
         View on GitHub
       </a>
     </div>
+  </div>
+</section>
 
-    <!-- Code preview -->
-    <div class="mx-auto mt-14 max-w-lg overflow-hidden rounded border border-[var(--color-border)] bg-[#1a1d21] text-left shadow-lg">
-      <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
-        <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
-        <span class="ml-3 text-[11px] text-white/40">index.html</span>
+<section class="grid-section bg-neutral-100">
+  <div class="grid-col px-4 py-12 sm:px-12 sm:py-16">
+    <div class="mx-auto max-w-xl animate-slide-up-fade overflow-hidden rounded-xl border border-neutral-200 bg-white text-left shadow-sm [animation-delay:400ms]">
+      <div class="flex items-center gap-1.5 border-b border-neutral-200 px-4 py-2.5">
+        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
+        <span class="ml-3 font-mono text-[11px] text-neutral-500">index.html</span>
       </div>
-      <pre class="overflow-x-auto p-4 text-[12.5px] leading-relaxed"><code class="text-[#e0e4e8]"><span class="text-[#7c8594]">&lt;!-- Add to any page --&gt;</span>
-<span class="text-[#ff7b72]">&lt;script</span> <span class="text-[#79c0ff]">src</span>=<span class="text-[#a5d6ff]">"https://your-cdn.com/instagram.js"</span> <span class="text-[#79c0ff]">defer</span><span class="text-[#ff7b72]">&gt;&lt;/script&gt;</span>
+      <pre class="overflow-x-auto p-4 font-mono text-[12.5px] leading-relaxed"><code class="text-neutral-800"><span class="text-neutral-400">&lt;!-- Add to any page --&gt;</span>
+<span class="text-rose-600">&lt;script</span> <span class="text-blue-600">src</span>=<span class="text-emerald-700">"https://your-cdn.com/instagram.js"</span> <span class="text-blue-600">defer</span><span class="text-rose-600">&gt;&lt;/script&gt;</span>
 
-<span class="text-[#ff7b72]">&lt;instagram-feed</span>
-  <span class="text-[#79c0ff]">feed</span>=<span class="text-[#a5d6ff]">"YOUR_FEED_ID"</span>
-  <span class="text-[#79c0ff]">api-base</span>=<span class="text-[#a5d6ff]">"https://api.your-site.com"</span>
-<span class="text-[#ff7b72]">&gt;&lt;/instagram-feed&gt;</span></code></pre>
+<span class="text-rose-600">&lt;instagram-feed</span>
+  <span class="text-blue-600">feed</span>=<span class="text-emerald-700">"YOUR_FEED_ID"</span>
+  <span class="text-blue-600">api-base</span>=<span class="text-emerald-700">"https://api.your-site.com"</span>
+<span class="text-rose-600">&gt;&lt;/instagram-feed&gt;</span></code></pre>
     </div>
   </div>
 </section>

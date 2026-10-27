@@ -1,0 +1,9 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "h-6 w-6" } = Astro.props;
+---
+
+<img src="/alfsight.png" alt="" width="450" height="450" class={className} />
