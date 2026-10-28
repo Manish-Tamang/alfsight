@@ -23,9 +23,9 @@
     "db:migrate": "pnpm --filter @instagram-widget/database migrate",
     "db:migrate:remote": "wrangler d1 migrations apply instagram-widget-db --remote --config apps/api/wrangler.jsonc",
     "deploy:api": "pnpm --filter @instagram-widget/api run deploy",
-    "deploy:widget": "pnpm build:widget && wrangler pages deploy apps/widget/dist --project-name alfsight-widget --branch main",
-    "deploy:dashboard": "pnpm build:dashboard && wrangler pages deploy apps/dashboard/dist --project-name alfsight-dashboard --branch main",
-    "deploy:web": "pnpm build:web && wrangler pages deploy apps/web/dist --project-name alfsight --branch main",
+    "deploy:widget": "pnpm build:widget && bash scripts/pages-deploy.sh alfsight-widget apps/widget/dist",
+    "deploy:dashboard": "pnpm build:dashboard && bash scripts/pages-deploy.sh alfsight-dashboard apps/dashboard/dist",
+    "deploy:web": "pnpm build:web && bash scripts/pages-deploy.sh alfsight apps/web/dist",
     "deploy:all": "pnpm deploy:api && pnpm deploy:widget && pnpm deploy:dashboard && pnpm deploy:web"
   },
   "engines": {
