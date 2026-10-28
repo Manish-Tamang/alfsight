@@ -4,6 +4,18 @@ import { API_BASE, DEMO_FEED_ID, WIDGET_URL } from "@/lib/site";
 
 const snippet = `<instagram-feed feed="${DEMO_FEED_ID}" api-base="${API_BASE}"></instagram-feed>
 <script src="${WIDGET_URL}/instagram.iife.js" defer></script>`;
+
+// Same snippet, one attribute per line so it reads without scrolling.
+const display = `<!-- Alfsight embed -->
+<instagram-feed
+  feed="${DEMO_FEED_ID}"
+  api-base="${API_BASE}"
+></instagram-feed>
+
+<script
+  src="${WIDGET_URL}/instagram.iife.js"
+  defer
+></script>`;
 ---
 
 <section id="preview">
@@ -34,29 +46,35 @@ const snippet = `<instagram-feed feed="${DEMO_FEED_ID}" api-base="${API_BASE}"><
       <div class="min-h-[240px] p-4 sm:min-h-[420px] sm:p-8">
         <instagram-feed feed={DEMO_FEED_ID} api-base={API_BASE}></instagram-feed>
       </div>
-
-      <!-- The exact snippet rendering the widget above -->
-      <div class="embed border-t border-neutral-200 bg-neutral-50/70">
-        <div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
-          <div class="flex min-w-0 items-center gap-3">
-            <span class="flex size-8 shrink-0 items-center justify-center rounded-[4px] bg-brand-50 text-brand-700 ring-1 ring-brand-200">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
-            </span>
-            <div class="min-w-0 leading-tight">
-              <p class="text-sm font-medium text-neutral-900">Embed code</p>
-              <p class="truncate text-xs text-neutral-500">Paste anywhere in your page's HTML</p>
-            </div>
-          </div>
-          <button type="button" class="btn btn-secondary !h-8 !rounded-[4px] !px-3 text-sm" data-copy-embed={snippet}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-            <span data-label>Copy</span>
-          </button>
-        </div>
-        <div class="mx-4 mb-4 overflow-hidden rounded-[4px] bg-white ring-1 ring-neutral-200 sm:mx-5 sm:mb-5">
-          <Code code={snippet} lang="html" theme="github-light" />
-        </div>
-      </div>
     </div>
+
+    <!-- Editor card with the snippet that renders the feed above -->
+    <div class="embed mx-auto mt-8 max-w-2xl overflow-hidden rounded-[4px] bg-[#0d1117] shadow-2xl shadow-black/20 ring-1 ring-black/10">
+      <div class="flex items-center justify-between border-b border-white/10 bg-[#161b22] pr-2">
+        <div class="flex items-center">
+          <div class="flex gap-1.5 px-4">
+            <span class="size-3 rounded-full bg-[#FF5F57]"></span>
+            <span class="size-3 rounded-full bg-[#FEBC2E]"></span>
+            <span class="size-3 rounded-full bg-[#28C840]"></span>
+          </div>
+          <span class="flex items-center gap-2 border-x border-white/10 bg-[#0d1117] px-4 py-2.5 font-mono text-xs text-neutral-200">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5 text-orange-400" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
+            index.html
+          </span>
+        </div>
+        <button
+          type="button"
+          class="flex h-7 items-center gap-1.5 rounded-[4px] px-2.5 text-xs font-medium text-neutral-300 ring-1 ring-white/15 transition-colors hover:bg-white/10 hover:text-white"
+          data-copy-embed={snippet}
+          aria-label="Copy embed code"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+          <span data-label>Copy</span>
+        </button>
+      </div>
+      <Code code={display} lang="html" theme="github-dark-default" />
+    </div>
+    <p class="mt-4 text-center text-sm text-neutral-500">This snippet renders the live feed above. Paste it anywhere in your HTML.</p>
   </div>
 </section>
 
@@ -78,13 +96,22 @@ const snippet = `<instagram-feed feed="${DEMO_FEED_ID}" api-base="${API_BASE}"><
   /* Line-numbered snippet */
   .embed :global(pre) {
     margin: 0;
-    padding: 12px 0;
+    padding: 16px 0;
     overflow-x: auto;
-    background: #fff !important;
+    background: #0d1117 !important;
     font-family: var(--font-mono);
-    font-size: 12.5px;
-    line-height: 1.75;
+    font-size: 13px;
+    line-height: 1.7;
     counter-reset: line;
+  }
+  @media (max-width: 639px) {
+    .embed :global(pre) {
+      font-size: 11px;
+    }
+    .embed :global(.line)::before {
+      width: 2rem;
+      padding-right: 0.75rem;
+    }
   }
   .embed :global(code) {
     font-family: inherit;
@@ -100,7 +127,7 @@ const snippet = `<instagram-feed feed="${DEMO_FEED_ID}" api-base="${API_BASE}"><
     width: 2.75rem;
     padding-right: 1rem;
     text-align: right;
-    color: #a3a3a3;
+    color: #484f58;
     user-select: none;
   }
 </style>
