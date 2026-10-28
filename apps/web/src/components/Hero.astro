@@ -43,9 +43,7 @@ const platforms = [
       <ul class="mx-auto mt-5 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
         {platforms.map((p) => (
           <li class="flex items-center justify-center gap-3 sm:justify-start">
-            <span class={`flex size-9 shrink-0 items-center justify-center rounded-lg bg-white ring-1 ring-black/10 shadow-sm ${p.color}`}>
-              <BrandIcon name={p.icon} class="size-5" />
-            </span>
+            <BrandIcon name={p.icon} class={`size-7 shrink-0 ${p.color}`} />
             <span class="text-left leading-tight">
               <span class="block text-[15px] text-neutral-800">{p.name}</span>
               <span class="block text-xs text-neutral-500">{p.kind}</span>
