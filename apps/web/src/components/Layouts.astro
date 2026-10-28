@@ -1,0 +1,56 @@
+---
+const layouts = [
+  {
+    name: "Grid",
+    description: "Even rows and columns. The classic profile look.",
+    cells: ["col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1"],
+    cols: "grid-cols-3 grid-rows-2",
+  },
+  {
+    name: "Masonry",
+    description: "Staggered heights that keep tall posts intact.",
+    cells: ["row-span-2", "row-span-1", "row-span-1", "row-span-1", "row-span-2", "row-span-1"],
+    cols: "grid-cols-3 grid-rows-3",
+  },
+  {
+    name: "Showcase",
+    description: "One hero post with a supporting strip beside it.",
+    cells: ["col-span-2 row-span-2", "col-span-1 row-span-1", "col-span-1 row-span-1"],
+    cols: "grid-cols-3 grid-rows-2",
+  },
+];
+---
+
+<section class="grid-section">
+  <div class="grid-col">
+    <div class="px-4 py-16 text-center sm:py-20">
+      <p class="text-sm font-medium text-brand-700">Layouts</p>
+      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Pick a layout, tweak every pixel</h2>
+      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
+        Columns, gaps, radius, hover effects and colors, all with a live preview in the dashboard.
+      </p>
+    </div>
+
+    <div class="grid gap-px border-t border-[var(--color-grid)] bg-[var(--color-grid)] md:grid-cols-3">
+      {layouts.map((layout) => (
+        <div class="group bg-white p-6 sm:p-8">
+          <div class="rounded-xl border border-neutral-200 bg-neutral-50 p-3 transition-colors group-hover:border-brand-200 group-hover:bg-brand-50/40">
+            <div class={`grid h-40 gap-1.5 ${layout.cols}`}>
+              {layout.cells.map((c, i) => (
+                <div
+                  class:list={[
+                    c,
+                    "rounded-md transition-colors",
+                    i === 0 ? "bg-brand-500/80 group-hover:bg-brand-500" : "bg-neutral-200 group-hover:bg-brand-200",
+                  ]}
+                ></div>
+              ))}
+            </div>
+          </div>
+          <h3 class="mt-5 text-base font-medium text-neutral-900">{layout.name}</h3>
+          <p class="mt-1 text-sm text-neutral-500">{layout.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

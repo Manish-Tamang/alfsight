@@ -1,5 +1,6 @@
 ---
 import Logo from "./ui/Logo.astro";
+import GitHubIcon from "./ui/GitHubIcon.astro";
 
 interface Props {
   links?: { label: string; href: string; active?: boolean }[];
@@ -9,6 +10,8 @@ const {
   links = [
     { label: "Features", href: "/#features" },
     { label: "How it works", href: "/#how-it-works" },
+    { label: "Compare", href: "/#compare" },
+    { label: "FAQ", href: "/#faq" },
     { label: "Docs", href: "/docs" },
   ],
 } = Astro.props;
@@ -42,8 +45,10 @@ const {
         href="https://github.com/Manish-Tamang/alfsight"
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden h-8 items-center rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900 md:flex"
+        class="hidden h-8 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900 md:flex"
+        aria-label="Alfsight on GitHub"
       >
+        <GitHubIcon class="size-4" />
         GitHub
       </a>
       <a href="/dashboard" class="btn btn-primary btn-sm">Dashboard</a>

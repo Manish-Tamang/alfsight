@@ -1,0 +1,46 @@
+---
+// Keep claims about Elfsight general; their plans and limits change over time.
+const rows = [
+  { label: "Price", alfsight: "Free, self-hosted", elfsight: "Monthly subscription for higher tiers" },
+  { label: "Widget view limits", alfsight: "None, beyond your Cloudflare quota", elfsight: "Capped per plan" },
+  { label: "Third-party branding", alfsight: "Never", elfsight: "Shown on the free plan" },
+  { label: "Source code", alfsight: "Open source, MIT", elfsight: "Closed source" },
+  { label: "Where data lives", alfsight: "Your own Cloudflare account", elfsight: "Vendor servers" },
+  { label: "Style isolation", alfsight: "Shadow DOM web component", elfsight: "Hosted embed script" },
+];
+---
+
+<section id="compare" class="grid-section bg-neutral-100">
+  <div class="grid-col bg-white px-4 pb-16 sm:px-10 sm:pb-20">
+    <div class="py-16 text-center sm:py-20">
+      <p class="text-sm font-medium text-brand-700">Compare</p>
+      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Alfsight vs Elfsight</h2>
+      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
+        The same embeddable Instagram feed, without the subscription.
+      </p>
+    </div>
+
+    <div class="mx-auto max-w-3xl overflow-hidden rounded-xl border border-neutral-200">
+      <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] border-b border-neutral-200 bg-neutral-50 text-sm font-medium">
+        <div class="px-3 py-3 sm:px-4 text-neutral-500"></div>
+        <div class="flex items-center gap-2 border-l border-neutral-200 bg-brand-50 px-3 py-3 sm:px-4 text-brand-700">
+          <img src="/alfsight.png" alt="" class="size-4" /> Alfsight
+        </div>
+        <div class="border-l border-neutral-200 px-3 py-3 sm:px-4 text-neutral-700">Elfsight</div>
+      </div>
+      {rows.map((row, i) => (
+        <div class:list={["grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] text-[13px] sm:text-sm", i < rows.length - 1 && "border-b border-neutral-200"]}>
+          <div class="px-3 py-3 sm:px-4 font-medium text-neutral-800">{row.label}</div>
+          <div class="flex gap-2 border-l border-neutral-200 bg-brand-50/40 px-3 py-3 sm:px-4 text-neutral-800">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 hidden size-4 shrink-0 text-brand-600 sm:block" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+            {row.alfsight}
+          </div>
+          <div class="flex gap-2 border-l border-neutral-200 px-3 py-3 sm:px-4 text-neutral-500">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mt-0.5 hidden size-4 shrink-0 text-neutral-400 sm:block" aria-hidden="true"><path d="M5 12h14"></path></svg>
+            {row.elfsight}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
