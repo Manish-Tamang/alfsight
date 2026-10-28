@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
-import { feeds, posts, instagramAccounts } from "@instagram-widget/database";
+import { feeds, posts, instagramAccounts, users } from "@instagram-widget/database";
 import type { FeedResponse, FeedMeta, FeedSettings, CacheProvider, InstagramProvider, PublicInstagramProvider } from "@instagram-widget/types";
 import type { CreateFeedInput, UpdateFeedInput } from "@instagram-widget/validation";
 import { feedCacheKey, DEFAULT_CACHE_TTL } from "../cache";
@@ -34,6 +34,13 @@ export class FeedService {
   async create(userId: string, input: CreateFeedInput): Promise<FeedMeta> {
     const id = this.generateId();
     const now = new Date().toISOString();
+
+    // feeds.user_id references users, so make sure the owner row exists
+    // (the production admin and dev users are never inserted anywhere else).
+    await this.db
+      .insert(users)
+      .values({ id: userId, email: `${userId}@alfsight.local` })
+      .onConflictDoNothing();
 
     await this.db.insert(feeds).values({
       id,

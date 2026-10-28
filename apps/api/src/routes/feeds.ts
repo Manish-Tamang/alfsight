@@ -90,6 +90,7 @@ feedsRouter.post("/", requireAuth, async (c) => {
             : "Could not load that public Instagram profile.";
       return apiError(c, status, "INSTAGRAM_API_ERROR", message);
     }
+    console.error("Failed to create feed:", error);
     return apiError(c, 502, "INSTAGRAM_API_ERROR", "Could not load that public Instagram profile");
   }
 });
