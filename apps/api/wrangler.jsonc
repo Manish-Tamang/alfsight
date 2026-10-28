@@ -10,31 +10,31 @@
     {
       "binding": "DB",
       "database_name": "instagram-widget-db",
-      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
-      "migrations_dir": "../../database/migrations"
-    }
+      "database_id": "4b4fb570-07fd-4f9c-82a2-e7df8be0b7fa",
+      "migrations_dir": "../../database/migrations",
+    },
   ],
 
   // KV Namespace for feed caching
   "kv_namespaces": [
     {
       "binding": "FEED_CACHE",
-      "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
-    }
+      "id": "f4245a4642f44ce28d1584b1a87a77d5",
+    },
   ],
 
   // Cron triggers for scheduled feed refresh
   "triggers": {
     "crons": [
-      "0 */6 * * *" // Every 6 hours
-    ]
+      "0 */6 * * *", // Every 6 hours
+    ],
   },
 
   // Environment variables (non-secret).
   // Local dev overrides this with ENVIRONMENT=development in .dev.vars.
   "vars": {
-    "ENVIRONMENT": "production"
-  }
+    "ENVIRONMENT": "production",
+  },
 
   // Secrets (set via `wrangler secret put`):
   // - ADMIN_TOKEN: the dashboard sign-in token in production

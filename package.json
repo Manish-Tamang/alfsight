@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Embeddable Instagram feed widget service",
   "license": "MIT",
+  "packageManager": "pnpm@12.8.1",
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
     "dev:api": "pnpm --filter @instagram-widget/api dev",
@@ -22,9 +23,9 @@
     "db:migrate": "pnpm --filter @instagram-widget/database migrate",
     "db:migrate:remote": "wrangler d1 migrations apply instagram-widget-db --remote --config apps/api/wrangler.jsonc",
     "deploy:api": "pnpm --filter @instagram-widget/api run deploy",
-    "deploy:widget": "pnpm build:widget && wrangler pages deploy apps/widget/dist --project-name alfsight-widget",
-    "deploy:dashboard": "pnpm build:dashboard && wrangler pages deploy apps/dashboard/dist --project-name alfsight-dashboard",
-    "deploy:web": "pnpm build:web && wrangler pages deploy apps/web/dist --project-name alfsight",
+    "deploy:widget": "pnpm build:widget && wrangler pages deploy apps/widget/dist --project-name alfsight-widget --branch main",
+    "deploy:dashboard": "pnpm build:dashboard && wrangler pages deploy apps/dashboard/dist --project-name alfsight-dashboard --branch main",
+    "deploy:web": "pnpm build:web && wrangler pages deploy apps/web/dist --project-name alfsight --branch main",
     "deploy:all": "pnpm deploy:api && pnpm deploy:widget && pnpm deploy:dashboard && pnpm deploy:web"
   },
   "engines": {
