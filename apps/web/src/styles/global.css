@@ -4,12 +4,12 @@
   --color-bg: #ffffff;
   --color-surface: #ffffff;
   --color-surface-2: #f5f5f5;
-  --color-text: #171717;
+  --color-text: #262626;
   --color-text-muted: #525252;
   --color-text-soft: #737373;
   --color-border: #d4d4d4;
   --color-border-soft: #e5e5e5;
-  --color-grid: #e5e5e5;
+  --color-dots: #a3a3a3;
   --color-primary: #19ca58;
   --color-primary-hover: #14ad4b;
   --color-primary-foreground: #ffffff;
@@ -17,13 +17,14 @@
   --color-brand-50: #ebfbf1;
   --color-brand-100: #d1f6df;
   --color-brand-200: #a5edc1;
+  --color-brand-400: #3ddc78;
   --color-brand-500: #19ca58;
   --color-brand-600: #14ad4b;
   --color-brand-700: #0f863a;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  --font-display: "Satoshi", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --animate-slide-up-fade: slide-up-fade 1s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -32,6 +33,15 @@
 @layer base {
   * {
     box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Keep anchor targets clear of the fixed navbar */
+  [id] {
+    scroll-margin-top: 6rem;
   }
 
   html,
@@ -43,6 +53,8 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* The dotted frame lines sit 2px outside the column */
+    overflow-x: clip;
   }
 
   a {
@@ -68,58 +80,102 @@
 }
 
 @layer components {
-  /* Dub-style buttons */
+  /* Glossy pill buttons with an inset highlight ring */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    height: 2.5rem;
-    padding: 0 1.25rem;
-    border-radius: 0.5rem;
-    border: 1px solid;
-    font-size: 0.875rem;
+    height: 2.75rem;
+    padding: 0 1.125rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
     white-space: nowrap;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
-    transition: all 150ms ease;
+    cursor: pointer;
+    transition: box-shadow 200ms ease, transform 100ms ease, background-color 200ms ease;
   }
-  .btn:hover {
-    box-shadow: 0 0 0 4px #e5e5e5;
+  .btn:active {
+    transform: scale(0.98);
   }
   .btn-sm {
-    height: 2rem;
-    padding: 0 0.75rem;
-  }
-  .btn-primary {
-    border-color: var(--color-brand-600);
-    background: var(--color-brand-500);
-    color: #fff;
-  }
-  .btn-primary:hover {
-    background: var(--color-brand-600);
-    box-shadow: 0 0 0 4px var(--color-brand-100);
-  }
-  .btn-secondary {
-    border-color: #e5e5e5;
-    background: #fff;
-    color: #262626;
-  }
-  .btn-secondary:hover {
-    border-color: #a3a3a3;
-  }
-
-  /* Bordered page column with grid lines, like dub.co */
-  .grid-section {
-    position: relative;
-    border-top: 1px solid var(--color-grid);
+    height: 2.5rem;
     padding: 0 1rem;
   }
-  .grid-col {
+  .btn-primary {
+    color: #fff;
+    background: linear-gradient(to bottom, var(--color-brand-400), var(--color-brand-600));
+    box-shadow:
+      inset 0 0 0 2px var(--color-brand-600),
+      inset 0 0 0 3px rgb(255 255 255 / 0.3),
+      inset 0 0 10px rgb(255 255 255 / 0.2);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      inset 0 0 0 2px var(--color-brand-600),
+      inset 0 0 0 3px rgb(255 255 255 / 0.5),
+      inset 0 0 20px rgb(255 255 255 / 0.4);
+  }
+  .btn-secondary {
+    color: var(--color-text);
+    background: #fff;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.08),
+      0 1px 2px rgb(0 0 0 / 0.05);
+  }
+  .btn-secondary:hover {
+    background: #fafafa;
+  }
+
+  /* Solid marker highlight on a heading phrase */
+  .hl {
+    background: var(--color-brand-500);
+    color: #fff;
+    padding: 0 0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* Page column framed by dotted lines */
+  .frame {
     position: relative;
     margin: 0 auto;
-    max-width: 1080px;
-    border-left: 1px solid var(--color-grid);
-    border-right: 1px solid var(--color-grid);
+    max-width: 1152px;
+  }
+  .frame::before,
+  .frame::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 2px 4px, var(--color-dots) 1px, transparent 1.4px);
+    background-size: 4px 8px;
+  }
+  .frame::before {
+    left: -2px;
+  }
+  .frame::after {
+    right: -2px;
+  }
+
+  .dots-x {
+    height: 4px;
+    background-image: radial-gradient(circle at 4px 2px, var(--color-dots) 1px, transparent 1.4px);
+    background-size: 8px 4px;
+  }
+  .dots-y {
+    width: 4px;
+    background-image: radial-gradient(circle at 2px 4px, var(--color-dots) 1px, transparent 1.4px);
+    background-size: 4px 8px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #404040;
+    text-wrap: balance;
   }
 }

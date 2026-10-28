@@ -9,57 +9,106 @@ interface Props {
 
 const {
   links = [
-    { label: "Features", href: "/#features" },
     { label: "How it works", href: "/#how-it-works" },
+    { label: "Features", href: "/#features" },
     { label: "Compare", href: "/#compare" },
-    { label: "FAQ", href: "/#faq" },
     { label: "Docs", href: "/docs" },
   ],
 } = Astro.props;
 ---
 
-<nav class="sticky top-0 z-50 w-full border-b border-transparent bg-white/75 backdrop-blur-lg transition-colors" data-navbar>
-  <div class="mx-auto flex h-14 w-full max-w-[1080px] items-center justify-between px-4 xl:px-0">
-    <div class="flex grow basis-0 items-center">
-      <a href="/" class="flex items-center gap-2 py-2 pr-2 text-black">
-        <Logo class="h-6 w-6" />
-        <span class="font-display text-[17px] font-bold tracking-tight">Alfsight</span>
+<nav class="fixed inset-x-4 top-4 z-50 mx-auto max-w-3xl md:top-6" data-navbar>
+  <div class="relative flex items-center justify-between rounded-2xl bg-white px-2 py-2 shadow-sm shadow-black/5 ring-1 ring-black/5">
+    <div class="relative flex h-full items-center">
+      <a href="/" class="mr-5 flex items-center gap-2 pl-2 md:pl-3">
+        <Logo class="size-6" />
+        <span class="font-display text-xl font-medium tracking-tight text-neutral-800">Alfsight</span>
       </a>
+      <span class="dots-y absolute -top-2 -bottom-2 -right-1.5 hidden md:block" aria-hidden="true"></span>
     </div>
 
-    <div class="hidden items-center sm:flex">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            "flex h-8 items-center rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900",
-            link.active && "bg-neutral-900/5 text-neutral-900",
-          ]}
-        >
-          {link.label}
-        </a>
+    <div class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-4 md:flex">
+      {links.map((link, i) => (
+        <>
+          {i > 0 && <span class="size-1 rounded-full bg-brand-500" aria-hidden="true"></span>}
+          <a
+            href={link.href}
+            class:list={[
+              "text-sm font-medium transition-colors hover:text-brand-700",
+              link.active ? "text-brand-700" : "text-neutral-800",
+            ]}
+          >
+            {link.label}
+          </a>
+        </>
       ))}
     </div>
 
-    <div class="flex grow basis-0 items-center justify-end gap-2">
+    <div class="flex items-center gap-2">
       <a
         href="https://github.com/Manish-Tamang/alfsight"
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden h-8 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-900/5 hover:text-neutral-900 md:flex"
+        class="hidden size-10 items-center justify-center rounded-xl text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 sm:flex"
         aria-label="Alfsight on GitHub"
       >
-        <GitHubIcon class="size-4" />
-        GitHub
+        <GitHubIcon class="size-[18px]" />
       </a>
-      <a href={DASHBOARD_URL} class="btn btn-primary btn-sm">Dashboard</a>
+      <div class="relative">
+        <span class="dots-y absolute -top-2 -bottom-2 -left-3 hidden md:block" aria-hidden="true"></span>
+        <a href={DASHBOARD_URL} class="btn btn-primary btn-sm">Dashboard</a>
+      </div>
+      <button
+        type="button"
+        class="flex size-9 flex-col items-center justify-center rounded-lg transition-colors hover:bg-neutral-100 md:hidden"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="block h-0.5 w-4 bg-neutral-800 transition-transform duration-200" data-bar-top></span>
+        <span class="mt-1 block h-0.5 w-4 bg-neutral-800 transition-transform duration-200" data-bar-bottom></span>
+      </button>
     </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="mt-2 hidden flex-col rounded-2xl bg-white p-2 shadow-lg shadow-black/5 ring-1 ring-black/5 md:hidden"
+    data-menu
+  >
+    {links.map((link) => (
+      <a href={link.href} class="rounded-xl px-4 py-3 text-base font-medium text-neutral-800 hover:bg-neutral-50">
+        {link.label}
+      </a>
+    ))}
+    <a
+      href="https://github.com/Manish-Tamang/alfsight"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-neutral-800 hover:bg-neutral-50"
+    >
+      <GitHubIcon class="size-4" /> GitHub
+    </a>
   </div>
 </nav>
 
 <script>
-  const nav = document.querySelector<HTMLElement>("[data-navbar]");
-  const onScroll = () => nav?.classList.toggle("!border-neutral-200", window.scrollY > 8);
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+  const top = document.querySelector<HTMLElement>("[data-bar-top]");
+  const bottom = document.querySelector<HTMLElement>("[data-bar-bottom]");
+
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    menu?.classList.toggle("flex", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+    top?.classList.toggle("translate-y-[3px]", open);
+    top?.classList.toggle("rotate-45", open);
+    bottom?.classList.toggle("-translate-y-[3px]", open);
+    bottom?.classList.toggle("-rotate-45", open);
+  };
+
+  toggle?.addEventListener("click", () => setOpen(menu?.classList.contains("hidden") ?? false));
+  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
 </script>

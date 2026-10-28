@@ -1,56 +1,116 @@
 ---
 const layouts = [
   {
-    name: "Grid",
-    description: "Even rows and columns. The classic profile look.",
-    cells: ["col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1"],
-    cols: "grid-cols-3 grid-rows-2",
+    name: "Grid layout",
+    description: "Even rows and columns for the classic profile look. Pick 2 to 6 columns and any gap.",
+    cols: "grid-cols-4 grid-rows-2",
+    cells: Array(8).fill("col-span-1 row-span-1"),
   },
   {
-    name: "Masonry",
-    description: "Staggered heights that keep tall posts intact.",
-    cells: ["row-span-2", "row-span-1", "row-span-1", "row-span-1", "row-span-2", "row-span-1"],
-    cols: "grid-cols-3 grid-rows-3",
+    name: "Masonry layout",
+    description: "Staggered heights that keep tall posts intact, for a magazine-style wall.",
+    cols: "grid-cols-4 grid-rows-3",
+    cells: ["row-span-2", "row-span-1", "row-span-2", "row-span-1", "row-span-2", "row-span-1", "row-span-1", "row-span-1"],
   },
   {
-    name: "Showcase",
-    description: "One hero post with a supporting strip beside it.",
-    cells: ["col-span-2 row-span-2", "col-span-1 row-span-1", "col-span-1 row-span-1"],
-    cols: "grid-cols-3 grid-rows-2",
+    name: "Showcase layout",
+    description: "One hero post with a supporting strip beside it, perfect for product launches.",
+    cols: "grid-cols-4 grid-rows-2",
+    cells: ["col-span-2 row-span-2", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1", "col-span-1 row-span-1"],
   },
+];
+
+const stack = [
+  { title: "Hono API on Workers", body: "A tiny, typed API that runs at the edge.", icon: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>' },
+  { title: "D1 database", body: "Feeds and posts live in Cloudflare's SQLite.", icon: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>' },
+  { title: "KV edge cache", body: "Feeds are served from cache, close to visitors.", icon: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>' },
+  { title: "Shadow DOM widget", body: "Your site's CSS never clashes with the feed.", icon: '<path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 3v9h9"/>' },
+  { title: "Validated with Zod", body: "Every request body is checked before it's saved.", icon: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>' },
+  { title: "TypeScript end to end", body: "Shared types between API, widget and dashboard.", icon: '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>' },
 ];
 ---
 
-<section class="grid-section">
-  <div class="grid-col">
-    <div class="px-4 py-16 text-center sm:py-20">
-      <p class="text-sm font-medium text-brand-700">Layouts</p>
-      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Pick a layout, tweak every pixel</h2>
-      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
-        Columns, gaps, radius, hover effects and colors, all with a live preview in the dashboard.
-      </p>
-    </div>
+<section id="layouts">
+  <div class="frame px-4 pb-6 sm:px-14">
+    <h2 class="section-title pt-24 pb-14 text-center text-3xl sm:text-4xl">
+      Pick a layout and <span class="hl">tweak every pixel</span>
+    </h2>
 
-    <div class="grid gap-px border-t border-[var(--color-grid)] bg-[var(--color-grid)] md:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-2">
       {layouts.map((layout) => (
-        <div class="group bg-white p-6 sm:p-8">
-          <div class="rounded-xl border border-neutral-200 bg-neutral-50 p-3 transition-colors group-hover:border-brand-200 group-hover:bg-brand-50/40">
-            <div class={`grid h-40 gap-1.5 ${layout.cols}`}>
-              {layout.cells.map((c, i) => (
-                <div
-                  class:list={[
-                    c,
-                    "rounded-md transition-colors",
-                    i === 0 ? "bg-brand-500/80 group-hover:bg-brand-500" : "bg-neutral-200 group-hover:bg-brand-200",
-                  ]}
-                ></div>
-              ))}
+        <article class="group overflow-hidden rounded-2xl bg-neutral-100">
+          <div class="flex h-64 items-end justify-center px-8 pt-10 sm:h-72">
+            <div class="w-full max-w-sm translate-y-6 rounded-t-xl bg-white p-3 shadow-xl shadow-black/5 ring-1 ring-black/5 transition-transform duration-500 group-hover:translate-y-3">
+              <div class={`grid h-44 gap-1.5 ${layout.cols}`}>
+                {layout.cells.map((c, i) => (
+                  <div class:list={[c, "rounded-md", i === 0 ? "bg-gradient-to-br from-brand-200 to-brand-500" : "bg-neutral-100"]}></div>
+                ))}
+              </div>
             </div>
           </div>
-          <h3 class="mt-5 text-base font-medium text-neutral-900">{layout.name}</h3>
-          <p class="mt-1 text-sm text-neutral-500">{layout.description}</p>
-        </div>
+          <div class="relative bg-neutral-100 px-8 pt-8 pb-8">
+            <h3 class="text-lg font-medium text-neutral-800">{layout.name}</h3>
+            <p class="mt-1 text-base leading-relaxed text-neutral-600">{layout.description}</p>
+          </div>
+        </article>
       ))}
+
+      <!-- Live editor -->
+      <article class="group overflow-hidden rounded-2xl bg-neutral-100">
+        <div class="flex h-64 items-center justify-center px-8 sm:h-72">
+          <div class="w-full max-w-xs space-y-3 rounded-2xl bg-white p-4 shadow-xl shadow-black/5 ring-1 ring-black/5">
+            {[["Columns", "4"], ["Gap", "16px"], ["Radius", "8px"], ["Hover", "Zoom"]].map(([k, v]) => (
+              <div class="flex items-center justify-between text-xs text-neutral-600">
+                {k}<span class="rounded-md px-2 py-0.5 text-neutral-800 ring-1 ring-neutral-300">{v}</span>
+              </div>
+            ))}
+            <div class="flex items-center justify-between text-xs text-neutral-600">
+              Background <span class="flex items-center gap-1.5"><span class="size-4 rounded ring-1 ring-neutral-300 bg-brand-50"></span>#ebfbf1</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-8 pt-8 pb-8">
+          <h3 class="text-lg font-medium text-neutral-800">Live editor</h3>
+          <p class="mt-1 text-base leading-relaxed text-neutral-600">Every change previews instantly on desktop, tablet and mobile before you hit save.</p>
+        </div>
+      </article>
+
+      <!-- Edge, worldwide -->
+      <article class="relative overflow-hidden rounded-2xl bg-neutral-100 md:col-span-2">
+        <div class="relative z-10 max-w-md p-8">
+          <h3 class="text-lg font-medium text-neutral-800">Runs on your Cloudflare, worldwide</h3>
+          <p class="mt-1 text-base leading-relaxed text-neutral-600">
+            The API, widget and dashboard deploy to your own account. Feeds are cached at the edge and refreshed on a schedule.
+          </p>
+          <ul class="mt-8 flex flex-wrap gap-2">
+            {["< 6 kB widget", "6 h auto sync", "KV edge cache", "MIT licensed"].map((t) => (
+              <li class="rounded-full bg-white px-3 py-1 text-sm text-neutral-700 ring-1 ring-black/5 shadow-sm">{t}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="relative h-56 md:absolute md:inset-y-0 md:right-0 md:h-auto md:w-1/2" aria-hidden="true">
+          <div class="absolute -bottom-24 right-[-10%] size-[420px] rounded-full bg-[radial-gradient(circle_at_35%_30%,#ffffff,var(--color-brand-50)_45%,var(--color-brand-100))] ring-1 ring-brand-200 md:-bottom-32 md:size-[480px]">
+            <div class="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgb(15_134_58_/_0.35)_1.2px,transparent_1.6px)] bg-[length:14px_14px] [mask-image:radial-gradient(circle_at_40%_35%,black_40%,transparent_72%)]"></div>
+            {[["top-[22%]", "left-[30%]"], ["top-[30%]", "left-[58%]"], ["top-[46%]", "left-[22%]"], ["top-[40%]", "left-[44%]"], ["top-[18%]", "left-[48%]"]].map(([t, l]) => (
+              <span class={`absolute ${t} ${l} flex size-3`}>
+                <span class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-50"></span>
+                <span class="relative inline-flex size-3 rounded-full bg-brand-500 ring-2 ring-white"></span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
     </div>
+
+    <!-- Under the hood -->
+    <ul class="grid gap-x-10 gap-y-12 px-4 py-20 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
+      {stack.map((s) => (
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-brand-600" set:html={s.icon} />
+          <h3 class="mt-5 text-base font-medium text-neutral-900">{s.title}</h3>
+          <p class="mt-2 max-w-[18rem] text-sm leading-relaxed text-neutral-600">{s.body}</p>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>

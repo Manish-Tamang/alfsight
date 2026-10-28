@@ -1,40 +1,127 @@
 ---
 const steps = [
   {
-    step: "1",
+    n: 1,
+    tile: "from-brand-400 to-brand-600",
     title: "Create a widget",
-    description: "Open the dashboard, enter an Instagram username, and configure the layout — grid, masonry, or showcase.",
+    rest: "from any public Instagram username in seconds.",
   },
   {
-    step: "2",
+    n: 2,
+    tile: "from-amber-300 to-amber-500",
     title: "Customize the design",
-    description: "Adjust columns, gap, border radius, background color, hover effects, and card style in the visual editor.",
+    rest: "with layouts, spacing and hover effects, live.",
   },
   {
-    step: "3",
+    n: 3,
+    tile: "from-rose-400 to-rose-600",
     title: "Embed anywhere",
-    description: "Copy the two-line snippet and paste it into any HTML page. The widget loads in under 6 kB.",
+    rest: "with a two-line snippet that works on any site.",
+  },
+  {
+    n: 4,
+    tile: "from-orange-400 to-orange-600",
+    title: "Stay in sync",
+    rest: "automatically, with posts refreshed every 6 hours.",
   },
 ];
 ---
 
-<section id="how-it-works" class="grid-section bg-neutral-100">
-  <div class="grid-col bg-white">
-    <div class="px-4 py-16 text-center sm:py-20">
-      <h2 class="font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Three steps to a live feed</h2>
-      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
-        No OAuth tokens, no API keys in the browser, no framework lock-in.
+<section id="how-it-works">
+  <div class="frame">
+    <div class="dots-x mx-2"></div>
+    <div class="px-6 pt-16 pb-12 sm:px-8">
+      <h2 class="section-title text-2xl sm:text-3xl">A workflow tuned for speed</h2>
+      <p class="mt-3 max-w-md text-base leading-relaxed text-neutral-500 sm:text-lg">
+        Create, customize, embed and forget. Alfsight keeps your feed fresh on its own.
       </p>
     </div>
 
-    <div class="grid border-t border-[var(--color-grid)] sm:grid-cols-3 sm:divide-x divide-[var(--color-grid)] max-sm:divide-y">
-      {steps.map((item) => (
-        <div class="p-8">
-          <div class="mb-4 flex size-7 items-center justify-center rounded-full border border-brand-200 bg-brand-50 font-mono text-xs font-medium text-brand-700">
-            {item.step}
+    <div class="grid border-t border-neutral-200/80 md:grid-cols-2 md:[&>*:nth-child(odd)]:border-r md:[&>*]:border-neutral-200/80">
+      {steps.map((step) => (
+        <div class="flex min-w-0 flex-col max-md:border-b max-md:border-neutral-200/80">
+          <!-- Visual -->
+          <div class="relative flex h-[320px] items-center justify-center overflow-hidden bg-neutral-50 px-6 sm:h-[380px]">
+            <div class="absolute inset-x-0 top-0 h-14 bg-[repeating-linear-gradient(135deg,rgb(0_0_0_/_0.035)_0_1px,transparent_1px_8px)]" aria-hidden="true"></div>
+
+            {step.n === 1 && (
+              <div class="relative w-full max-w-xs rounded-2xl bg-white p-5 shadow-xl shadow-black/5 ring-1 ring-black/5">
+                <p class="text-sm font-semibold text-neutral-800">New widget</p>
+                <p class="mt-1 text-xs text-neutral-500">Connect a public Instagram profile.</p>
+                <p class="mt-4 text-xs font-medium text-neutral-700">Instagram username</p>
+                <div class="mt-1.5 flex h-9 items-center overflow-hidden rounded-lg ring-1 ring-brand-500">
+                  <span class="flex h-full items-center border-r border-neutral-200 bg-neutral-50 px-3 text-sm text-neutral-500">@</span>
+                  <span class="px-3 text-sm text-neutral-800">yourbrand<span class="ml-px inline-block h-4 w-px translate-y-0.5 animate-pulse bg-neutral-800"></span></span>
+                </div>
+                <div class="mt-4 flex justify-end">
+                  <span class="btn btn-primary !h-8 !rounded-lg !px-3 text-xs">Create widget</span>
+                </div>
+                <svg viewBox="0 0 24 24" class="absolute -bottom-3 right-10 size-6 drop-shadow" aria-hidden="true"><path d="M5 3l14 8-6 2-2 6z" fill="white" stroke="#262626" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+              </div>
+            )}
+
+            {step.n === 2 && (
+              <div class="relative w-full max-w-xs space-y-3 rounded-2xl bg-white p-5 shadow-xl shadow-black/5 ring-1 ring-black/5">
+                <p class="text-sm font-semibold text-neutral-800">Layout</p>
+                <div class="flex rounded-lg bg-neutral-100 p-0.5 text-xs font-medium">
+                  <span class="flex-1 rounded-md bg-white py-1 text-center text-neutral-900 shadow-sm">Grid</span>
+                  <span class="flex-1 py-1 text-center text-neutral-500">Masonry</span>
+                  <span class="flex-1 py-1 text-center text-neutral-500">Showcase</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-neutral-600">
+                  Columns <span class="rounded-md px-2 py-0.5 ring-1 ring-neutral-300">4</span>
+                </div>
+                <div class="text-xs text-neutral-600">
+                  <div class="flex justify-between">Gap <span>16px</span></div>
+                  <div class="mt-2 h-1.5 rounded-full bg-neutral-200"><div class="relative h-full w-1/2 rounded-full bg-brand-500"><span class="absolute -right-1.5 -top-1 size-3.5 rounded-full bg-white ring-2 ring-brand-500"></span></div></div>
+                </div>
+                <div class="flex items-center justify-between text-xs text-neutral-600">
+                  Captions <span class="relative h-4 w-7 rounded-full bg-brand-500"><span class="absolute right-0.5 top-0.5 size-3 rounded-full bg-white"></span></span>
+                </div>
+              </div>
+            )}
+
+            {step.n === 3 && (
+              <div class="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-xl shadow-black/5 ring-1 ring-black/5">
+                <pre class="overflow-x-auto p-4 font-mono text-[12px] leading-relaxed"><code><span class="text-blue-700">&lt;instagram-feed</span>
+  <span class="text-sky-700">feed</span>=<span class="text-neutral-700">"YOUR_FEED_ID"</span>
+<span class="text-blue-700">&gt;&lt;/instagram-feed&gt;</span>
+<span class="text-blue-700">&lt;script</span> <span class="text-sky-700">src</span>=<span class="text-neutral-700">"…/instagram.iife.js"</span> <span class="text-sky-700">defer</span><span class="text-blue-700">&gt;&lt;/script&gt;</span></code></pre>
+              </div>
+            )}
+
+            {step.n === 4 && (
+              <div class="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-xl shadow-black/5 ring-1 ring-black/5">
+                <div class="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+                  <span class="text-sm font-semibold text-neutral-800">Sync activity</span>
+                  <span class="flex items-center gap-1.5 text-xs text-neutral-500"><span class="size-2 rounded-full bg-brand-500"></span> Live</span>
+                </div>
+                <ul class="divide-y divide-neutral-100 text-xs">
+                  {[
+                    ["Cron", "Synced 12 new posts", "06:00"],
+                    ["Cache", "Feed refreshed in KV", "06:00"],
+                    ["Manual", "Synced 3 new posts", "09:42"],
+                  ].map(([who, what, when]) => (
+                    <li class="flex items-center gap-3 px-4 py-3">
+                      <span class="flex size-7 items-center justify-center rounded-full bg-brand-50 font-medium text-brand-700">{who[0]}</span>
+                      <span class="flex-1"><span class="block font-medium text-neutral-800">{who}</span><span class="text-neutral-500">{what}</span></span>
+                      <span class="text-neutral-400">{when}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-          <h3 class="text-base font-medium text-neutral-900">{item.title}</h3>
-          <p class="mt-1.5 text-sm leading-relaxed text-neutral-500">{item.description}</p>
+
+          <!-- Caption -->
+          <div class="flex items-start gap-4 px-6 py-8 sm:px-8">
+            <span class={`flex size-12 shrink-0 items-center justify-center rounded-md bg-gradient-to-b ${step.tile} text-lg font-medium text-white shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.3),0_4px_10px_-4px_rgb(0_0_0_/_0.3)]`}>
+              {step.n}
+            </span>
+            <p class="section-title text-lg leading-snug sm:text-xl">
+              {step.title} <span class="text-neutral-400">{step.rest}</span>
+            </p>
+          </div>
         </div>
       ))}
     </div>
