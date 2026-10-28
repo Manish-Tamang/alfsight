@@ -15,7 +15,7 @@ import { buttonClass } from "@/components/ui/Button";
 const listWrap = "flex w-full flex-col gap-3";
 
 const cardShell =
-  "relative flex w-full overflow-hidden rounded-xl border border-neutral-200 bg-white transition-[border-color,box-shadow] hover:border-brand-200 hover:shadow-[0_4px_12px_-4px_rgb(0_0_0_/_0.08)]";
+  "relative flex w-full overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5 ring-1 ring-black/5 transition-shadow hover:shadow-lg hover:shadow-black/5 hover:ring-brand-200";
 
 const actionBtn = buttonClass("primary", "sm");
 
@@ -85,7 +85,7 @@ export function WidgetsGrid() {
 
 function WidgetPreview({ feedId }: { feedId: string }) {
   return (
-    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden border-r border-neutral-200 bg-neutral-50">
+    <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden border-r border-neutral-200/80 bg-neutral-50 hatch">
       <iframe
         src={getPreviewUrl(feedId)}
         title=""
@@ -205,8 +205,8 @@ function WidgetCard({ feed, onDelete }: { feed: FeedMeta; onDelete: () => void }
 
 function EmptyState() {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white px-4 py-16 text-center">
-      <div className="mx-auto mb-5 flex size-12 items-center justify-center rounded-xl border border-neutral-200 bg-brand-50 text-brand-700 shadow-sm">
+    <div className="rounded-2xl bg-white px-4 py-16 text-center shadow-sm shadow-black/5 ring-1 ring-black/5">
+      <div className="mx-auto mb-5 flex size-12 items-center justify-center rounded-[10px] bg-gradient-to-b from-brand-400 to-brand-600 text-white shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.3),0_4px_10px_-4px_rgb(0_0_0_/_0.3)]">
         <Camera size={20} strokeWidth={1.75} />
       </div>
       <h3 className="text-base font-semibold text-neutral-900">No widgets yet</h3>

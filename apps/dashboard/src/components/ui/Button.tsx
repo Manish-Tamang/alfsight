@@ -13,25 +13,25 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   kbd?: string;
 }
 
-// Dub-style buttons: flat fills, 1px border, soft ring on hover.
+// Studio-style buttons: glossy brand fill with an inset highlight ring.
 export const buttonBase =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium transition-all cursor-pointer disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:shadow-none disabled:ring-0";
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] font-medium transition-all cursor-pointer active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-none disabled:bg-neutral-100 disabled:text-neutral-400 disabled:shadow-none disabled:active:scale-100";
 
 export const buttonVariants: Record<Variant, string> = {
   primary:
-    "border-brand-600 bg-brand-500 text-white shadow-[var(--shadow-card)] hover:bg-brand-600 hover:ring-4 hover:ring-brand-100",
+    "bg-gradient-to-b from-brand-400 to-brand-600 text-white shadow-[inset_0_0_0_2px_var(--color-brand-600),inset_0_0_0_3px_rgb(255_255_255_/_0.3),inset_0_0_10px_rgb(255_255_255_/_0.2)] hover:shadow-[inset_0_0_0_2px_var(--color-brand-600),inset_0_0_0_3px_rgb(255_255_255_/_0.5),inset_0_0_20px_rgb(255_255_255_/_0.4)]",
   secondary:
-    "border-neutral-200 bg-white text-neutral-900 shadow-[var(--shadow-card)] hover:bg-neutral-50 hover:ring-4 hover:ring-neutral-100",
+    "bg-white text-neutral-900 shadow-[0_0_0_1px_rgb(0_0_0_/_0.08),0_1px_2px_rgb(0_0_0_/_0.05)] hover:bg-neutral-50",
   ghost:
-    "border-transparent bg-transparent text-neutral-600 hover:bg-black/5 hover:text-neutral-900",
+    "bg-transparent text-neutral-600 hover:bg-black/5 hover:text-neutral-900",
   danger:
-    "border-red-500 bg-red-500 text-white shadow-[var(--shadow-card)] hover:bg-red-600 hover:ring-4 hover:ring-red-100",
+    "bg-gradient-to-b from-red-400 to-red-600 text-white shadow-[inset_0_0_0_2px_#dc2626,inset_0_0_0_3px_rgb(255_255_255_/_0.3),inset_0_0_10px_rgb(255_255_255_/_0.2)]",
 };
 
 export const buttonSizes: Record<Size, string> = {
   sm: "h-8 px-3 text-[13px]",
   md: "h-9 px-4 text-sm",
-  lg: "h-10 px-5 text-sm",
+  lg: "h-11 px-5 text-[15px]",
 };
 
 export function buttonClass(
@@ -84,7 +84,7 @@ export function Kbd({
       className={cn(
         "hidden rounded px-1.5 py-px font-mono text-[11px] font-medium md:inline-block",
         dark
-          ? "bg-brand-600 text-white"
+          ? "bg-white/20 text-white ring-1 ring-white/30"
           : "border border-neutral-200 bg-neutral-100 text-neutral-500",
       )}
     >

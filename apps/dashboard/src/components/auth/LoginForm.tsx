@@ -38,12 +38,12 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={submit} className="space-y-5 rounded-xl border border-neutral-200 bg-white p-6 shadow-[var(--shadow-card)]">
-      <div className="flex size-10 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-700">
+    <form onSubmit={submit} className="space-y-5 rounded-2xl bg-white p-6 shadow-xl shadow-black/5 ring-1 ring-black/5">
+      <div className="flex size-10 items-center justify-center rounded-[10px] border border-brand-200 bg-brand-50 text-brand-700">
         <KeyRound size={18} strokeWidth={1.75} />
       </div>
       <div>
-        <h1 className="font-display text-xl font-medium text-neutral-900">Sign in to Alfsight</h1>
+        <h1 className="page-title text-xl">Sign in to Alfsight</h1>
         <p className="mt-1 text-sm text-neutral-500">
           Paste the <code className="rounded bg-neutral-100 px-1 font-mono text-[12px]">ADMIN_TOKEN</code> you set on the API Worker.
         </p>

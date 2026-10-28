@@ -116,7 +116,7 @@ export function WidgetEditor({ feedId }: Props) {
         <div className="flex min-w-0 items-center gap-2">
           <a
             href="/"
-            className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+            className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-white text-neutral-600 shadow-[0_0_0_1px_rgb(0_0_0_/_0.08),0_1px_2px_rgb(0_0_0_/_0.05)] transition-colors hover:bg-neutral-50 hover:text-neutral-900"
             aria-label="Back"
           >
             <ChevronLeft size={16} />
@@ -155,9 +155,9 @@ export function WidgetEditor({ feedId }: Props) {
       )}
 
       {/* Main area */}
-      <div className="flex min-h-0 flex-1 gap-0 overflow-hidden rounded-xl border border-neutral-200">
+      <div className="flex min-h-0 flex-1 gap-0 overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5 ring-1 ring-black/5">
         {/* Preview */}
-        <div className="flex flex-1 flex-col bg-neutral-50">
+        <div className="flex flex-1 flex-col bg-neutral-50 hatch">
           <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-3 py-2">
             <span className="text-xs font-medium text-neutral-500">Preview</span>
             <div className="flex items-center gap-0.5 rounded-lg border border-neutral-200 p-0.5">

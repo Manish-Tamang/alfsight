@@ -29,12 +29,12 @@ export function CreateWidget() {
 
   return (
     <div className="mx-auto w-full max-w-[520px]">
-      <h1 className="font-display text-2xl font-medium text-neutral-900">New widget</h1>
+      <h1 className="page-title text-2xl sm:text-[28px]">New widget</h1>
       <p className="mt-1 text-sm text-neutral-500">
         Connect a public Instagram profile. You can customize layout and theme in the editor.
       </p>
 
-      <form onSubmit={submit} className="mt-6 space-y-5 rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
+      <form onSubmit={submit} className="mt-6 space-y-5 rounded-2xl bg-white p-5 shadow-sm shadow-black/5 ring-1 ring-black/5 sm:p-6">
         <Field label="Widget name">
           <TextInput
             required

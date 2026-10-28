@@ -4,12 +4,16 @@ import { LoginForm } from "@/components/auth/LoginForm";
 ---
 
 <BaseLayout title="Sign in | Alfsight">
-  <main class="flex min-h-screen flex-col items-center justify-center bg-[var(--color-bg)] px-4">
-    <a href="/" class="mb-8 flex items-center gap-2 text-black">
+  <main class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-4">
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-[520px]" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(80%_70%_at_50%_0%,var(--color-brand-100),transparent_70%),radial-gradient(40%_50%_at_15%_10%,rgb(186_230_253_/_0.6),transparent_70%),radial-gradient(40%_50%_at_85%_5%,rgb(167_243_208_/_0.7),transparent_70%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(15_134_58_/_0.18)_1px,transparent_1.5px)] bg-[length:18px_18px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]"></div>
+    </div>
+    <a href="/" class="relative mb-8 flex items-center gap-2 text-black">
       <img src="/alfsight.png" alt="" width="450" height="450" class="h-7 w-7" />
-      <span class="font-display text-lg font-bold tracking-tight">Alfsight</span>
+      <span class="font-display text-xl font-medium tracking-tight text-neutral-800">Alfsight</span>
     </a>
-    <div class="w-full max-w-sm">
+    <div class="relative w-full max-w-sm">
       <LoginForm client:load />
     </div>
   </main>
