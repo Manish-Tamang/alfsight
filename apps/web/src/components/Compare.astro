@@ -1,46 +1,107 @@
 ---
 // Keep claims about Elfsight general; their plans and limits change over time.
-const rows = [
-  { label: "Price", alfsight: "Free, self-hosted", elfsight: "Monthly subscription for higher tiers" },
-  { label: "Widget view limits", alfsight: "None, beyond your Cloudflare quota", elfsight: "Capped per plan" },
-  { label: "Third-party branding", alfsight: "Never", elfsight: "Shown on the free plan" },
-  { label: "Source code", alfsight: "Open source, MIT", elfsight: "Closed source" },
-  { label: "Where data lives", alfsight: "Your own Cloudflare account", elfsight: "Vendor servers" },
-  { label: "Style isolation", alfsight: "Shadow DOM web component", elfsight: "Hosted embed script" },
+const elfsight = [
+  "Monthly subscription for higher tiers",
+  "Widget views capped per plan",
+  "Elfsight branding on the free plan",
+  "Closed source",
+  "Data hosted on vendor servers",
 ];
+
+const alfsight = [
+  "Unlimited widgets and views",
+  "No third-party branding, ever",
+  "Open source under the MIT license",
+  "Your data in your own Cloudflare account",
+  "Shadow DOM widget under 6 kB gzipped",
+  "Automatic sync every 6 hours",
+];
+
+const check =
+  '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>';
+const minus = '<circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>';
 ---
 
-<section id="compare" class="grid-section bg-neutral-100">
-  <div class="grid-col bg-white px-4 pb-16 sm:px-10 sm:pb-20">
-    <div class="py-16 text-center sm:py-20">
-      <p class="text-sm font-medium text-brand-700">Compare</p>
-      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Alfsight vs Elfsight</h2>
-      <p class="mx-auto mt-3 max-w-md text-base text-neutral-500 sm:text-lg">
-        The same embeddable Instagram feed, without the subscription.
-      </p>
+<section id="compare">
+  <div class="frame">
+    <div class="dots-x mx-2"></div>
+    <h2 class="section-title mx-auto max-w-xl px-4 py-20 text-center text-3xl sm:text-4xl">
+      Everything Elfsight does, <span class="hl">without the subscription</span> or the view limits.
+    </h2>
+    <div class="dots-x mx-2"></div>
+
+    <div class="grid gap-1 p-1 md:grid-cols-2">
+      <!-- Elfsight -->
+      <article class="flex flex-col rounded-2xl bg-white ring-1 ring-neutral-200">
+        <div class="flex-1 px-8 py-10 sm:px-14 sm:py-12">
+          <h3 class="text-xl font-medium text-neutral-900">Elfsight</h3>
+          <p class="mt-2 max-w-xs text-base text-neutral-600">A hosted widget service you rent month to month.</p>
+          <p class="mt-6 text-sm text-neutral-500">Pricing</p>
+          <p class="mt-1 flex items-baseline gap-2">
+            <span class="text-4xl font-semibold tracking-tight text-neutral-900">Paid</span>
+            <span class="text-sm text-neutral-500">plans per month</span>
+          </p>
+          <ul class="mt-8 space-y-3">
+            {elfsight.map((item) => (
+              <li class="flex items-start gap-3 text-base text-neutral-600">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" class="mt-0.5 size-5 shrink-0 text-neutral-400" set:html={minus} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="flex h-14 items-center justify-center rounded-b-2xl border-t border-neutral-200 bg-neutral-50 text-base font-medium text-neutral-500">
+          Hosted SaaS
+        </div>
+      </article>
+
+      <!-- Alfsight -->
+      <article class="relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-b from-brand-500 to-brand-600 text-white">
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_0%,rgb(255_255_255_/_0.25),transparent_45%)]" aria-hidden="true"></div>
+        <div class="relative flex-1 px-8 py-10 sm:px-14 sm:py-12">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-xl font-medium">Alfsight</h3>
+            <span class="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium ring-1 ring-white/30">Open source</span>
+          </div>
+          <p class="mt-2 max-w-xs text-base text-white/85">A self-hosted widget service you own outright.</p>
+          <p class="mt-6 text-sm text-white/75">Pricing</p>
+          <p class="mt-1 flex items-baseline gap-2">
+            <span class="text-4xl font-semibold tracking-tight"><span class="text-2xl align-top">$</span>0</span>
+            <span class="text-sm text-white/80">forever, on Cloudflare's free tier for most sites</span>
+          </p>
+          <p class="mt-8 text-xs font-medium uppercase tracking-wide text-white/75">Everything you need, plus</p>
+          <ul class="mt-3 space-y-3">
+            {alfsight.map((item) => (
+              <li class="flex items-start gap-3 text-base">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 size-5 shrink-0 text-white" set:html={check} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <a
+          href="/docs#deploy-production"
+          class="relative flex h-14 items-center justify-center border-t border-white/25 bg-white/10 text-base font-semibold transition-colors hover:bg-white/20"
+        >
+          Deploy your own
+        </a>
+      </article>
     </div>
 
-    <div class="mx-auto max-w-3xl overflow-hidden rounded-xl border border-neutral-200">
-      <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] border-b border-neutral-200 bg-neutral-50 text-sm font-medium">
-        <div class="px-3 py-3 sm:px-4 text-neutral-500"></div>
-        <div class="flex items-center gap-2 border-l border-neutral-200 bg-brand-50 px-3 py-3 sm:px-4 text-brand-700">
-          <img src="/alfsight.png" alt="" class="size-4" /> Alfsight
-        </div>
-        <div class="border-l border-neutral-200 px-3 py-3 sm:px-4 text-neutral-700">Elfsight</div>
+    <p class="px-4 pt-8 text-center text-sm text-neutral-600">
+      No subscription, no view caps, no lock-in. You only pay Cloudflare if you outgrow their free tier.
+    </p>
+
+    <div class="mx-1 mt-8 flex flex-col gap-6 rounded-2xl bg-neutral-50 px-8 py-8 ring-1 ring-neutral-200/70 sm:flex-row sm:items-center sm:justify-between">
+      <div class="max-w-md">
+        <h3 class="text-lg font-medium text-neutral-800">Need a hand self-hosting?</h3>
+        <p class="mt-2 text-base leading-relaxed text-neutral-600">
+          Follow the step-by-step deploy guide, or open an issue on GitHub and we'll help you get your first widget live.
+        </p>
       </div>
-      {rows.map((row, i) => (
-        <div class:list={["grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] text-[13px] sm:text-sm", i < rows.length - 1 && "border-b border-neutral-200"]}>
-          <div class="px-3 py-3 sm:px-4 font-medium text-neutral-800">{row.label}</div>
-          <div class="flex gap-2 border-l border-neutral-200 bg-brand-50/40 px-3 py-3 sm:px-4 text-neutral-800">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 hidden size-4 shrink-0 text-brand-600 sm:block" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-            {row.alfsight}
-          </div>
-          <div class="flex gap-2 border-l border-neutral-200 px-3 py-3 sm:px-4 text-neutral-500">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mt-0.5 hidden size-4 shrink-0 text-neutral-400 sm:block" aria-hidden="true"><path d="M5 12h14"></path></svg>
-            {row.elfsight}
-          </div>
-        </div>
-      ))}
+      <a href="https://github.com/Manish-Tamang/alfsight/issues" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm self-start sm:self-auto">
+        Open an issue
+      </a>
     </div>
   </div>
 </section>

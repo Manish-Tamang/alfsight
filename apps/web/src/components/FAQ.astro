@@ -25,27 +25,42 @@ const faqs = [
     a: "Yes. Paste the two-line snippet into any HTML block or custom code embed. If the platform renders HTML, it works.",
   },
 ];
+
+const icons = [
+  '<path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/>',
+  '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  '<path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 3v9h9"/>',
+  '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+];
 ---
 
-<section id="faq" class="grid-section">
-  <div class="grid-col px-4 pb-16 sm:px-10 sm:pb-20">
-    <div class="py-16 text-center sm:py-20">
-      <p class="text-sm font-medium text-brand-700">FAQ</p>
-      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Questions, answered</h2>
-    </div>
+<section id="faq">
+  <div class="frame px-4 pb-20 sm:px-14">
+    <h2 class="section-title mx-auto max-w-xl py-20 text-center text-3xl sm:text-4xl">
+      Have questions? <span class="hl">Browse the FAQs</span> to find the answers you need.
+    </h2>
 
-    <div class="mx-auto max-w-2xl divide-y divide-neutral-200 border-y border-neutral-200">
-      {faqs.map((f) => (
-        <details class="group py-1">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-base font-medium text-neutral-900 [&::-webkit-details-marker]:hidden">
-            {f.q}
-            <span class="flex size-6 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition-transform group-open:rotate-45 group-open:border-brand-200 group-open:bg-brand-50 group-open:text-brand-700">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="size-3.5" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+    <dl class="grid gap-x-14 gap-y-12 px-2 md:grid-cols-2 lg:px-6">
+      {faqs.map((f, i) => (
+        <div>
+          <dt class="flex items-center gap-3 text-base font-medium text-neutral-900">
+            <span class="flex size-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-b from-brand-400 to-brand-600 text-white shadow-[inset_0_0_0_1px_rgb(255_255_255_/_0.3)]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5" set:html={icons[i]} />
             </span>
-          </summary>
-          <p class="pb-5 pr-10 text-sm leading-relaxed text-neutral-600">{f.a}</p>
-        </details>
+            {f.q}
+          </dt>
+          <dd class="mt-4 text-base leading-relaxed text-neutral-600">{f.a}</dd>
+        </div>
       ))}
-    </div>
+    </dl>
+
+    <p class="mt-16 text-center text-base text-neutral-700">
+      Didn't find your answer?{" "}
+      <a href="/docs" class="font-medium text-brand-700 hover:underline">Read the docs</a>{" "}
+      or{" "}
+      <a href="https://github.com/Manish-Tamang/alfsight/issues" target="_blank" rel="noopener noreferrer" class="text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">open an issue on GitHub</a>.
+    </p>
   </div>
 </section>

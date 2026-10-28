@@ -1,0 +1,25 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+  meta: string;
+  body: string;
+  class?: string;
+  size?: "lg" | "md";
+}
+
+const { icon, title, meta, body, class: className, size = "lg" } = Astro.props;
+---
+
+<article class:list={["flex flex-col justify-between rounded-2xl bg-white p-6 ring-1 ring-neutral-200 sm:p-7", className]}>
+  <p class:list={["leading-relaxed text-neutral-800", size === "lg" ? "text-lg tracking-tight" : "text-base"]}>{body}</p>
+  <div class:list={["flex items-center gap-3", size === "lg" ? "mt-10" : "mt-6"]}>
+    <span class="flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand-700 ring-1 ring-brand-200">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" set:html={icon} />
+    </span>
+    <span class="leading-tight">
+      <span class="block text-sm font-medium text-neutral-900">{title}</span>
+      <span class="text-xs text-neutral-500">{meta}</span>
+    </span>
+  </div>
+</article>
