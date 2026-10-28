@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Embeddable Instagram feed widget service",
   "license": "MIT",
+  "packageManager": "pnpm@12.8.1",
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
     "dev:api": "pnpm --filter @instagram-widget/api dev",
@@ -19,7 +20,13 @@
     "typecheck": "pnpm -r run typecheck",
     "test": "pnpm -r run test",
     "db:generate": "pnpm --filter @instagram-widget/database generate",
-    "db:migrate": "pnpm --filter @instagram-widget/database migrate"
+    "db:migrate": "pnpm --filter @instagram-widget/database migrate",
+    "db:migrate:remote": "wrangler d1 migrations apply instagram-widget-db --remote --config apps/api/wrangler.jsonc",
+    "deploy:api": "pnpm --filter @instagram-widget/api run deploy",
+    "deploy:widget": "pnpm build:widget && wrangler pages deploy apps/widget/dist --project-name alfsight-widget --branch main",
+    "deploy:dashboard": "pnpm build:dashboard && wrangler pages deploy apps/dashboard/dist --project-name alfsight-dashboard --branch main",
+    "deploy:web": "pnpm build:web && wrangler pages deploy apps/web/dist --project-name alfsight --branch main",
+    "deploy:all": "pnpm deploy:api && pnpm deploy:widget && pnpm deploy:dashboard && pnpm deploy:web"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -29,5 +36,8 @@
     "apps/*",
     "packages/*",
     "database"
-  ]
+  ],
+  "devDependencies": {
+    "wrangler": "^3.114.17"
+  }
 }

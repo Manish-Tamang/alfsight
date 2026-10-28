@@ -1,5 +1,5 @@
 ---
-import { BookOpen, LayoutGrid, Plus, Settings } from "lucide-react";
+import { BookOpen, LayoutGrid, LogOut, Plus, Settings } from "lucide-react";
 
 const path = Astro.url.pathname;
 
@@ -51,5 +51,26 @@ const items = [
       <BookOpen size={16} strokeWidth={1.75} />
       Docs
     </a>
+    {
+      !import.meta.env.DEV && (
+        <button
+          type="button"
+          data-sign-out
+          class="flex h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/5 hover:text-neutral-900"
+        >
+          <LogOut size={16} strokeWidth={1.75} />
+          Sign out
+        </button>
+      )
+    }
   </div>
 </aside>
+
+<script>
+  import { clearToken } from "@/lib/auth";
+
+  document.querySelector("[data-sign-out]")?.addEventListener("click", () => {
+    clearToken();
+    window.location.href = "/login";
+  });
+</script>

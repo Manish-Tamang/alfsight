@@ -20,6 +20,7 @@ export interface Env {
   META_REDIRECT_URI: string;
   OPENHANDLE_TEST_KEY?: string;
   OPENHANDLE_LIVE_KEY?: string;
+  ADMIN_TOKEN?: string;
 }
 
 /**

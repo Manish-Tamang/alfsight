@@ -10,7 +10,7 @@ import {
   Copy,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import { WIDGET_ORIGIN, getEmbedSnippet } from "@/lib/embed";
+import { WIDGET_ORIGIN, getEmbedSnippet, getPreviewUrl } from "@/lib/embed";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
@@ -196,7 +196,7 @@ export function WidgetEditor({ feedId }: Props) {
               <iframe
                 key={iframeKey}
                 ref={iframeRef}
-                src={`${WIDGET_ORIGIN}/?feed=${feedId}`}
+                src={getPreviewUrl(feedId)}
                 title="Widget preview"
                 className="h-[min(640px,70vh)] w-full border-0"
                 onLoad={sendPreviewSettings}

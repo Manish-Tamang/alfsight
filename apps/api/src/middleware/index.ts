@@ -32,11 +32,24 @@ export const servicesMiddleware = createMiddleware<{
   await next();
 });
 
+/** User id that owns feeds created with the admin token. */
+export const ADMIN_USER_ID = "admin";
+
+/** Compare two strings without leaking where they differ. */
+async function safeEqual(a: string, b: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const [hashA, hashB] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(a)),
+    crypto.subtle.digest("SHA-256", encoder.encode(b)),
+  ]);
+  return crypto.subtle.timingSafeEqual(hashA, hashB);
+}
+
 /**
- * Placeholder auth middleware.
+ * Single-tenant auth middleware.
  *
- * In development, it optionally reads a dev user header.
- * Replace this with a real auth provider (e.g. JWT, session) later.
+ * In development, it reads the `x-dev-user-id` header.
+ * In production, `Authorization: Bearer <ADMIN_TOKEN>` signs in as the admin.
  */
 export const authMiddleware = createMiddleware<{
   Bindings: Env;
@@ -47,8 +60,11 @@ export const authMiddleware = createMiddleware<{
     const devUserId = c.req.header("x-dev-user-id");
     c.set("userId", devUserId ?? null);
   } else {
-    // TODO: Implement real authentication
-    c.set("userId", null);
+    const header = c.req.header("authorization") ?? "";
+    const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+    const adminToken = c.env.ADMIN_TOKEN ?? "";
+    const valid = token !== "" && adminToken !== "" && (await safeEqual(token, adminToken));
+    c.set("userId", valid ? ADMIN_USER_ID : null);
   }
 
   await next();
