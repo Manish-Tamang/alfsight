@@ -1,5 +1,6 @@
 ---
 import Logo from "./ui/Logo.astro";
+import GitHubIcon from "./ui/GitHubIcon.astro";
 
 const columns = [
   {
@@ -7,6 +8,7 @@ const columns = [
     links: [
       { label: "Features", href: "/#features" },
       { label: "How it works", href: "/#how-it-works" },
+      { label: "Compare", href: "/#compare" },
       { label: "Dashboard", href: "/dashboard" },
     ],
   },
@@ -15,7 +17,9 @@ const columns = [
     links: [
       { label: "Docs", href: "/docs" },
       { label: "API reference", href: "/docs#api-reference" },
+      { label: "FAQ", href: "/#faq" },
       { label: "GitHub", href: "https://github.com/Manish-Tamang/alfsight" },
+      { label: "MIT License", href: "https://github.com/Manish-Tamang/alfsight/blob/main/LICENSE" },
     ],
   },
 ];
@@ -32,7 +36,16 @@ const columns = [
         <p class="mt-4 text-sm text-neutral-500">
           Self-hosted Instagram feed widgets, cached at the edge.
         </p>
-        <p class="mt-6 text-xs text-neutral-400">&copy; {new Date().getFullYear()} Alfsight</p>
+        <a
+          href="https://github.com/Manish-Tamang/alfsight"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-5 inline-flex size-8 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900"
+          aria-label="Alfsight on GitHub"
+        >
+          <GitHubIcon class="size-4" />
+        </a>
+        <p class="mt-5 text-xs text-neutral-400">&copy; {new Date().getFullYear()} Alfsight &middot; MIT licensed</p>
       </div>
 
       <div class="grid grid-cols-2 gap-12">

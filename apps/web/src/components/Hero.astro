@@ -1,10 +1,15 @@
 ---
 import GridPattern from "./ui/GridPattern.astro";
+import GitHubIcon from "./ui/GitHubIcon.astro";
 ---
 
 <section class="grid-section !border-t-0">
   <div class="grid-col overflow-hidden px-4 pt-28 pb-16 sm:pt-36 sm:pb-24">
     <GridPattern />
+    <div
+      class="pointer-events-none absolute left-1/2 top-24 h-64 w-[640px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl"
+      aria-hidden="true"
+    ></div>
 
     <div class="relative mx-auto flex max-w-2xl flex-col items-center text-center">
       <a
@@ -13,7 +18,13 @@ import GridPattern from "./ui/GridPattern.astro";
         rel="noopener noreferrer"
         class="group flex animate-slide-up-fade items-center rounded-full border border-neutral-300 bg-white text-xs font-medium drop-shadow-sm transition-colors hover:bg-neutral-50 sm:divide-x sm:divide-neutral-300 [--offset:10px]"
       >
-        <span class="py-1.5 pl-4 text-neutral-800 sm:pr-2.5">Self-hosted on Cloudflare</span>
+        <span class="flex items-center gap-1.5 py-1.5 pl-3 text-neutral-800 sm:pr-2.5">
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-60"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-brand-500"></span>
+          </span>
+          MIT licensed &middot; Self-hosted on Cloudflare
+        </span>
         <span class="flex items-center gap-1.5 p-1.5 pl-2.5 text-neutral-500">
           <span class="hidden sm:block">Star on GitHub</span>
           <span class="rounded-full bg-brand-50 p-0.5 text-brand-700">
@@ -24,41 +35,31 @@ import GridPattern from "./ui/GridPattern.astro";
         </span>
       </a>
 
-      <h1 class="mt-5 animate-slide-up-fade text-pretty font-display text-4xl font-medium text-neutral-900 [--offset:20px] [animation-delay:100ms] sm:text-5xl sm:leading-[1.15]">
+      <h1 class="mt-5 animate-slide-up-fade text-pretty font-display text-4xl font-medium text-neutral-900 [--offset:20px] [animation-delay:100ms] sm:text-6xl sm:leading-[1.1]">
         The open-source alternative to{" "}
         <span class="bg-gradient-to-r from-brand-600 to-brand-500 bg-clip-text text-transparent">Elfsight</span>
       </h1>
 
-      <p class="mt-5 animate-slide-up-fade text-pretty text-base text-neutral-600 [animation-delay:200ms] sm:text-xl">
+      <p class="mt-5 max-w-xl animate-slide-up-fade text-pretty text-base text-neutral-600 [animation-delay:200ms] sm:text-xl">
         Self-hosted Instagram feed widgets for any website. No subscription and no view limits, just one script tag.
       </p>
     </div>
 
-    <div class="relative mx-auto mt-10 flex max-w-fit animate-slide-up-fade gap-4 [--offset:5px] [animation-delay:300ms]">
-      <a href="/docs" class="btn btn-primary">Get started</a>
+    <div class="relative mx-auto mt-10 flex max-w-fit animate-slide-up-fade flex-col gap-3 [--offset:5px] [animation-delay:300ms] sm:flex-row sm:gap-4">
+      <a href="/docs" class="btn btn-primary group">
+        Get started
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
       <a href="https://github.com/Manish-Tamang/alfsight" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-        View on GitHub
+        <GitHubIcon class="size-4" />
+        Star on GitHub
       </a>
     </div>
-  </div>
-</section>
 
-<section class="grid-section bg-neutral-100">
-  <div class="grid-col px-4 py-12 sm:px-12 sm:py-16">
-    <div class="mx-auto max-w-xl animate-slide-up-fade overflow-hidden rounded-xl border border-neutral-200 bg-white text-left shadow-sm [animation-delay:400ms]">
-      <div class="flex items-center gap-1.5 border-b border-neutral-200 px-4 py-2.5">
-        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
-        <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
-        <span class="ml-3 font-mono text-[11px] text-neutral-500">index.html</span>
-      </div>
-      <pre class="overflow-x-auto p-4 font-mono text-[12.5px] leading-relaxed"><code class="text-neutral-800"><span class="text-neutral-400">&lt;!-- Add to any page --&gt;</span>
-<span class="text-rose-600">&lt;script</span> <span class="text-blue-600">src</span>=<span class="text-emerald-700">"https://your-cdn.com/instagram.js"</span> <span class="text-blue-600">defer</span><span class="text-rose-600">&gt;&lt;/script&gt;</span>
-
-<span class="text-rose-600">&lt;instagram-feed</span>
-  <span class="text-blue-600">feed</span>=<span class="text-emerald-700">"YOUR_FEED_ID"</span>
-  <span class="text-blue-600">api-base</span>=<span class="text-emerald-700">"https://api.your-site.com"</span>
-<span class="text-rose-600">&gt;&lt;/instagram-feed&gt;</span></code></pre>
-    </div>
+    <p class="relative mt-6 animate-slide-up-fade text-center text-xs text-neutral-500 [animation-delay:400ms]">
+      Free forever &middot; Under 3&nbsp;kB gzipped &middot; Deploys in minutes
+    </p>
   </div>
 </section>

@@ -1,0 +1,51 @@
+---
+const faqs = [
+  {
+    q: "Is Alfsight really free?",
+    a: "Yes. The code is MIT licensed and runs on your own Cloudflare account. Small and medium sites usually fit within Cloudflare's free tier, so there is no monthly bill to pay.",
+  },
+  {
+    q: "Do I need an Instagram API token or OAuth?",
+    a: "No. Public profile data is fetched server-side through the OpenHandle API, so you only need an OpenHandle key (a free test key is available). No Instagram tokens ever reach the browser.",
+  },
+  {
+    q: "Can I show a private Instagram account?",
+    a: "No. Alfsight only displays public profiles, the same posts anyone can see on Instagram.",
+  },
+  {
+    q: "How often do new posts appear?",
+    a: "A Cloudflare cron trigger re-syncs every feed every 6 hours, and you can trigger a manual sync from the dashboard at any time.",
+  },
+  {
+    q: "Will the widget clash with my site's CSS?",
+    a: "No. The widget is a web component rendered in Shadow DOM, so your styles don't leak in and its styles don't leak out.",
+  },
+  {
+    q: "Does it work with WordPress, Shopify or Webflow?",
+    a: "Yes. Paste the two-line snippet into any HTML block or custom code embed. If the platform renders HTML, it works.",
+  },
+];
+---
+
+<section id="faq" class="grid-section">
+  <div class="grid-col px-4 pb-16 sm:px-10 sm:pb-20">
+    <div class="py-16 text-center sm:py-20">
+      <p class="text-sm font-medium text-brand-700">FAQ</p>
+      <h2 class="mt-2 font-display text-3xl font-medium text-neutral-900 sm:text-4xl">Questions, answered</h2>
+    </div>
+
+    <div class="mx-auto max-w-2xl divide-y divide-neutral-200 border-y border-neutral-200">
+      {faqs.map((f) => (
+        <details class="group py-1">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-base font-medium text-neutral-900 [&::-webkit-details-marker]:hidden">
+            {f.q}
+            <span class="flex size-6 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition-transform group-open:rotate-45 group-open:border-brand-200 group-open:bg-brand-50 group-open:text-brand-700">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="size-3.5" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            </span>
+          </summary>
+          <p class="pb-5 pr-10 text-sm leading-relaxed text-neutral-600">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
