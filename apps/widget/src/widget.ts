@@ -13,6 +13,7 @@ class InstagramFeedWidget extends HTMLElement {
   private feedId: string | null = null;
   private apiBase: string | undefined;
   private feedData: FeedResponse | null = null;
+  private connected = false;
 
   static get observedAttributes(): string[] {
     return ["feed", "api-base"];
@@ -27,10 +28,12 @@ class InstagramFeedWidget extends HTMLElement {
     this.feedId = this.getAttribute("feed");
     this.apiBase = this.getAttribute("api-base") ?? undefined;
     window.addEventListener("message", this.handlePreviewMessage);
+    this.connected = true;
     this.render();
   }
 
   disconnectedCallback(): void {
+    this.connected = false;
     window.removeEventListener("message", this.handlePreviewMessage);
   }
 
@@ -49,11 +52,13 @@ class InstagramFeedWidget extends HTMLElement {
 
     if (name === "feed") {
       this.feedId = newValue;
-      this.render();
     } else if (name === "api-base") {
       this.apiBase = newValue ?? undefined;
-      this.render();
     }
+
+    // During upgrade this fires once per attribute before connectedCallback,
+    // so only re-render for changes made after the element is on the page.
+    if (this.connected) this.render();
   }
 
   private async render(): Promise<void> {
