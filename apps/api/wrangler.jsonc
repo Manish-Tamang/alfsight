@@ -5,6 +5,11 @@
   "main": "src/index.ts",
   "compatibility_date": "2024-09-25",
 
+  // Keep the custom domain attached on every deploy (also keeps *.workers.dev).
+  // The hostname must not have another DNS record, e.g. an old Vercel CNAME.
+  "routes": [{ "pattern": "api.manishtamang.com", "custom_domain": true }],
+  "workers_dev": true,
+
   // D1 Database
   "d1_databases": [
     {
