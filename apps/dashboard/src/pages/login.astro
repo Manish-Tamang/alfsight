@@ -1,0 +1,16 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { LoginForm } from "@/components/auth/LoginForm";
+---
+
+<BaseLayout title="Sign in | Alfsight">
+  <main class="flex min-h-screen flex-col items-center justify-center bg-[var(--color-bg)] px-4">
+    <a href="/" class="mb-8 flex items-center gap-2 text-black">
+      <img src="/alfsight.png" alt="" width="450" height="450" class="h-7 w-7" />
+      <span class="font-display text-lg font-bold tracking-tight">Alfsight</span>
+    </a>
+    <div class="w-full max-w-sm">
+      <LoginForm client:load />
+    </div>
+  </main>
+</BaseLayout>

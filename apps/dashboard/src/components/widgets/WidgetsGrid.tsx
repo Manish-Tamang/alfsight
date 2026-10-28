@@ -8,7 +8,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import { getEmbedSnippet, WIDGET_ORIGIN } from "@/lib/embed";
+import { getEmbedSnippet, getPreviewUrl } from "@/lib/embed";
 import { cn } from "@/lib/cn";
 import { buttonClass } from "@/components/ui/Button";
 
@@ -87,7 +87,7 @@ function WidgetPreview({ feedId }: { feedId: string }) {
   return (
     <div className="relative flex h-full min-h-[120px] w-[168px] shrink-0 items-center justify-center overflow-hidden border-r border-neutral-200 bg-neutral-50">
       <iframe
-        src={`${WIDGET_ORIGIN}/?feed=${feedId}`}
+        src={getPreviewUrl(feedId)}
         title=""
         className="pointer-events-none absolute left-1/2 top-[58%] h-[240px] w-[360px] -translate-x-1/2 -translate-y-1/2 scale-[0.42] border-0"
         loading="lazy"
