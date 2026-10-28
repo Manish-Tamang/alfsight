@@ -33,7 +33,7 @@ A lightweight, embeddable Instagram feed widget service and management dashboard
 ### Applications & Packages
 - **API (`apps/api`)**: [Hono](https://hono.dev/) v4, [Drizzle ORM](https://orm.drizzle.team/), [Zod](https://zod.dev/)
 - **Dashboard (`apps/dashboard`)**: [React 19](https://react.dev/), [Vite 6](https://vite.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [React Router v7](https://reactrouter.com/), [Lucide React](https://lucide.dev/) (Inter & Satoshi typography)
-- **Widget (`apps/widget`)**: Vanilla Web Component (`customElements` + Shadow DOM), zero framework runtime (< 3 kB gzipped)
+- **Widget (`apps/widget`)**: Vanilla Web Component (`customElements` + Shadow DOM), zero framework runtime (< 6 kB gzipped)
 - **Database (`database`)**: [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite) with Drizzle ORM migrations
 - **Cache**: [Cloudflare KV](https://developers.cloudflare.com/kv/) for low-latency edge feed delivery
 - **Background Sync**: Cloudflare Cron Triggers (automatic scheduled feed refreshes)
@@ -192,18 +192,31 @@ pnpm dev
 
 ## Build & Deployment
 
+Everything deploys to Cloudflare from the repo root. The API is a Worker; the widget, dashboard and website are Pages projects.
+
 ```bash
-# Build all apps and packages
-pnpm build
+# 1. One-time setup
+pnpm wrangler login
+pnpm wrangler d1 create instagram-widget-db        # paste database_id into apps/api/wrangler.jsonc
+pnpm wrangler kv namespace create FEED_CACHE       # paste id into apps/api/wrangler.jsonc
+pnpm db:migrate:remote
 
-# Deploy Cloudflare Worker API
-pnpm --filter @instagram-widget/api exec wrangler deploy
+# 2. Secrets
+pnpm wrangler secret put ADMIN_TOKEN --config apps/api/wrangler.jsonc          # dashboard sign-in
+pnpm wrangler secret put OPENHANDLE_LIVE_KEY --config apps/api/wrangler.jsonc
 
-# Build Dashboard (outputs to apps/dashboard/dist)
-pnpm build:dashboard
+# 3. Deploy
+pnpm deploy:api
+pnpm deploy:widget
+pnpm deploy:dashboard   # needs apps/dashboard/.env.production (see .env.example)
+pnpm deploy:web         # needs apps/web/.env.production (see .env.example)
+```
 
-# Build Widget bundle (outputs to apps/widget/dist)
-pnpm build:widget
+Embed a widget on any site:
+
+```html
+<script src="https://alfsight-widget.pages.dev/instagram.iife.js" defer></script>
+<instagram-feed feed="YOUR_FEED_ID" api-base="https://instagram-widget-api.<you>.workers.dev"></instagram-feed>
 ```
 
 ---

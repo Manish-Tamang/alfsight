@@ -1,6 +1,7 @@
 ---
 import Logo from "./ui/Logo.astro";
 import GitHubIcon from "./ui/GitHubIcon.astro";
+import { DASHBOARD_URL } from "@/lib/site";
 
 interface Props {
   links?: { label: string; href: string; active?: boolean }[];
@@ -51,7 +52,7 @@ const {
         <GitHubIcon class="size-4" />
         GitHub
       </a>
-      <a href="/dashboard" class="btn btn-primary btn-sm">Dashboard</a>
+      <a href={DASHBOARD_URL} class="btn btn-primary btn-sm">Dashboard</a>
     </div>
   </div>
 </nav>

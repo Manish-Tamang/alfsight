@@ -1,6 +1,7 @@
 ---
 import Logo from "./ui/Logo.astro";
 import GitHubIcon from "./ui/GitHubIcon.astro";
+import { DASHBOARD_URL } from "@/lib/site";
 
 const columns = [
   {
@@ -9,7 +10,7 @@ const columns = [
       { label: "Features", href: "/#features" },
       { label: "How it works", href: "/#how-it-works" },
       { label: "Compare", href: "/#compare" },
-      { label: "Dashboard", href: "/dashboard" },
+      { label: "Dashboard", href: DASHBOARD_URL },
     ],
   },
   {

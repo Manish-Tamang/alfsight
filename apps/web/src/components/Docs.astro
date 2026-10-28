@@ -1,4 +1,6 @@
 ---
+import { DASHBOARD_URL } from "@/lib/site";
+
 const endpoints = [
   { method: "GET", path: "/api/feeds/:id", description: "Fetch feed metadata and posts (cached via KV)" },
   { method: "POST", path: "/api/feeds", description: "Create a new feed configuration" },
@@ -45,7 +47,7 @@ const endpoints = [
 
     <div class="mt-10 flex justify-center gap-4">
       <a href="/docs" class="btn btn-primary">Read the docs</a>
-      <a href="/dashboard" class="btn btn-secondary">Open dashboard</a>
+      <a href={DASHBOARD_URL} class="btn btn-secondary">Open dashboard</a>
     </div>
   </div>
 </section>

@@ -53,7 +53,7 @@ import CodeBlock from "@/components/ui/CodeBlock.astro";
         <section id="overview" class="docs-section">
           <h1 class="font-display text-4xl font-medium text-neutral-900">Documentation</h1>
           <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">
-            Alfsight is a self-hosted alternative to Elfsight for embedding Instagram feeds on any website. It fetches public Instagram data via the <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">OpenHandle API</a>, caches it at the edge with Cloudflare KV, and serves it through a zero-dependency Web Component that weighs under 3 kB gzipped.
+            Alfsight is a self-hosted alternative to Elfsight for embedding Instagram feeds on any website. It fetches public Instagram data via the <a href="https://openhandle.dev" target="_blank" rel="noopener noreferrer" class="font-medium text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-600">OpenHandle API</a>, caches it at the edge with Cloudflare KV, and serves it through a zero-dependency Web Component that weighs under 6 kB gzipped.
           </p>
           <div class="mt-6 rounded-lg border border-[var(--color-border-soft)] bg-[var(--color-surface-2)] p-4 text-[13px] leading-relaxed text-[var(--color-text-muted)]">
             <strong class="text-[var(--color-text)]">Architecture:</strong> Monorepo with pnpm workspaces &mdash; API (Hono on Cloudflare Workers), Dashboard (Astro + React), Widget (vanilla Web Component), and shared packages for types and validation. Data flows: visitor loads widget &rarr; widget calls API &rarr; API checks KV cache &rarr; cache miss hits D1 &rarr; cron syncs from OpenHandle.
@@ -584,45 +584,45 @@ if (!res.ok) {
           <h2 class="docs-h2">Authentication</h2>
           <p class="docs-p">In <strong>development</strong>, pass the dev header to simulate a user:</p>
           <CodeBlock lang="http" title="HTTP header" code={`x-dev-user-id: dev-user-1`} />
-          <p class="docs-p">The dashboard sends this header automatically in development mode. In production, replace the auth middleware in <code class="docs-code">apps/api/src/middleware/index.ts</code> with your auth provider (JWT, session cookies, etc.).</p>
+          <p class="docs-p">The dashboard sends this header automatically in development mode. In <strong>production</strong>, the dev header is ignored and authenticated routes require <code class="docs-code">Authorization: Bearer &lt;ADMIN_TOKEN&gt;</code>. The dashboard asks for this token on its sign-in page.</p>
         </section>
 
         <!-- Production Deploy -->
         <section id="deploy-production" class="docs-section">
           <h2 class="docs-h2">Production deploy</h2>
+          <p class="docs-p">Everything runs on Cloudflare: the API is a Worker, and the widget, dashboard and this site are Cloudflare Pages projects. All commands run from the repo root.</p>
 
-          <h3 class="docs-h3">1. Set secrets</h3>
-          <CodeBlock lang="bash" code={`# Set each secret on Cloudflare
-wrangler secret put OPENHANDLE_LIVE_KEY
-wrangler secret put OPENHANDLE_TEST_KEY
-wrangler secret put META_APP_ID
-wrangler secret put META_APP_SECRET
-wrangler secret put META_REDIRECT_URI`} />
+          <h3 class="docs-h3">1. Log in and create the database and cache</h3>
+          <CodeBlock lang="bash" code={`pnpm wrangler login
+pnpm wrangler d1 create instagram-widget-db
+pnpm wrangler kv namespace create FEED_CACHE`} />
+          <p class="docs-p">Paste the printed <code class="docs-code">database_id</code> and KV <code class="docs-code">id</code> into <code class="docs-code">apps/api/wrangler.jsonc</code>, then create the tables:</p>
+          <CodeBlock lang="bash" code={`pnpm db:migrate:remote`} />
 
-          <h3 class="docs-h3">2. Apply migrations to production D1</h3>
-          <CodeBlock lang="bash" code={`pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
-  instagram-widget-db \\
-  --file=../../database/migrations/0000_bouncy_peter_parker.sql
+          <h3 class="docs-h3">2. Set secrets</h3>
+          <CodeBlock lang="bash" code={`# Dashboard sign-in token (generate a long random value)
+openssl rand -hex 32
+pnpm wrangler secret put ADMIN_TOKEN --config apps/api/wrangler.jsonc
 
-pnpm --filter @instagram-widget/api exec wrangler d1 execute \\
-  instagram-widget-db \\
-  --file=../../database/migrations/0001_old_risque.sql`} />
+# OpenHandle key used to fetch public Instagram data
+pnpm wrangler secret put OPENHANDLE_LIVE_KEY --config apps/api/wrangler.jsonc`} />
 
-          <h3 class="docs-h3">3. Deploy the API worker</h3>
-          <CodeBlock lang="bash" code={`pnpm --filter @instagram-widget/api exec wrangler deploy`} />
+          <h3 class="docs-h3">3. Deploy the API and widget</h3>
+          <CodeBlock lang="bash" code={`pnpm deploy:api     # → https://instagram-widget-api.<you>.workers.dev
+pnpm deploy:widget  # → https://alfsight-widget.pages.dev`} />
+          <p class="docs-p">Cron triggers (<code class="docs-code">0 */6 * * *</code>) activate on deploy and re-sync every feed every 6 hours.</p>
 
-          <h3 class="docs-h3">4. Build static apps</h3>
-          <CodeBlock lang="bash" code={`# Build everything
-pnpm build
+          <h3 class="docs-h3">4. Deploy the dashboard</h3>
+          <p class="docs-p">Point the dashboard at your API and widget URLs, then deploy:</p>
+          <CodeBlock lang="dotenv" title="apps/dashboard/.env.production" code={`PUBLIC_API_BASE=https://instagram-widget-api.<you>.workers.dev
+PUBLIC_WIDGET_URL=https://alfsight-widget.pages.dev`} />
+          <CodeBlock lang="bash" code={`pnpm deploy:dashboard  # → https://alfsight-dashboard.pages.dev`} />
+          <p class="docs-p">Open the dashboard and sign in with your <code class="docs-code">ADMIN_TOKEN</code>. The Install button now copies a production snippet that loads <code class="docs-code">instagram.iife.js</code> from your widget project.</p>
 
-# Or individually
-pnpm build:dashboard   # → apps/dashboard/dist/
-pnpm build:widget      # → apps/widget/dist/
-pnpm build:web         # → apps/web/dist/`} />
-          <p class="docs-p">Deploy the dashboard and widget <code class="docs-code">dist/</code> folders to any static host: Cloudflare Pages, Vercel, Netlify, or a CDN.</p>
-
-          <h3 class="docs-h3">5. Cron triggers</h3>
-          <p class="docs-p">The API worker includes a cron trigger configured to run every 6 hours (<code class="docs-code">0 */6 * * *</code>). This is defined in <code class="docs-code">wrangler.jsonc</code> and activates automatically on deploy. It refreshes feed data from OpenHandle so widgets stay up-to-date without manual intervention.</p>
+          <h3 class="docs-h3">5. Deploy this site (optional)</h3>
+          <CodeBlock lang="dotenv" title="apps/web/.env.production" code={`PUBLIC_DASHBOARD_URL=https://alfsight-dashboard.pages.dev`} />
+          <CodeBlock lang="bash" code={`pnpm deploy:web  # → https://alfsight.pages.dev`} />
+          <p class="docs-p">If a <code class="docs-code">*.pages.dev</code> name is taken, Cloudflare gives the project a different subdomain. Use the URL the deploy prints in the env files above. Custom domains can be added under Pages → Custom domains.</p>
         </section>
 
         <!-- Project Structure -->
@@ -647,7 +647,7 @@ pnpm build:web         # → apps/web/dist/`} />
 │   │       ├── layouts/         # DashboardLayout
 │   │       └── styles/          # global.css (theme vars)
 │   │
-│   ├── widget/           # Embeddable Web Component (<3 kB)
+│   ├── widget/           # Embeddable Web Component (< 6 kB)
 │   │   └── src/
 │   │       ├── widget.ts        # <instagram-feed> custom element
 │   │       ├── styles.ts        # Shadow DOM styles
