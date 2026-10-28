@@ -25,11 +25,13 @@
 
   <script type="module" src="/src/index.ts"></script>
   <script>
+    // The dashboard embeds this page as a live preview: ?feed=<id>&api=<api base>
     const params = new URLSearchParams(window.location.search);
+    const widget = document.getElementById("widget");
     const feedId = params.get("feed");
-    if (feedId) {
-      document.getElementById("widget")?.setAttribute("feed", feedId);
-    }
+    const apiBase = params.get("api");
+    if (feedId) widget?.setAttribute("feed", feedId);
+    if (apiBase) widget?.setAttribute("api-base", apiBase);
   </script>
 </body>
 </html>
