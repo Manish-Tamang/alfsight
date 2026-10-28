@@ -212,6 +212,20 @@ pnpm deploy:dashboard   # needs apps/dashboard/.env.production (see .env.example
 pnpm deploy:web         # needs apps/web/.env.production (see .env.example)
 ```
 
+### Auto deploy
+
+`.github/workflows/deploy.yml` deploys on every push to `main`, but only the apps whose files changed (D1 migrations run before the API deploys). Run it manually from the Actions tab to deploy everything.
+
+Add these in GitHub → Settings → Secrets and variables → Actions:
+
+| Name | Type | Value |
+| --- | --- | --- |
+| `CLOUDFLARE_API_TOKEN` | Secret | API token with **Workers Scripts: Edit**, **Cloudflare Pages: Edit** and **D1: Edit** |
+| `CLOUDFLARE_ACCOUNT_ID` | Secret | Your Cloudflare account ID |
+| `PUBLIC_API_BASE` | Variable | e.g. `https://api.example.com` |
+| `PUBLIC_WIDGET_URL` | Variable | e.g. `https://alfsight-widget.pages.dev` |
+| `PUBLIC_DASHBOARD_URL` | Variable | e.g. `https://alfsight-dashboard.pages.dev` |
+
 Embed a widget on any site:
 
 ```html
