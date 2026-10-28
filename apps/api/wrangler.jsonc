@@ -16,6 +16,9 @@
       "binding": "DB",
       "database_name": "instagram-widget-db",
       "database_id": "4b4fb570-07fd-4f9c-82a2-e7df8be0b7fa",
+      // Local dev (wrangler dev / --local) uses this ID instead, so local data
+      // stays separate from production. The value is just a stable local key.
+      "preview_database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
       "migrations_dir": "../../database/migrations",
     },
   ],

@@ -14,7 +14,7 @@ const items = [
   <div class="flex h-14 items-center justify-between px-4 md:h-auto md:px-3 md:pt-4 md:pb-3">
     <a href="/" class="flex items-center gap-2 rounded-lg px-1 py-1 text-black" aria-label="Alfsight home">
       <img src="/alfsight.png" alt="" width="450" height="450" class="h-6 w-6" />
-      <span class="font-display text-[17px] font-bold tracking-tight">Alfsight</span>
+      <span class="font-display text-xl font-medium tracking-tight text-neutral-800">Alfsight</span>
     </a>
   </div>
 
@@ -27,10 +27,10 @@ const items = [
           <a
             href={item.href}
             class:list={[
-              "flex h-9 shrink-0 items-center gap-2.5 rounded-lg px-2.5 text-sm transition-colors",
+              "flex h-9 shrink-0 items-center gap-2.5 rounded-[10px] px-2.5 text-sm transition-colors",
               active
-                ? "bg-[var(--color-accent-soft)] font-medium text-[var(--color-accent)]"
-                : "text-neutral-600 hover:bg-black/5 hover:text-neutral-900 active:bg-black/10",
+                ? "bg-white font-medium text-neutral-900 shadow-sm shadow-black/5 ring-1 ring-black/5 [&>svg]:text-brand-600"
+                : "text-neutral-600 hover:bg-black/[0.04] hover:text-neutral-900",
             ]}
           >
             <Icon size={16} strokeWidth={active ? 2 : 1.75} />
@@ -42,11 +42,12 @@ const items = [
   </nav>
 
   <div class="hidden px-3 pb-4 md:block">
+    <div class="dots-x mx-1 mb-3"></div>
     <a
       href="https://github.com/Manish-Tamang/alfsight#readme"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/5 hover:text-neutral-900"
+      class="flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/[0.04] hover:text-neutral-900"
     >
       <BookOpen size={16} strokeWidth={1.75} />
       Docs
@@ -56,7 +57,7 @@ const items = [
         <button
           type="button"
           data-sign-out
-          class="flex h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/5 hover:text-neutral-900"
+          class="flex h-9 w-full items-center gap-2.5 rounded-[10px] px-2.5 text-sm text-neutral-600 transition-colors hover:bg-black/[0.04] hover:text-neutral-900"
         >
           <LogOut size={16} strokeWidth={1.75} />
           Sign out
