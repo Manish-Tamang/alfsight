@@ -15,6 +15,10 @@
   <a href="https://github.com/Manish-Tamang/alfsight">GitHub</a>
 </p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-19ca58" alt="MIT License" /></a>
+</p>
+
 A lightweight, embeddable Instagram feed widget service and management dashboard. Fetch public Instagram data server-side, cache feed content at the edge, and embed customizable grids on any website using a zero-dependency Web Component `<script>` tag.
 
 ---
@@ -201,3 +205,9 @@ pnpm build:dashboard
 # Build Widget bundle (outputs to apps/widget/dist)
 pnpm build:widget
 ```
+
+---
+
+## License
+
+[MIT](LICENSE) © Manish Tamang

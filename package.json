@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "description": "Embeddable Instagram feed widget service",
+  "license": "MIT",
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
     "dev:api": "pnpm --filter @instagram-widget/api dev",
