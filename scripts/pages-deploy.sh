@@ -6,7 +6,8 @@ set -euo pipefail
 project="$1"
 dir="$2"
 
-if ! pnpm exec wrangler pages project list | grep -q "│ ${project} │"; then
+# The table pads each name to the column width, e.g. "│ alfsight           │".
+if ! pnpm exec wrangler pages project list | grep -qE "│ ${project} +│"; then
   echo "Creating Pages project ${project}"
   pnpm exec wrangler pages project create "$project" --production-branch main
 fi
