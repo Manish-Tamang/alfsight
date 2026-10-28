@@ -16,7 +16,31 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Manish-Tamang/alfsight/actions/workflows/deploy.yml"><img src="https://github.com/Manish-Tamang/alfsight/actions/workflows/deploy.yml/badge.svg" alt="Deploy" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-19ca58" alt="MIT License" /></a>
+  <a href="https://github.com/Manish-Tamang/alfsight/stargazers"><img src="https://img.shields.io/github/stars/Manish-Tamang/alfsight?style=flat&color=19ca58" alt="GitHub stars" /></a>
+  <a href="https://github.com/Manish-Tamang/alfsight/commits/main"><img src="https://img.shields.io/github/last-commit/Manish-Tamang/alfsight?color=19ca58" alt="Last commit" /></a>
+  <img src="https://img.shields.io/badge/widget-%3C%206%20kB%20gzipped-19ca58" alt="Widget under 6 kB gzipped" />
+  <a href="https://github.com/Manish-Tamang/alfsight/pulls"><img src="https://img.shields.io/badge/PRs-welcome-19ca58" alt="PRs welcome" /></a>
+</p>
+
+<p align="center">
+  <a href="https://workers.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflareworkers&logoColor=white" alt="Cloudflare Workers" /></a>
+  <a href="https://pages.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare_Pages-F38020?logo=cloudflarepages&logoColor=white" alt="Cloudflare Pages" /></a>
+  <a href="https://developers.cloudflare.com/d1/"><img src="https://img.shields.io/badge/Cloudflare_D1-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare D1" /></a>
+  <a href="https://developers.cloudflare.com/kv/"><img src="https://img.shields.io/badge/Cloudflare_KV-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare KV" /></a>
+</p>
+
+<p align="center">
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://hono.dev/"><img src="https://img.shields.io/badge/Hono-E36002?logo=hono&logoColor=white" alt="Hono" /></a>
+  <a href="https://orm.drizzle.team/"><img src="https://img.shields.io/badge/Drizzle_ORM-C5F74F?logo=drizzle&logoColor=black" alt="Drizzle ORM" /></a>
+  <a href="https://zod.dev/"><img src="https://img.shields.io/badge/Zod-3E67B1?logo=zod&logoColor=white" alt="Zod" /></a>
+  <a href="https://astro.build/"><img src="https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white" alt="Astro" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB" alt="React 19" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" /></a>
+  <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white" alt="pnpm" /></a>
 </p>
 
 A lightweight, embeddable Instagram feed widget service and management dashboard. Fetch public Instagram data server-side, cache feed content at the edge, and embed customizable grids on any website using a zero-dependency Web Component `<script>` tag.
