@@ -10,7 +10,8 @@
     {
       "binding": "DB",
       "database_name": "instagram-widget-db",
-      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
+      "migrations_dir": "../../database/migrations"
     }
   ],
 
@@ -29,12 +30,14 @@
     ]
   },
 
-  // Environment variables (non-secret)
+  // Environment variables (non-secret).
+  // Local dev overrides this with ENVIRONMENT=development in .dev.vars.
   "vars": {
-    "ENVIRONMENT": "development"
+    "ENVIRONMENT": "production"
   }
 
   // Secrets (set via `wrangler secret put`):
+  // - ADMIN_TOKEN: the dashboard sign-in token in production
   // - OPENHANDLE_TEST_KEY for local/test data
   // - OPENHANDLE_LIVE_KEY for explicitly enabled production access
 }
